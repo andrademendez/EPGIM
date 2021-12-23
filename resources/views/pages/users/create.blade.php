@@ -1,17 +1,26 @@
-<x-modal.modal-md>
-    <x-slot name="modalhead"> {{ $action }} Usuario </x-slot>
+<x-modal.modal-sm>
+    <x-slot name="modalhead"> Registrar nuevo Usuario </x-slot>
     <div>
         <form method="post">
-            <div class="grid grid-cols-4 gap-4">
-                <div class="pt-2 col-span-2">
+            <div class="grid grid-cols-4 gap-2">
+                <div class="pt-2 col-span-4">
                     <x-form.label for="nombre">Nombre</x-form.label>
                     <x-input type="text" name="nombre" wire:model="name" id="nombre" placeholder="Nombre del usuario" class="w-full" required />
                     @error('name') <span class="text-xs text-red-600">{{ $message }}</span> @enderror
                 </div>
-                <div class="pt-2 col-span-2">
+                <div class="pt-2 col-span-4">
                     <x-form.label for="email">Email</x-form.label>
                     <x-input type="email" name="email" wire:model="email" id="email" placeholder="example@grupogim.com.mx" class="w-full" required />
                     @error('email') <span class="text-xs text-red-600">{{ $message }}</span> @enderror
+                </div>
+                <div class=" pt-2 col-span-2">
+                    <x-form.label for="password">Contraseña</x-form.label>
+                    <x-input type="password" name="password" wire:model="password" id="password" placeholder="********" class="w-full" required />
+                    @error('password') <span class="text-xs text-red-600">{{ $message }}</span> @enderror
+                </div>
+                <div class="pt-2 col-span-2">
+                    <x-form.label for="repeat_password">Confirmar Contraseña</x-form.label>
+                    <x-input type="password" name="repeat_password" wire:model="repeat_password" id="repeat_password" placeholder="*******" class="w-full" required />
                 </div>
                 <div class="pt-2 col-span-2">
                     <x-form.label for="rol">Rol</x-form.label>
@@ -22,36 +31,29 @@
                         @endforeach
                     </x-form.select>
                 </div>
-                @if ($action == 'Actualizar')
-                <div class="pt-2 col-span-2">
-                    <x-form.label for="status">Estatus</x-form.label>
-                    <x-form.select name="status" id="status" wire:model="status" class="w-full">
-                        <option selected> Selecione el estatus</option>
-                        <option value="0"> Inactivo</option>
-                        <option value="1"> Activo</option>
-                    </x-form.select>
-                </div>
-                @endif
-            </div>
-            <div class="pt-2 flex justify-end">
-                <x-button wire:click.prevent="store()">{{ $action }}</x-button>
-            </div>
-        </form>
-        <form method="post">
-            <div class="grid grid-cols-4 gap-4">
-                <div class="w-full pt-2 pr-2 col-span-2">
-                    <x-form.label for="password">Contraseña</x-form.label>
-                    <x-input type="password" name="password" wire:model="password" id="password" placeholder="********" class="w-full" required />
-                    @error('password') <span class="text-xs text-red-600">{{ $message }}</span> @enderror
-                </div>
-                <div class="w-full pt-2 pl-2 col-span-2">
-                    <x-form.label for="repeat_password">Repetir Contraseña</x-form.label>
-                    <x-input type="password" name="repeat_password" wire:model="repeat_password" id="repeat_password" placeholder="*******" class="w-full" required />
+                <div class="pt-2 col-span-2 ">
+                    <x-form.label for="rol">Tipo de usuario</x-form.label>
+                    <div class="flex items-center">
+                        <div class="flex items-center pr-2">
+                            <input id="interno" wire:model="interno" type="radio" name="interno" value="1" class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600" aria-labelledby="country-option-1" aria-describedby="country-option-1" checked>
+                            <label for="interno" class="block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                Interno
+                            </label>
+                        </div>
+
+                        <div class="flex items-center ">
+                            <input id="externo" wire:model="interno" type="radio" name="interno" value="0" class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600" aria-labelledby="country-option-2" aria-describedby="country-option-2">
+                            <label for="externo" class="block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                Externo
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="pt-2 flex justify-end">
-                <x-button wire:click.prevent="updatePassword()">{{ $action }}</x-button>
+                <x-button wire:click.prevent="store()">Registrar</x-button>
             </div>
         </form>
+
     </div>
-</x-modal.modal-md>
+</x-modal.modal-sm>

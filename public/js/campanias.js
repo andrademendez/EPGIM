@@ -12,7 +12,7 @@ $(".modal-dialog").draggable({
 });
 
 new Pikaday({
-    field: document.getElementById("started"),
+    field: document.getElementById("start"),
     format: "D-MMM-YYYY",
     firstDay: 1,
 });
@@ -24,6 +24,12 @@ new Pikaday({
 
 new Pikaday({
     field: document.getElementById("ustart"),
+    format: "D-MMM-YYYY",
+    firstDay: 1,
+});
+
+new Pikaday({
+    field: document.getElementById("uend"),
     format: "D-MMM-YYYY",
     firstDay: 1,
 });

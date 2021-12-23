@@ -172,15 +172,19 @@
                             </x-nav-link>
                         </x-nav-li>
                         @if (auth()->user()->isAdmin() || auth()->user()->isCreator())
-                        <li class="nav-item {{ $activePage == 'detalles' ? ' active' : '' }}">
-                            <a class="nav-link" href="#">
-                                <span class="sidebar-mini">
-                                    <span class="iconify h-5 w-5" data-icon="ic:round-event-note" data-inline="false"></span>
-                                </span>
+                        <x-nav-li :active="request()->routeIs('campania.detalles')">
+                            <x-nav-link :href="route('campania.detalles')">
+                                <span class="sidebar-mini"> DL </span>
                                 <span class="sidebar-normal"> {{ __('Detalles') }} </span>
-                            </a>
-                        </li>
+                            </x-nav-link>
+                        </x-nav-li>
                         @endif
+                        <x-nav-li :active="request()->routeIs('challenge')">
+                            <x-nav-link :href="route('challenge')">
+                                <span class="sidebar-mini"> CH </span>
+                                <span class="sidebar-normal"> {{ __('Challenge') }} </span>
+                            </x-nav-link>
+                        </x-nav-li>
                     </ul>
                 </div>
             </li>

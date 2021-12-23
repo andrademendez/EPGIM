@@ -10,7 +10,7 @@ class TipoEspacio extends Component
 {
     use WithPagination;
 
-    public $nombre, $open, $search = '';
+    public $nombre, $open, $search = '', $id_tipo, $action;
 
     protected $queryString = [
         'search' => ['except' => '']
@@ -23,11 +23,16 @@ class TipoEspacio extends Component
     public function openModal()
     {
         $this->open = true;
+        $this->action = 'Registrar';
     }
 
-    public function openEdit()
+    public function openEdit($id)
     {
         $this->open = true;
+        $this->action = 'Actualizar';
+        $tipo = TiposEspacios::find($id);
+        $this->nombre = $tipo->nombre;
+        $this->id_tipo = $tipo->id;
     }
 
     public function openDelete()
@@ -37,7 +42,7 @@ class TipoEspacio extends Component
     public function closeModal()
     {
         $this->open = false;
-        $this->reset('nombre');
+        $this->reset('nombre', 'id_tipo');
     }
 
     public function render()
@@ -51,12 +56,22 @@ class TipoEspacio extends Component
     {
         $this->validate();
         try {
-            $tipo = new TiposEspacios();
-            $tipo->nombre = $this->nombre;
-            $tipo->save();
-            if ($tipo) {
-                $this->showAlert('Tipo de espacio registrado', 'success');
-                $this->closeModal();
+            if ($this->action == 'Registrar') {
+                $tipo = new TiposEspacios();
+                $tipo->nombre = $this->nombre;
+                $tipo->save();
+                if ($tipo) {
+                    $this->showAlert('Tipo de espacio registrado', 'success');
+                    $this->closeModal();
+                }
+            } else {
+                $tipo = TiposEspacios::find($this->id_tipo);
+                $tipo->nombre = $this->nombre;
+                $tipo->save();
+                if ($tipo) {
+                    $this->showAlert('Tipo de espacio actualizado', 'success');
+                    $this->closeModal();
+                }
             }
         } catch (\Throwable $th) {
             $this->showAlert('Registro no realizado', 'error');

@@ -1,5 +1,5 @@
 <x-modal.modal-sm>
-    <x-slot name="modalhead"> Nuevo Registro </x-slot>
+    <x-slot name="modalhead"> {{ $action }} Registro </x-slot>
     <div>
         <form action="#" method="post">
             <div class="pt-2">
@@ -10,8 +10,8 @@
                 <x-form.label for="nombre">Nombre</x-form.label>
                 <x-input type="text" name="nombre" wire:model="nombre" id="nombre" placeholder="Nombre de la unidad" class="w-full" />
             </div>
-            <div class="pt-4">
-                <x-button wire:click.prevent="store">Guardar</x-button>
+            <div class="pt-4 flex justify-end">
+                <x-form.btn-primary wire:click.prevent="store">Guardar</x-form.btn-primary>
             </div>
         </form>
     </div>

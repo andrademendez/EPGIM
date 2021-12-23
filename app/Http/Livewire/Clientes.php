@@ -28,9 +28,16 @@ class Clientes extends Component
         $this->action = 'Registrar';
     }
 
-    public function openEdit()
+    public function openEdit($id)
     {
         $this->open = true;
+        $this->action = 'Actualizar';
+        $cliente = ModelsClientes::find($id);
+        $this->id_cliente = $cliente->id;
+        $this->nombre = $cliente->nombre;
+        $this->email = $cliente->email;
+        $this->telefono = $cliente->telefono;
+        $this->contacto = $cliente->contacto;
     }
 
     public function openDelete()
@@ -48,15 +55,28 @@ class Clientes extends Component
     {
         $this->validate();
         try {
-            $cliente = new ModelsClientes();
-            $cliente->nombre = $this->nombre;
-            $cliente->contacto = $this->contacto;
-            $cliente->email = $this->email;
-            $cliente->telefono = $this->telefono;
-            $cliente->save();
-            if ($cliente) {
-                $this->showAlert('Cliente Registrado', 'success');
-                $this->closeModal();
+            if ($this->action == 'Registrar') {
+                $cliente = new ModelsClientes();
+                $cliente->nombre = $this->nombre;
+                $cliente->contacto = $this->contacto;
+                $cliente->email = $this->email;
+                $cliente->telefono = $this->telefono;
+                $cliente->save();
+                if ($cliente) {
+                    $this->showAlert('Cliente Registrado', 'success');
+                    $this->closeModal();
+                }
+            } else {
+                $cliente = ModelsClientes::find($this->id_cliente);
+                $cliente->nombre = $this->nombre;
+                $cliente->email = $this->email;
+                $cliente->telefono = $this->telefono;
+                $cliente->contacto = $this->contacto;
+                $cliente->save();
+                if ($cliente) {
+                    $this->showAlert('Datos del cliente actualizados!!', 'success');
+                    $this->closeModal();
+                }
             }
         } catch (\Throwable $th) {
             $this->showAlert('Error del sistema!!', 'error');

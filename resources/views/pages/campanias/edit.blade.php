@@ -14,50 +14,65 @@
                             <form id="modificarEvento" method="POST">
                                 @csrf
                                 <input id="id_up" type="hidden" name="id" value="">
-                                <div class="mt-2 mb-3">
-                                    <div class="">
-                                        <x-label for="unombre">Nombre</x-label>
-                                        <input class="form-control" name="unombre" id="unombre" type="text" />
+                                <div class="mt-2 mb-3 grid grid-cols-4 gap-2">
+                                    <div class="col-span-4">
+                                        <x-form.label for="unombre">Nombre</x-form.label>
+                                        <x-input class="w-full" name="unombre" id="unombre" type="text" />
                                     </div>
-                                </div>
-                                <div class="mt-2 mb-3 flex flex-inline">
-                                    <div class="w-1/2">
-                                        <x-label for="ustart">Fecha</x-label>
-                                        <div class="form-group">
-                                            <input class="form-control" name="udate-start" id="ustart" type="text" />
-                                        </div>
+
+                                    <div class="col-span-2 pt-2">
+                                        <x-form.label for="ustart">Fecha</x-form.label>
+                                        <x-input name="udate-start" id="ustart" type="text" />
+
+                                    </div>
+                                    <div class="col-span-2 pt-2">
+                                        <x-form.label for="uend">Fecha</x-form.label>
+                                        <x-input name="udate-uend" id="uend" type="text" />
+
                                     </div>
                                     <!-- Estado -->
-                                    <div class="w-1/2 ml-2">
-                                        <x-label for="uestatus">Estatus</x-label>
-                                        <div class="form-group ">
-                                            <select class="form-control selectpicker" id="uestatus" data-style="btn btn-link">
-                                                <option value="Confirmado">Confirmado</option>
-                                                <option value="Hold">Hold</option>
-                                                {{-- <option value="Cancelado">Cancelado</option> --}}
-                                            </select>
+                                    <div class="col-span-2 pt-2">
+                                        <x-form.label for="uestatus">Estatus</x-form.label>
+                                        <x-input id="uestatus" type="text" title="Estatus" disabled />
+                                    </div>
+                                    <!-- Tipo evento -->
+                                    <div class="col-span-2  pt-2">
+                                        <x-form.label for="umedio">Medio de ingreso</x-form.label>
+                                        <x-form.select id="umedio" title="Medio" class="w-full">
+                                            @foreach ( $medios as $medio)
+                                            <option value="{{ $medio->id }}">{{ $medio->nombre }}</option>
+                                            @endforeach
+                                        </x-form.select>
+                                    </div>
+                                    <div class="col-span-2 pt-2">
+                                        <x-form.label for="ucliente">Cliente</x-form.label>
+                                        <x-form.select id="ucliente" class="w-full" name="cliente" title="Cliente">
+                                            <option selected>Selecione el cliente</option>
+                                            @foreach ( $clientes as $cliente)
+                                            <option value="{{ $cliente->id }}">{{ $cliente->nombre }}</option>
+                                            @endforeach
+                                        </x-form.select>
+                                    </div>
+                                    <!-- Estado -->
+                                    <div class="col-span-2  pt-2">
+                                        <x-form.label for="estatus">Cargar Archivo</x-form.label>
+
+                                        <div class="mt-1 flex justify-center p-1 border border-gray-300 border-dashed rounded-md">
+                                            <div class=" text-center">
+                                                <div class="flex items-center text-xs text-gray-600">
+                                                    <label for="file-upload" class=" relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                                                        <span>Cargar Archivo</span>
+                                                        <input id="file-upload" name="file-upload" type="file" class="sr-only ">
+                                                    </label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Tipo Evento -->
-                                <div class="mt-2 mb-3 ">
-                                    <label class=" text-gray-800 text-sm mb-2" for="utevento">Tipo de Evento</label>
-                                    {{-- <select class="form-control selectpicker" name="teventos" id="utevento" data-style="btn btn-link" data-size="7">
-                                        @foreach ( $teventos as $tevento)
-                                        <option value="{{ $tevento->id }}">{{ $tevento->nombre }}</option>
-                                    @endforeach
-                                    </select> --}}
-                                </div>
                                 <!-- Bottom -->
-                                <div class="m-2">
-                                    <div class="flex justify-between mt-3">
-                                        <x-button id="udelete" type="button">
-                                            <div class="flex items-center">
-                                                {{-- <span class="iconify w-6 h-6" data-icon="ph:calendar-x-light" data-inline="false"></span> --}}
-                                                <span class="pl-2">Eliminar</span>
-                                            </div>
-                                        </x-button>
-                                        <x-form.btn-primary id="uguardar" type="button">
+                                <div class="mx-2 pt-2">
+                                    <div class="flex justify-end mt-3">
+                                        <x-form.btn-primary id="uguardar" type="submit">
                                             <div class="flex items-center">
                                                 {{-- <span class="iconify w-6 h-6" data-icon="fluent:calendar-arrow-down-24-filled" data-inline="false"></span> --}}
                                                 <span class="pl-2">Guardar cambios</span>
@@ -66,6 +81,22 @@
                                     </div>
                                 </div>
                             </form>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <x-button id="confirmar" class="hidden ">Confirmar</x-button>
+                                    <x-button id="challenge" class="hidden ">Challenge</x-button>
+
+
+                                </div>
+                                <form method="post" class="flex justify-start">
+                                    @csrf
+                                    <x-button id="delete" type="submit" class="bg-red-600 text-red-100">
+                                        <span class="pl-2">Eliminar</span>
+                                    </x-button>
+                                </form>
+
+                            </div>
+
                         </div>
                     </div>
                     <!-- agregar espacio -->
@@ -77,41 +108,46 @@
                                 <x-label for="uespacio">Agregar espacios</x-label>
                                 <div class="flex flex-row items-center justify-center">
                                     <div class="w-full">
-
-                                        {{-- <div class="">
+                                        <div class="">
                                             <select name="uespacio[]" class="selectpicker" id="espacioadd" multiple data-style="select-with-transition" data-size="7">
                                                 @foreach ( $espacios as $espacio)
                                                 <option value="{{ $espacio->id }}">{{ $espacio->nombre }}</option>
-                                        @endforeach
-                                        </select>
-                                    </div> --}}
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-end">
+                                        <x-form.btn-icons type="button" id="saveAddVenue">
+                                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                        </x-form.btn-icons>
+                                    </div>
                                 </div>
-                                <div class="flex items-end">
-                                    <x-form.btn-icons type="button" id="saveAddVenue">
-                                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                        </svg>
-                                    </x-form.btn-icons>
-                                </div>
+                            </form>
                         </div>
-                        </form>
-                    </div>
-                    <div class="pb-2">
-                        <x-table.table>
-                            <x-slot name="theader">
-                                <tr>
-                                    <x-table.th colspan="2">Espacios</x-table.th>
-                                </tr>
-                            </x-slot>
-                            <tbody class="bg-white divide-y divide-gray-200" id="cargadatos">
+                        <div class="pb-2">
+                            <x-table.table>
+                                <x-slot name="theader">
+                                    <tr>
+                                        <x-table.th colspan="2">Espacios</x-table.th>
+                                    </tr>
+                                </x-slot>
+                                <tbody class="bg-white divide-y divide-gray-200" id="cargadatos">
 
-                            </tbody>
-                        </x-table.table>
+                                </tbody>
+                            </x-table.table>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
+        </div>
     </div>
 </div>
-</div>
+
+<script>
+    let id = $("#id_up").val();
+    console.log(id);
+
+</script>

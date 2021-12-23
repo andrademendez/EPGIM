@@ -14,7 +14,7 @@ class Usuarios extends Component
     use WithPagination, WithFileUploads;
 
     public $name, $email, $id_rol, $password, $repeat_password, $status, $id_user;
-    public $search = '', $open, $action;
+    public $search = '', $open, $interno;
 
     protected $queryString = [
         'search' => ['except' => '']
@@ -31,19 +31,6 @@ class Usuarios extends Component
     public function openModal()
     {
         $this->open = true;
-        $this->action = 'Registrar';
-    }
-
-    public function openEdit($id)
-    {
-        $this->open = true;
-        $this->action = 'Actualizar';
-        $user = User::find($id);
-        $this->id_user = $id;
-        $this->name = $user->name;
-        $this->email = $user->email;
-        $this->id_rol = $user->id_rol;
-        $this->status  = $user->status;
     }
 
     public function openDelete()
@@ -54,55 +41,45 @@ class Usuarios extends Component
     public function closeModal()
     {
         $this->open = false;
-        $this->reset(['id_rol', 'name', 'email', 'action', 'password', 'repeat_password', 'id_user', 'status']);
-    }
-
-    public function updatePassword()
-    {
-        if ($this->password == $this->repeat_password) {
-            $user = User::find($this->id_user);
-            $user->password = Hash::make($this->password);
-            $user->save();
-            if ($user) {
-                $this->showAlert('Contraseña actualizada!!', 'success');
-            }
-        } else {
-            $this->showAlert('Las contraseña no coninciden', 'info');
-        }
+        $this->reset(['id_rol', 'name', 'email', 'password', 'repeat_password', 'id_user', 'interno', 'status']);
     }
 
     public function store()
     {
         $this->validate();
         try {
-            if ($this->action == 'Registrar') {
-                if ($this->password == $this->repeat_password) {
-                    $user = new User();
-                    $user->name = $this->name;
-                    $user->email = $this->email;
-                    $user->id_rol = $this->id_rol;
-                    $user->password = Hash::make($this->password);
-                    $user->status = true;
-                    $user->save();
-                    if ($user) {
-                        $this->showAlert('Usuario registrado', 'success');
-                        $this->closeModal();
-                    }
-                } else {
-                    $this->showAlert('Las contraseña no coninciden', 'info');
-                }
-            } elseif ($this->action == 'Actualizar') {
-                $user = User::find($this->id_user);
+            if ($this->password == $this->repeat_password) {
+                $user = new User();
                 $user->name = $this->name;
+                $user->email = $this->email;
                 $user->id_rol = $this->id_rol;
+                $user->password = Hash::make($this->password);
+                $user->status = true;
+                $user->interno = $this->interno;
                 $user->save();
                 if ($user) {
-                    $this->showAlert('Los datos del Usuario han sido actualizado', 'success');
+                    $this->showAlert('Usuario registrado', 'success');
                     $this->closeModal();
                 }
+            } else {
+                $this->showAlert('Las contraseña no coninciden', 'info');
             }
         } catch (\Throwable $th) {
             $this->showAlert('Verifique sus datos', 'info');
+        }
+    }
+
+    public function updateStatus($id)
+    {
+        $user = User::find($id);
+        if ($user->status == 0) {
+            $user->status = true;
+        } else {
+            $user->status = false;
+        }
+        $user->save();
+        if ($user) {
+            $this->showAlert('Estatus cambiado', 'success');
         }
     }
 

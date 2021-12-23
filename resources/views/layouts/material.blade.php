@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ config('app.name', 'EPGIM') }}</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>EPGIM - {{ $title }}</title>
     <link rel="shortcut icon" href="{{ asset('images/gim.png') }}" type="image/x-icon">
     <!--     Fonts and icons     -->
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
@@ -12,20 +13,19 @@
     <!-- CSS Files -->
     <link href="{{ asset('material/css/material-dashboard.css?v=2.1.2') }}" rel="stylesheet" />
     <!-- Styles -->
-
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link href="{{ asset('css/toastr.css') }}" rel="stylesheet">
 
     @livewireStyles
     @method('styles')
 
 </head>
-<body>
-    <div class="w-xl w-full">
+<body class="bg-white">
+    <div class=" w-full">
         @include('layouts.navbars.sidebar')
         <div class="main-panel ">
             @include('layouts.navbars.navs.auth')
             {{ $slot }}
-            @include('layouts.footers.auth')
         </div>
     </div>
 
@@ -59,14 +59,13 @@
     <script src="{{ asset('js/offcanvas.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <script src="{{ asset('js/toast.js') }}"></script>
+
     @livewireScripts
     @method('js')
-
+    <link rel="stylesheet" type="text/css" href="{{ asset("css/pikaday.css") }}">
     <script src="{{ asset("js/pikaday.js") }}"></script>
     <script src="{{ asset("js/campanias.js") }}"></script>
 
-
-    <link rel="stylesheet" type="text/css" href="{{ asset("css/pikaday.css") }}">
     <style>
         .uk-active {
 

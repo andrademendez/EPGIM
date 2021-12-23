@@ -16,7 +16,7 @@ class CreateCampaniaEspacioTable extends Migration
         Schema::create('campania_espacio', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_campania')->constrained('campanias');
-            $table->foreignId('id_cliente')->constrained('clientes');
+            $table->foreignId('id_espacio')->constrained('espacios');
             $table->timestamps();
         });
     }

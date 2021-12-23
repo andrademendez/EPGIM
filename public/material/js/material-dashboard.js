@@ -735,11 +735,11 @@ md = {
                     .append(
                         '<div class="hr-line-solid-no-margin"></div>' +
                             '<span class="uk-text-left" style="font-size: 10px">' +
-                            event.tipo_evento +
+                            event.medios +
                             "</span> <br>" +
                             '<span style="font-size: 10px">' +
                             event.estado +
-                            " " +
+                            " - " +
                             event.hold +
                             "</span> <br>" +
                             '<span style="font-size: 10px"> Creado por: ' +
@@ -753,7 +753,7 @@ md = {
             eventOrder: "hold",
             // color classes: [ event-blue | event-azure | event-green | event-orange | event-red ]
             events: {
-                url: "/eventos/get",
+                url: "/all/campanias",
                 cache: false,
                 lazyFetching: false,
             },
@@ -784,18 +784,19 @@ md = {
                     titleFormat: "D MMM, YYYY",
                 },
             },
+
             select: function (start, end, jsEvent) {
                 $("#crearEvento")[0].reset();
                 $("#uikit-create").modal("show");
                 var start = $.fullCalendar.formatDate(start, "DD-MMM-Y");
                 var end = $.fullCalendar.formatDate(end, "DD-MMM-Y");
-                $("#started").val(start);
+                $("#start").val(start);
                 $("#end").val(end);
             },
             editable: true,
             eventLimit: 5,
 
-            eventDrop: function (event, jsEvent) {
+            eventDrop: function (event, end, jsEvent) {
                 var ustart = $.fullCalendar.formatDate(
                     event.start,
                     "Y-MM-DD HH:mm:ss"
@@ -860,24 +861,32 @@ md = {
                 });
             },
             eventClick: function (event, jsEvent, view) {
+                var element = document.getElementById("confirmar");
+
                 $("#modificarEvento")[0].reset();
-                //UIkit.offcanvas('#offcanvas-flip').toggle();
                 $("#modalEventEditar").modal("show");
-                //event.preventDefault();
+                element.classList.add("hidden");
                 var start = $.fullCalendar.formatDate(event.start, "DD-MMM-Y");
+                var end = $.fullCalendar.formatDate(event.end, "DD-MMM-Y");
 
                 $("#ustart").val(start);
+                $("#uend").val(end);
                 $("#unombre").val(event.title);
                 $("#id_up").val(event.id);
                 $("#idEventEdit").val(event.id);
-                var id = event.id;
-                //console.log(start);
+                $("#uestatus").val(
+                    event.estado + " (Hold - " + event.hold + ")"
+                );
+                let id = event.id;
+                //console.log(view);
                 //datos(id);
                 var datos = {
                     id: id,
+                    hold: event.hold,
                 };
                 collection(datos);
                 consultar(datos);
+                actionStatus(datos);
                 //parametros
             },
         });
@@ -1321,47 +1330,49 @@ function debounce(func, wait, immediate) {
 function hide(element) {
     UIkit.modal(element).hide();
 }
-
+//llenado de los select
 function consultar(datos) {
     $.ajax({
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
-        url: "/eventos/editar",
+        url: "/only/get_estatus",
         type: "GET",
         data: datos,
         dataType: "json",
         success: function (response) {
             //console.log(response);
             data = response;
-            var tipo_evento = data[0].tipo_evento;
-            var tipo_evento_id = data[0].tipo_evento_id;
-            var estatus = data[0].estatus;
+            let medio_nombre = data[0].nombre_medio;
+            let id_medio = data[0].id_medio;
+            let cliente_nombre = data[0].nombre_cliente;
+            let id_cliente = data[0].id_cliente;
+
             //console.log(data);
-            $("#utevento").append(
+            $("#umedio").append(
                 '<option hidden selected value="' +
-                    tipo_evento_id +
+                    id_medio +
                     '">' +
-                    tipo_evento +
+                    medio_nombre +
                     "</option>"
             );
-            $("#uestatus").append(
+            $("#ucliente").append(
                 '<option hidden selected value="' +
-                    estatus +
+                    id_cliente +
                     '">' +
-                    estatus +
+                    cliente_nombre +
                     "</option>"
             );
         },
     });
 }
-
+//get espacio for edit
 function collection(datos) {
     $.ajax({
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
-        url: "/eventos/get_espacio",
+        url: "/only/get_espacio",
         type: "GET",
         data: datos,
         dataType: "json",
@@ -1374,7 +1385,6 @@ function collection(datos) {
                 $("#cargadatos").append(
                     "<tr>" +
                         '<td class="p-2 whitespace-normal flex items-center text-sm text-gray-800 text-uppercase">' +
-                        '<span class="iconify w-6 h-6" data-icon="mdi:office-building-marker" data-inline="false"></span>' +
                         '<span class="pl-2">' +
                         data.nombre +
                         "</span></td>" +
@@ -1382,9 +1392,9 @@ function collection(datos) {
                         '<button type="button" id="delespacio" class="px-2 text-red-800" onclick="eliminar(' +
                         data.id +
                         ", " +
-                        data.evento_id +
+                        data.id_campania +
                         ')" >' +
-                        '<span class="iconify w-6 h-6" data-icon="ph:x-circle" data-inline="false"></span>' +
+                        '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>' +
                         "</button> " +
                         "</td></tr>"
                 );
@@ -1403,7 +1413,7 @@ function espacios(element, event) {
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
-        url: "/espacios/for_evento",
+        url: "/only/espacio",
         type: "GET",
         data: data,
         dataType: "json",
@@ -1422,3 +1432,18 @@ function espacios(element, event) {
         },
     });
 }
+
+actionStatus = (camp) => {
+    if (camp.hold === "1") {
+        var element = document.getElementById("confirmar");
+        var challenge = document.getElementById("challenge");
+        element.classList.remove("hidden");
+        challenge.classList.add("hidden");
+    } else {
+        var element = document.getElementById("challenge");
+        var confirmar = document.getElementById("confirmar");
+        element.classList.remove("hidden");
+        confirmar.classList.add("hidden");
+        console.log("Soy btn-challenge");
+    }
+};

@@ -1,5 +1,5 @@
 <x-modal.modal-sm>
-    <x-slot name="modalhead"> Nuevo cliente </x-slot>
+    <x-slot name="modalhead"> {{ $action }} cliente </x-slot>
     <div>
         <form action="#" method="post">
             <div class="pt-2">
@@ -25,7 +25,7 @@
             </div>
 
             <div class="pt-4 flex justify-end">
-                <x-button wire:click.prevent="store()">Guardar</x-button>
+                <x-form.btn-primary wire:click.prevent="store()">Guardar</x-form.btn-primary>
             </div>
         </form>
     </div>

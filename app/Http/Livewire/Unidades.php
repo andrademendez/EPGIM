@@ -11,7 +11,7 @@ class Unidades extends Component
     public $open;
     public $buscar = '';
     public $action;
-    public $id_ciudad, $nombre;
+    public $id_ciudad, $nombre, $id_unidad;
 
     protected $queryString = [
         'buscar' => ['except' => '']
@@ -31,12 +31,17 @@ class Unidades extends Component
     public function closeModal()
     {
         $this->open = false;
-        $this->reset(['id_ciudad', 'nombre']);
+        $this->reset(['id_ciudad', 'nombre', 'id_unidad']);
     }
 
-    public function openEdit()
+    public function openEdit($id)
     {
         $this->open = true;
+        $this->action = 'Actualizar';
+        $unidad = UnidadesNegocios::find($id);
+        $this->id_unidad = $unidad->id;
+        $this->nombre = $unidad->nombre;
+        $this->id_ciudad = $unidad->id_ciudad;
     }
 
     public function openDelete()
@@ -47,14 +52,28 @@ class Unidades extends Component
     public function store()
     {
         $this->validate();
-
-        $unidad = new UnidadesNegocios();
-        $unidad->nombre = $this->nombre;
-        $unidad->id_ciudad = $this->id_ciudad;
-        $unidad->save();
-        if ($unidad) {
-            $this->showAlert('Registro exitóso', 'success');
-            $this->closeModal();
+        try {
+            if ($this->action == 'Registrar') {
+                $unidad = new UnidadesNegocios();
+                $unidad->nombre = $this->nombre;
+                $unidad->id_ciudad = $this->id_ciudad;
+                $unidad->save();
+                if ($unidad) {
+                    $this->showAlert('Registro exitóso!!', 'success');
+                    $this->closeModal();
+                }
+            } else {
+                $unidad = UnidadesNegocios::find($this->id_unidad);
+                $unidad->nombre = $this->nombre;
+                $unidad->id_ciudad = $this->id_ciudad;
+                $unidad->save();
+                if ($unidad) {
+                    $this->showAlert('Datos actualizados!!', 'success');
+                    $this->closeModal();
+                }
+            }
+        } catch (\Throwable $th) {
+            $this->showAlert('Error al actualizar los datos!!', 'success');
         }
     }
 

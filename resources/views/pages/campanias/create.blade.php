@@ -8,56 +8,42 @@
                 </button>
             </div>
             <div class="w-full">
-                {{-- <div class="mb-2 py-2 px-4 text-md text-center font-bold">
-                    <span>Nuevo Evento</span>
-                </div> --}}
                 <form class="px-2" id="crearEvento" method="POST">
                     @csrf
                     <!-- Nombre -->
                     <div class="w-full px-2 border border-purple-500 rounded-2xl bg-white">
                         <div class="p-2 grid grid-cols-4 gap-4">
                             <div class="col-span-4 pt-3">
-                                <x-form.label for="nombre">Nombre del evento</x-form.label>
-                                <input id="nombre" class="form-control" name="title" placeholder="Ingrese el nombre" type="text" required>
-                            </div>
-                            <!-- Estado -->
-                            <div class="col-span-2">
-                                <x-form.label for="select-espacio">Estatus</x-form.label>
-                                <select id="select-estatus" name="estatus" class="selectpicker form-control" data-style="btn btn-link" title="Estatus" required>
-                                    <option value="Solicitudes">Solicitudes</option>
-                                    <option value="Challenge">Challenge</option>
-                                    <option value="Confirmado">Confirmado</option>
-                                    <option value="Cerrado">Cerrado</option>
-                                </select>
+                                <x-form.label for="nombre">Nombre de la campaña</x-form.label>
+                                <x-input id="nombre" class="w-full" name="nombre" placeholder="Ingrese el nombre" type="text" required />
                             </div>
                             <!-- Tipo evento -->
-                            <div class="col-span-2">
-                                <x-form.label for="tevento">Medio de ingreso</x-form.label>
-                                <select id="tevento" class="selectpicker form-control" name="tevento" data-style="btn btn-link" data-size="7" title="Tipo de evento">
+                            <div class="col-span-2  pt-2">
+                                <x-form.label for="medio">Medio de ingreso</x-form.label>
+                                <x-form.select id="medio" title="Medio" class="w-full">
                                     @foreach ( $medios as $medio)
                                     <option value="{{ $medio->id }}">{{ $medio->nombre }}</option>
                                     @endforeach
-                                </select>
+                                </x-form.select>
                             </div>
-                            <div class="col-span-2">
-                                <x-form.label for="started">Fecha</x-form.label>
-                                <div class="form-group">
-                                    <input id="started" class="form-control" name="start" type="text" title="Inicio de la campaña">
-                                </div>
+                            <div class="col-span-2 pt-2">
+                                <x-form.label for="start">Fecha inicio</x-form.label>
+                                <x-input id="start" name="start" type="text" title="Inicio de la campaña" />
+
                             </div>
-                            <div class="col-span-2">
-                                <x-form.label for="end">Fecha</x-form.label>
-                                <div class="form-group">
-                                    <input id="end" class="form-control" name="end" type="text" title="Fin de la campaña">
-                                </div>
+                            <div class="col-span-2 pt-2">
+                                <x-form.label for="end">Fecha fin</x-form.label>
+                                <x-input id="end" name="end" type="text" title="Fin de la campaña" />
+
                             </div>
                             <div class="col-span-2">
                                 <x-form.label for="cliente">Cliente</x-form.label>
-                                <select id="cliente" class="selectpicker form-control" name="cliente" data-style="btn btn-link" data-size="7" title="Cliente">
+                                <x-form.select id="cliente" class="w-full" name="cliente" title="Cliente">
+                                    <option selected>Selecione el cliente</option>
                                     @foreach ( $clientes as $cliente)
                                     <option value="{{ $cliente->id }}">{{ $cliente->nombre }}</option>
                                     @endforeach
-                                </select>
+                                </x-form.select>
                             </div>
                             <div class="col-span-2">
                                 <x-form.label>Espacios</x-form.label>
@@ -74,7 +60,8 @@
                         </div>
                     </div>
                     <!-- Fecha Inicio-->
-                    <div class="pt-2 flex justify-end ">
+                    <div class="pt-2 flex justify-between px-10 ">
+                        <x-form.btn-secondary id="cancel" type="button" data-dismiss="modal">Terminar</x-form.btn-secondary>
                         <x-form.btn-primary id="save" type="submit">Agregar</x-form.btn-primary>
                     </div>
                 </form>

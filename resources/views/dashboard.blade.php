@@ -1,5 +1,8 @@
 <x-material-layout>
-    <div class="p-3">
+    <x-slot name="title">Dashboard</x-slot>
+    <x-slot name="titlePage">Dashboard</x-slot>
+
+    <div class="p-2">
         <div class="mx-auto">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-4 bg-white border-b border-gray-200">

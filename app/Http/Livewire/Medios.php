@@ -8,7 +8,7 @@ use Livewire\Component;
 class Medios extends Component
 {
     public $search = '', $open;
-    public $nombre, $action;
+    public $nombre, $action, $id_medio;
 
     protected $queryString = [
         'search' => ['except' => '']
@@ -27,12 +27,44 @@ class Medios extends Component
     public function closeModal()
     {
         $this->open = false;
-        $this->reset('nombre');
+        $this->reset(['nombre', 'id_medio']);
     }
 
+    public function openEdit($id)
+    {
+        $this->open = true;
+        $this->action = 'Actualizar';
+        $medio = ModelsMedios::find($id);
+        $this->nombre = $medio->nombre;
+        $this->id_medio = $medio->id;
+    }
+
+    public function openDelete()
+    {
+        $this->open = true;
+        $this->action = 'Eliminar';
+    }
     public function store()
     {
-        # code...
+        try {
+            if ($this->action == 'Registrar') {
+                $medio = new ModelsMedios;
+                $medio->nombre = $this->nombre;
+                $medio->save();
+                if ($medio) {
+                    $this->showAlert('Medio registrado!!', 'success');
+                }
+            } else {
+                $medio = ModelsMedios::find($this->id_medio);
+                $medio->nombre = $this->nombre;
+                $medio->save();
+                if ($medio) {
+                    $this->showAlert('Medio registrado!!', 'success');
+                }
+            }
+        } catch (\Throwable $th) {
+            $this->showAlert('Error verifique tus datos!!', 'error');
+        }
     }
     public function render()
     {

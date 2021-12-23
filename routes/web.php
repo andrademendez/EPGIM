@@ -22,6 +22,21 @@ Route::get('/ciudades', function () {
     return view('pages.ciudad.index');
 })->middleware(['auth'])->name('ciudades');
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/all/campanias', [CampaniaController::class, 'getCampanias']);
+    Route::get('/all/only_espacio', [CampaniaController::class, 'getEspacios']);
+    Route::get('/only/espacio', [EspacioController::class, 'getOnlyEspacio']);
+    Route::get('/only/get_espacio', [CampaniaController::class, 'get_espacio']);
+    Route::get('/only/get_estatus', [CampaniaController::class, 'getOptions']);
+    Route::get('/campanias/destroy', [CampaniaController::class, 'destroy']);
+    Route::get('/challenge', function () {
+        return view('pages.challenge');
+    })->name('challenge');
+    Route::get('/campania/my-campania', function () {
+        return view('pages.campanias.detalles');
+    })->name('campania.detalles');
+});
+
 require __DIR__ . '/auth.php';
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('roles', RolesController::class);
@@ -33,4 +48,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('clientes', ClienteController::class);
     Route::resource('unidades', UnidadesController::class);
     Route::resource('medios', MediosController::class);
+    Route::resource('espacios', EspacioController::class);
 });

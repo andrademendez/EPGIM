@@ -26,4 +26,10 @@ class Espacios extends Model
     {
         return $this->belongsTo(Ubicacion::class, 'id_ubicacion');
     }
+
+    public function campanias()
+    {
+        # code...
+        return $this->belongsToMany(Campanias::class, 'campania_espacio', 'id_campania', 'id_espacio');
+    }
 }

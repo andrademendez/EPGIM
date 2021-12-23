@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Espacios;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EspacioController extends Controller
 {
@@ -58,6 +60,8 @@ class EspacioController extends Controller
     public function edit($id)
     {
         //
+        $espacio = Espacios::find($id);
+        return view('pages.espacios.edit', compact('espacio'));
     }
 
     /**
@@ -81,5 +85,14 @@ class EspacioController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getOnlyEspacio(Request $request)
+    {
+        $espacio = DB::table('vEspacio')
+            ->select('nombre')
+            ->where('campania', $request->id)
+            ->get()->toArray();
+        return response()->json($espacio);
     }
 }
