@@ -30,7 +30,7 @@
     </div>
 
     </div>
-
+    @livewireScripts
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('material/js/core/jquery.min.js') }}"></script>
     <script src="{{ asset('material/js/core/popper.min.js') }}"></script>
@@ -60,7 +60,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <script src="{{ asset('js/toast.js') }}"></script>
 
-    @livewireScripts
+
     @method('js')
     <link rel="stylesheet" type="text/css" href="{{ asset("css/pikaday.css") }}">
     <script src="{{ asset("js/pikaday.js") }}"></script>

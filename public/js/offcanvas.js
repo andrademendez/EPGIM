@@ -15,7 +15,7 @@ jQuery(document).ready(function ($) {
             cliente: cliente,
             espacio: espacio,
         };
-        //console.log(campania);
+        console.log(campania);
         //return false;
         $.ajax({
             headers: {
@@ -128,6 +128,7 @@ jQuery(document).ready(function ($) {
         Swal.fire({
             title: "Está seguro?",
             text: "¡No podrás revertir esta acción!",
+            icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
@@ -143,11 +144,11 @@ jQuery(document).ready(function ($) {
                             "content"
                         ),
                     },
-                    url: "/campanias/destroy",
-                    type: "PUT",
+                    url: "/campanias/delete",
+                    type: "POST",
                     data: eventos,
                     success: function (response) {
-                        console.log(response);
+                        //console.log(response);
                         var messaje = response;
                         var type = messaje[0];
                         var mess = messaje[1];
@@ -180,7 +181,7 @@ jQuery(document).ready(function ($) {
         var id = $("#idEventEdit").val();
         var espacios = $("#espacioadd").val();
         var datos = {
-            evento_id: id,
+            id: id,
             espacios: espacios,
         };
         console.log(datos);
@@ -189,7 +190,7 @@ jQuery(document).ready(function ($) {
             headers: {
                 "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
             },
-            url: "/eventos/addvenue",
+            url: "/campanias/addespacio",
             type: "POST",
             data: datos,
             success: function (response) {
@@ -217,19 +218,20 @@ jQuery(document).ready(function ($) {
                         var content = "";
                         datas.forEach(function (data) {
                             content +=
-                                "<tr>" +
-                                '<td class="p-2 whitespace-normal flex items-center text-sm text-gray-800 text-uppercase">' +
+                                "<tr class='bg-white border-b dark:bg-gray-800 dark:border-gray-700'>" +
+                                "<td class='py-2 px-3 text-sm font-normal text-gray-700 whitespace-nowrap dark:text-white'>" +
                                 '<span class="iconify w-6 h-6" data-icon="mdi:office-building-marker" data-inline="false"></span>' +
                                 '<span class="pl-2">' +
                                 data.nombre +
-                                "</span></td>" +
-                                '<td class="p-2">' +
+                                "</span>" +
+                                "</td>" +
+                                "<td class='py-2 px-3 text-sm font-normal text-gray-700 whitespace-nowrap dark:text-white'>" +
                                 '<button type="button" id="delespacio" class="px-2 text-red-800" onclick="eliminar(' +
                                 data.id +
                                 ", " +
-                                data.evento_id +
+                                data.id_campania +
                                 ')" >' +
-                                '<span class="iconify w-6 h-6" data-icon="ph:x-circle" data-inline="false"></span>' +
+                                '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>' +
                                 "</button> " +
                                 "</td>" +
                                 "</tr>";
@@ -264,7 +266,7 @@ function eliminar(id, evento) {
     var evento_id = evento;
     var datos = {
         espacio: espacio,
-        evento: evento_id,
+        id: evento_id,
     };
     console.log(datos);
     //return false;
@@ -272,7 +274,7 @@ function eliminar(id, evento) {
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
-        url: "/eventos/deletevenue",
+        url: "/campanias/delespacio",
         type: "POST",
         data: datos,
         success: function (response) {
@@ -290,7 +292,7 @@ function eliminar(id, evento) {
                 });
             } else {
                 $calendar.fullCalendar("refetchEvents");
-                toastr.success("Evento eliminado!!", "", {
+                toastr.success("Espacio eliminado!!", "", {
                     timeOut: 3000,
                 });
                 var lista = $("#cargadatos");
@@ -298,19 +300,19 @@ function eliminar(id, evento) {
                     var content = "";
                     datas.forEach(function (data) {
                         content +=
-                            "<tr>" +
-                            '<td class="px-2 py-2 whitespace-normal flex items-center text-sm text-gray-800 text-uppercase">' +
+                            "<tr class='bg-white border-b dark:bg-gray-800 dark:border-gray-700'>" +
+                            "<td class='py-2 px-3 text-sm font-normal text-gray-700 whitespace-nowrap dark:text-white'>" +
                             '<span class="iconify w-6 h-6" data-icon="mdi:office-building-marker" data-inline="false"></span>' +
                             '<span class="pl-2">' +
                             data.nombre +
                             "</span></td>" +
-                            '<td class="px-2">' +
+                            "<td class='py-2 px-3 text-sm font-normal text-gray-700 whitespace-nowrap dark:text-white'>" +
                             '<button type="button" id="delespacio" class="px-2 text-red-800" onclick="eliminar(' +
                             data.id +
                             ", " +
-                            data.evento_id +
+                            data.campania_id +
                             ')" >' +
-                            '<span class="iconify w-6 h-6" data-icon="ph:x-circle" data-inline="false"></span>' +
+                            '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>' +
                             "</button> " +
                             "</td>" +
                             "</tr>";

@@ -17,6 +17,15 @@
                                 <x-form.label for="nombre">Nombre de la campaña</x-form.label>
                                 <x-input id="nombre" class="w-full" name="nombre" placeholder="Ingrese el nombre" type="text" required />
                             </div>
+                            <div class="col-span-2 pt-2">
+                                <x-form.label for="cliente">Cliente</x-form.label>
+                                <x-form.select id="cliente" class="w-full" name="cliente" title="Cliente">
+                                    <option selected>Selecione el cliente</option>
+                                    @foreach ( $clientes as $cliente)
+                                    <option value="{{ $cliente->id }}">{{ $cliente->nombre }}</option>
+                                    @endforeach
+                                </x-form.select>
+                            </div>
                             <!-- Tipo evento -->
                             <div class="col-span-2  pt-2">
                                 <x-form.label for="medio">Medio de ingreso</x-form.label>
@@ -36,15 +45,7 @@
                                 <x-input id="end" name="end" type="text" title="Fin de la campaña" />
 
                             </div>
-                            <div class="col-span-2">
-                                <x-form.label for="cliente">Cliente</x-form.label>
-                                <x-form.select id="cliente" class="w-full" name="cliente" title="Cliente">
-                                    <option selected>Selecione el cliente</option>
-                                    @foreach ( $clientes as $cliente)
-                                    <option value="{{ $cliente->id }}">{{ $cliente->nombre }}</option>
-                                    @endforeach
-                                </x-form.select>
-                            </div>
+
                             <div class="col-span-2">
                                 <x-form.label>Espacios</x-form.label>
                                 <div class="form-group">
@@ -61,7 +62,7 @@
                     </div>
                     <!-- Fecha Inicio-->
                     <div class="pt-2 flex justify-between px-10 ">
-                        <x-form.btn-secondary id="cancel" type="button" data-dismiss="modal">Terminar</x-form.btn-secondary>
+                        <x-form.btn-secondary class="bg-gray-700" id="cancel" type="button" data-dismiss="modal">Cerrar</x-form.btn-secondary>
                         <x-form.btn-primary id="save" type="submit">Agregar</x-form.btn-primary>
                     </div>
                 </form>

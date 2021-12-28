@@ -21,12 +21,12 @@
                                     </div>
 
                                     <div class="col-span-2 pt-2">
-                                        <x-form.label for="ustart">Fecha</x-form.label>
+                                        <x-form.label for="ustart">Fecha Inicio</x-form.label>
                                         <x-input name="udate-start" id="ustart" type="text" />
 
                                     </div>
                                     <div class="col-span-2 pt-2">
-                                        <x-form.label for="uend">Fecha</x-form.label>
+                                        <x-form.label for="uend">Fecha Término</x-form.label>
                                         <x-input name="udate-uend" id="uend" type="text" />
 
                                     </div>
@@ -70,8 +70,14 @@
                                     </div>
                                 </div>
                                 <!-- Bottom -->
-                                <div class="mx-2 pt-2">
-                                    <div class="flex justify-end mt-3">
+                                <div class="mx-2 pt-2 flex items-center justify-between">
+                                    <div class="mt-3">
+                                        <div>
+                                            <x-button id="confirmar" class="hidden ">Confirmar</x-button>
+                                            <x-button id="challenge" class="hidden ">Challenge</x-button>
+                                        </div>
+                                    </div>
+                                    <div class=" mt-3">
                                         <x-form.btn-primary id="uguardar" type="submit">
                                             <div class="flex items-center">
                                                 {{-- <span class="iconify w-6 h-6" data-icon="fluent:calendar-arrow-down-24-filled" data-inline="false"></span> --}}
@@ -81,40 +87,22 @@
                                     </div>
                                 </div>
                             </form>
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <x-button id="confirmar" class="hidden ">Confirmar</x-button>
-                                    <x-button id="challenge" class="hidden ">Challenge</x-button>
-
-
-                                </div>
-                                <form method="post" class="flex justify-start">
-                                    @csrf
-                                    <x-button id="delete" type="submit" class="bg-red-600 text-red-100">
-                                        <span class="pl-2">Eliminar</span>
-                                    </x-button>
-                                </form>
-
-                            </div>
-
                         </div>
                     </div>
                     <!-- agregar espacio -->
-                    <div class="col-span-2 px-2 border border-purple-500 rounded-2xl bg-white ">
-                        <div class="pt-2 px-2">
+                    <div class="col-span-2 px-2 border border-purple-500 rounded-2xl flex flex-col justify-end items-end bg-white ">
+                        <div class="pt-4 px-2 flex-1 w-full">
                             <form id="agregarEspacios" method="POST">
                                 @csrf
                                 <input id="idEventEdit" type="hidden" name="event_id" value="">
-                                <x-label for="uespacio">Agregar espacios</x-label>
-                                <div class="flex flex-row items-center justify-center">
+                                <x-form.label for="uespacio">Agregar espacios</x-form.label>
+                                <div class="flex flex-cols items-center justify-center">
                                     <div class="w-full">
-                                        <div class="">
-                                            <select name="uespacio[]" class="selectpicker" id="espacioadd" multiple data-style="select-with-transition" data-size="7">
-                                                @foreach ( $espacios as $espacio)
-                                                <option value="{{ $espacio->id }}">{{ $espacio->nombre }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
+                                        <select name="uespacio[]" class="selectpicker" id="espacioadd" multiple data-style="select-with-transition" data-size="7" style="width: 100%">
+                                            @foreach ( $espacios as $espacio)
+                                            <option value="{{ $espacio->id }}">{{ $espacio->nombre }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                     <div class="flex items-end">
                                         <x-form.btn-icons type="button" id="saveAddVenue">
@@ -126,18 +114,20 @@
                                 </div>
                             </form>
                         </div>
-                        <div class="pb-2">
+                        <div class="pb-2 flex-auto w-full">
                             <x-table.table>
                                 <x-slot name="theader">
-                                    <tr>
-                                        <x-table.th colspan="2">Espacios</x-table.th>
-                                    </tr>
+                                    <x-table.th colspan="2">Espacios</x-table.th>
                                 </x-slot>
-                                <tbody class="bg-white divide-y divide-gray-200" id="cargadatos">
-
-                                </tbody>
+                                <tbody id="cargadatos"> </tbody>
                             </x-table.table>
                         </div>
+                        <form method="post" class="">
+                            @csrf
+                            <x-button id="delete" type="submit" class="bg-red-600 text-red-100">
+                                <span class="pl-2">Eliminar</span>
+                            </x-button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -145,9 +135,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    let id = $("#id_up").val();
-    console.log(id);
-
-</script>

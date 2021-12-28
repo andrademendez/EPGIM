@@ -23,12 +23,16 @@ Route::get('/ciudades', function () {
 })->middleware(['auth'])->name('ciudades');
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/test', [CampaniaController::class, 'test']);
+
     Route::get('/all/campanias', [CampaniaController::class, 'getCampanias']);
     Route::get('/all/only_espacio', [CampaniaController::class, 'getEspacios']);
     Route::get('/only/espacio', [EspacioController::class, 'getOnlyEspacio']);
     Route::get('/only/get_espacio', [CampaniaController::class, 'get_espacio']);
     Route::get('/only/get_estatus', [CampaniaController::class, 'getOptions']);
-    Route::get('/campanias/destroy', [CampaniaController::class, 'destroy']);
+    Route::post('/campanias/delete', [CampaniaController::class, 'destroy']);
+    Route::post('/campanias/addespacio', [CampaniaController::class, 'agregarEspacio']);
+    Route::post('/campanias/delespacio', [CampaniaController::class, 'eliminarEspacio']);
     Route::get('/challenge', function () {
         return view('pages.challenge');
     })->name('challenge');

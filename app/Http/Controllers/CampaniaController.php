@@ -51,9 +51,11 @@ class CampaniaController extends Controller
         $start = $start->format('Y-m-d H:i:s');
         $end = new DateTime($request->end . ' 23:59:59');
         $end = $end->format('Y-m-d H:i:s');
+        //$espacio = array($request->espacio);
 
-        $existe   = $this->validarEspacio($start, $end, $request->espacio);
-        //dump($end);
+        $existe = $this->validarEspacio($start, $end, $request->espacio);
+
+        //dump($existe);
         if ($existe > 0) {
             return response()->json(['info', 'Se ha detactado espacio o espacios ocupados']);
         } else {
@@ -90,7 +92,7 @@ class CampaniaController extends Controller
                         $campania->end = $end;
                         $campania->status = 'Solicitud';
                         $campania->hold = $counts;
-                        $campania->display = '#75F6DC';
+                        $campania->display = "#30a3cf";
                         $campania->id_user = Auth::id();
                         $campania->id_cliente = $request->cliente;
                         $campania->id_medio = $request->medio;
@@ -126,14 +128,63 @@ class CampaniaController extends Controller
 
     public function destroy(Request $request)
     {
-        //dd($request->id);
         try {
-            $destroy = Campanias::find($request->id);
+            $campania = Campanias::find($request->id);
+            if (Auth::id() == $campania->id_user) {
 
-            return response()->json(['info', $destroy]);
+                $delespacio = $campania->espacios()->detach();
+                if ($delespacio) {
+                    $gp = $campania->forceDelete();
+                    if ($gp) {
+                        return response()->json(['success', 'Campaña eliminado!!']);
+                    }
+                }
+            }
         } catch (\Throwable $th) {
-            //throw $th;
-            return response()->json(['error', 'NO hay infomacion que mostrar']);
+            return response()->json(['error', 'Hay dependencias activos de este evento']);
+        }
+    }
+    //agregar espacio en el formulario de editar
+    public function agregarEspacio(Request $request)
+    {
+        //$this->authorize('update', Calendario::class);
+        $user = Auth::id();
+        $id = $request->id;
+        $campania = Campanias::find($id);
+
+        if ($user == $campania->id_user) {
+            $existen = $this->validarEspacio($campania->start, $campania->end, $request->espacios);
+            if ($existen <= 12) {
+                $campania->espacios()->syncWithoutDetaching($request->espacios);
+                $espacio = $this->getConsultaEspacio($id);
+                return response()->json($espacio);
+            } else {
+                return response()->json(['info', 'El espacio esta reservado']);
+            }
+        } else {
+            return response()->json(['info', 'No tienes los permisos necesarios']);
+        }
+    }
+    //quitar espacio en el formulario de editar
+    public function eliminarEspacio(Request $request)
+    {
+        $user = Auth::id();
+        $espacio = $request->espacio;
+        $evento = Campanias::findOrFail($request->id);
+        try {
+            if ($user == $evento->id_user) {
+                if ($evento->status == 'Confirmado') {
+                    return response()->json(['info', 'Espacios reservados no se pueden eliminar']);
+                } else {
+                    $delof = $evento->espacios()->detach($espacio);
+                    if ($delof) {
+                        $espacios = $this->getConsultaEspacio($request->id);
+                        return response()->json($espacios);
+                    }
+                }
+            }
+        } catch (\Throwable $th) {
+            return response()->json(['error', 'Se ha presentado un error']);
         }
     }
 
@@ -147,7 +198,6 @@ class CampaniaController extends Controller
 
     public function getOptions(Request $request)
     {
-
         $events = DB::table('campanias')
             ->join('medios', 'medios.id', '=', 'campanias.id_medio')
             ->join('clientes', 'clientes.id', '=', 'campanias.id_cliente')
@@ -164,26 +214,38 @@ class CampaniaController extends Controller
         return response()->json($events);
     }
 
+    public function test()
+    {
+        # code...
+        $start = "2021-12-11 00:00:00";
+        $end = "2021-12-28 23:59:59";
+        $espacio = ['1', '2'];
+        //$espacio = array($espacio);
+        //dd($espacio[0]);
+        //$select = DB::table('campanias')->where('id', 24)->get();
+
+        $var = $this->updatePosition($start, $end, $espacio);
+        return  $var;
+    }
     //funciones para validar la asigancion de eventos a registrar
     //validacion de los espacios, si no está ocupados
     function validarEspacio($start, $end, $espacio)
     {
         $existen = DB::table('vEspacioConfirmado')
-            ->select('id_espacio')
-            ->where('start', '=', $start)
-            ->Where('end', '=',  $end)
-            ->whereIn('id_espacio', [$espacio])
+            ->where('start', $start)
+            ->whereBetween('start', [$start, $end])
+            ->orWhereBetween('end', [$start, $end])
+            ->whereIn('id_espacio', $espacio)
             ->get();
-
         return count($existen);
     }
     //consulta de los espacios por evento
     function getConsultaEspacio($id)
     {
         $espacio = DB::table('campania_espacio')
-            ->join('espacios', 'espacios.id', '=', 'espacio_evento.espacio_id')
-            ->select('espacios.id as id', 'evento_id', 'nombre')
-            ->where('evento_id', '=', $id)
+            ->join('espacios', 'espacios.id', '=', 'campania_espacio.id_espacio')
+            ->select('espacios.id as id', 'id_campania', 'espacios.nombre')
+            ->where('id_campania', '=', $id)
             ->get();
         return $espacio;
     }
@@ -220,31 +282,36 @@ class CampaniaController extends Controller
     function countPosicionHold($start, $end, $espacio)
     {
         $count = DB::table('vCampaniaEspacio')
-            ->where([
-                ['status', 'Solicitud'],
-                ['start', $start],
-                ['end', $end]
-            ])
-            ->whereIn('id_espacio', [$espacio])
+            ->where('status', '=', 'Solicitud')
+            ->whereBetween('start', [$start, $end])
+            ->orWhereBetween('end', [$start, $end])
+            // ->orWhere('end', $end)
+            ->whereIn('id_espacio', $espacio)
             ->groupBy('id_campania')
             ->get();
-
+        //dump($count);
         return count($count);
     }
 
     public function updatePosition($start, $end, $espacio)
     {
-        $position = $this->countPosicionHold($start, $end, $espacio);
-        if ($position == 1) {
-        } elseif ($position == 2) {
-            $evento = Campanias::where([['start', $start], ['end', $end]])->get();
-        }
+        $campania = DB::table('vCampaniaEspacio')
+            ->where('status', '=', 'Solicitud')
+            ->whereBetween('start', [$start, $end])
+            ->orWhereBetween('end', [$start, $end])
+            //->orWhere('start', $start)
+            //->orWhere('end', $end)
+            ->whereIn('id_espacio', $espacio)
+            ->groupBy('id_campania')
+            ->get();
+
+        return $campania;
     }
 
     public function conteoEvento($start, $end)
     {
         $conteo = Campanias::where([
-            ['status', 'Hold'],
+            ['status', 'Solicitud'],
             ['start', $start],
             ['end', $end]
         ])->count();

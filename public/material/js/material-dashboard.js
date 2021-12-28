@@ -733,19 +733,9 @@ md = {
                 element
                     .find(".fc-title")
                     .append(
-                        '<div class="hr-line-solid-no-margin"></div>' +
-                            '<span class="uk-text-left" style="font-size: 10px">' +
-                            event.medios +
-                            "</span> <br>" +
-                            '<span style="font-size: 10px">' +
-                            event.estado +
-                            " - " +
-                            event.hold +
-                            "</span> <br>" +
-                            '<span style="font-size: 10px"> Creado por: ' +
-                            event.users +
-                            "</span></br>" +
-                            '<span id="ocupado-espacio" style="font-size: 10px"> </span></br></div>'
+                        "<div>" +
+                            '<span id="ocupado-espacio" style="font-size: 10px"> </span>' +
+                            "</div>"
                     );
                 espacios(element, event);
                 element.find(".fc-time").hide();
@@ -754,8 +744,8 @@ md = {
             // color classes: [ event-blue | event-azure | event-green | event-orange | event-red ]
             events: {
                 url: "/all/campanias",
-                cache: false,
-                lazyFetching: false,
+                cache: true,
+                lazyFetching: true,
             },
             viewRender: function (view, element) {
                 // We make sure that we activate the perfect scrollbar when the view isn't on Month
@@ -794,7 +784,7 @@ md = {
                 $("#end").val(end);
             },
             editable: true,
-            eventLimit: 5,
+            eventLimit: 7,
 
             eventDrop: function (event, end, jsEvent) {
                 var ustart = $.fullCalendar.formatDate(
@@ -1383,12 +1373,13 @@ function collection(datos) {
             datas.forEach(function (data) {
                 //console.log(data.nombre);
                 $("#cargadatos").append(
-                    "<tr>" +
-                        '<td class="p-2 whitespace-normal flex items-center text-sm text-gray-800 text-uppercase">' +
-                        '<span class="pl-2">' +
+                    "<tr class='bg-white border-b dark:bg-gray-800 dark:border-gray-700'>" +
+                        "<td class='py-2 px-3 text-sm font-normal text-gray-700 whitespace-nowrap dark:text-white'>" +
+                        "<span class='pl-2'>" +
                         data.nombre +
-                        "</span></td>" +
-                        '<td class="p-2">' +
+                        "</span>" +
+                        "</td>" +
+                        "<td class='py-2 px-3 text-sm font-normal text-gray-700 whitespace-nowrap dark:text-white' >" +
                         '<button type="button" id="delespacio" class="px-2 text-red-800" onclick="eliminar(' +
                         data.id +
                         ", " +
@@ -1396,7 +1387,8 @@ function collection(datos) {
                         ')" >' +
                         '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>' +
                         "</button> " +
-                        "</td></tr>"
+                        "</td>" +
+                        "</tr>"
                 );
             });
         },
@@ -1404,8 +1396,6 @@ function collection(datos) {
 }
 
 function espacios(element, event) {
-    //console.log(element[0]);
-    //console.log(event.id);
     data = {
         id: event.id,
     };

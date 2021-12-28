@@ -15,12 +15,26 @@ module.exports = {
             serif: ["Merriweather", "serif"],
         },
         extend: {
+            screens: {
+                "3xl": "1920px",
+            },
             spacing: {
                 128: "32rem",
                 144: "36rem",
             },
             borderRadius: {
                 "4xl": "2rem",
+            },
+            colors: {
+                cyan: colors.cyan,
+                lime: colors.lime,
+                fuchsia: colors.fuchsia,
+                gray: colors.gray,
+                emerald: colors.emerald,
+                teal: colors.teal,
+                sky: colors.sky,
+                violet: colors.violet,
+                rose: colors.rose,
             },
         },
     },
