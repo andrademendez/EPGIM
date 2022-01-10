@@ -16,7 +16,7 @@ jQuery(document).ready(function ($) {
             espacio: espacio,
         };
         console.log(campania);
-        //return false;
+        return false;
         $.ajax({
             headers: {
                 "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),

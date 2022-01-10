@@ -1,4 +1,4 @@
-<x-material-layout>
+<x-material-layout :activePage="'dashboard'" :menuParent="'dashboard'">
     <x-slot name="title">Dashboard</x-slot>
     <x-slot name="titlePage">Dashboard</x-slot>
 
@@ -9,24 +9,27 @@
                     <div class="pb-3 text-lg font-medium">
                         <h1>Overview</h1>
                     </div>
-                    <div class="grid grid-cols-6 gap-4">
-                        <div class="col-span-1">
+                    <div class="grid grid-cols-6 gap-4 ">
+                        <div class="col-span-1 bg-gradient-to-r from-violet-600 to-fuchsia-700 hover:bg-gradient-to-r hover:from-violet-700 hover:to-fuchsia-500 rounded-lg">
                             <x-dashboard.card>
                                 <span>+24</span>
                                 <h1 class="text-lg font-medium">$27,000.00</h1>
                                 <span class="text-sm">Total Sales</span>
                             </x-dashboard.card>
                         </div>
-                        <div class="col-span-1">
+                        <div class="col-span-1 bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-lg">
                             <x-dashboard.card>
                                 <span>+24</span>
                                 <h1 class="text-lg font-medium">$27,000.00</h1>
                                 <span class="text-sm">Total Sales</span>
                             </x-dashboard.card>
                         </div>
-                        <div class="col-span-2">
-                            <div class="px-4 py-3 shadow-lg rounded-lg bg-gray-800">
-                            </div>
+                        <div class="col-span-2 bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-lg">
+                            <x-dashboard.card>
+                                <span>+24</span>
+                                <h1 class="text-lg font-medium">$27,000.00</h1>
+                                <span class="text-sm">Total Sales</span>
+                            </x-dashboard.card>
                         </div>
                         <div class="col-span-2">
                             <div class="px-4 py-3 shadow-lg rounded-lg bg-gray-900">

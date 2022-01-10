@@ -1,4 +1,4 @@
-<x-material-layout>
+<x-material-layout :activePage="'users'" :menuParent="'users'">
     <x-slot name="title">Mi Perfil</x-slot>
     <x-slot name="titlePage">Mi Perfil</x-slot>
 

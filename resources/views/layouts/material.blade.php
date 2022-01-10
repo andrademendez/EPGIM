@@ -20,8 +20,8 @@
     @method('styles')
 
 </head>
-<body class="bg-white">
-    <div class=" w-full">
+<body class=" flex items-center justify-center bg-white">
+    <div class="max-w-screen-3xl w-full">
         @include('layouts.navbars.sidebar')
         <div class="main-panel ">
             @include('layouts.navbars.navs.auth')
@@ -60,12 +60,12 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <script src="{{ asset('js/toast.js') }}"></script>
 
-
-    @method('js')
     <link rel="stylesheet" type="text/css" href="{{ asset("css/pikaday.css") }}">
     <script src="{{ asset("js/pikaday.js") }}"></script>
     <script src="{{ asset("js/campanias.js") }}"></script>
+    <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
 
+    @method('js')
     <style>
         .uk-active {
 

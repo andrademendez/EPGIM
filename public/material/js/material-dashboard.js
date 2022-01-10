@@ -722,7 +722,7 @@ md = {
 
             // allow "more" link when too many events
             eventRender: function (event, element, view) {
-                var allDay = false;
+                var allDay = true;
                 if (event.allDay === "true") {
                     event.allDay = true;
                     allDay = event.allDay;
@@ -744,8 +744,8 @@ md = {
             // color classes: [ event-blue | event-azure | event-green | event-orange | event-red ]
             events: {
                 url: "/all/campanias",
-                cache: true,
-                lazyFetching: true,
+                cache: false,
+                lazyFetching: false,
             },
             viewRender: function (view, element) {
                 // We make sure that we activate the perfect scrollbar when the view isn't on Month
@@ -784,7 +784,7 @@ md = {
                 $("#end").val(end);
             },
             editable: true,
-            eventLimit: 7,
+            eventLimit: 4,
 
             eventDrop: function (event, end, jsEvent) {
                 var ustart = $.fullCalendar.formatDate(

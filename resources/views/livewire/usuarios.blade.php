@@ -9,7 +9,12 @@
             <x-input type="search" name="search" id="search" wire:model="search" placeholder="Buscar..." />
         </div>
         <div>
-            <x-form.btn-primary wire:click="openModal">Nuevo Usuario</x-form.btn-primary>
+            <x-form.btn-primary wire:click="openModal" class="flex items-center">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+                Nuevo Usuario
+            </x-form.btn-primary>
         </div>
     </div>
     <x-table.table>

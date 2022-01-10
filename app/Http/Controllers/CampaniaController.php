@@ -7,11 +7,14 @@ use App\Models\Clientes;
 use App\Models\Espacios;
 use App\Models\Medios;
 use App\Models\UnidadesNegocios;
+use DateInterval;
+use DatePeriod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use DateTime;
+use Illuminate\Support\Facades\Date;
 
 class CampaniaController extends Controller
 {
@@ -52,62 +55,40 @@ class CampaniaController extends Controller
         $end = new DateTime($request->end . ' 23:59:59');
         $end = $end->format('Y-m-d H:i:s');
         //$espacio = array($request->espacio);
+        $existen = $this->getBloqueoFecha($start, $end, $request->espacio);
 
-        $existe = $this->validarEspacio($start, $end, $request->espacio);
+        if ($existen->count() == 0) {
 
-        //dump($existe);
-        if ($existe > 0) {
-            return response()->json(['info', 'Se ha detactado espacio o espacios ocupados']);
+            $existe = DB::table('campanias')
+                ->where([
+                    ['title', $request->title],
+                    ['start', $start],
+                    ['end', $end],
+                    ['status', 'Solicitud'],
+                ])->exists();
+
+            if ($existe) {
+                return response()->json(['info', 'Ya existe un evento similar']);
+            } else {
+                $campania = new Campanias();
+                $campania->title = $request->title;
+                $campania->start = $start;
+                $campania->end = $end;
+                $campania->status = 'Solicitud';
+                $campania->hold = '1';
+                $campania->display = "#30a3cf";
+                $campania->id_user = Auth::id();
+                $campania->id_cliente = $request->cliente;
+                $campania->id_medio = $request->medio;
+                $campania->save();
+                if ($campania) {
+                    $campania->espacios()->attach($request->espacio);
+                    return response()->json(['success', 'Campaña registrado!!']);
+                }
+            }
         } else {
-
-            try {
-                //conteo de posicion
-                $counts = $this->countPosicionHold($start, $end, $request->espacio);
-
-                if ($counts == 0) {
-                    $counts = ++$counts;
-                } else {
-                    $counts = ++$counts;
-                }
-
-                //conteo maximo de ventos por dia
-                $conteo = $this->conteoEvento($start, $end);
-
-                if ($conteo < 12) {
-                    # code...
-                    $existe = DB::table('campanias')
-                        ->where([
-                            ['title', $request->title],
-                            ['start', $start],
-                            ['end', $end],
-                            ['status', 'Solicitud'],
-                        ])->exists();
-
-                    if ($existe) {
-                        return response()->json(['info', 'Ya existe un evento similar']);
-                    } else {
-                        $campania = new Campanias();
-                        $campania->title = $request->title;
-                        $campania->start = $start;
-                        $campania->end = $end;
-                        $campania->status = 'Solicitud';
-                        $campania->hold = $counts;
-                        $campania->display = "#30a3cf";
-                        $campania->id_user = Auth::id();
-                        $campania->id_cliente = $request->cliente;
-                        $campania->id_medio = $request->medio;
-                        $campania->save();
-                        if ($campania) {
-                            $campania->espacios()->attach($request->espacio);
-                            return response()->json(['success', 'Campaña registrado!!']);
-                        }
-                    }
-                } else {
-                    return response()->json(['info', 'Se ha excedido el número maximo de hold permitido']);
-                }
-            } catch (\Throwable $th) {
-                //throw $th;
-                return dd($th);
+            foreach ($existen as $existe) {
+                # code...
             }
         }
     }
@@ -217,16 +198,82 @@ class CampaniaController extends Controller
     public function test()
     {
         # code...
-        $start = "2021-12-11 00:00:00";
-        $end = "2021-12-28 23:59:59";
-        $espacio = ['1', '2'];
-        //$espacio = array($espacio);
-        //dd($espacio[0]);
-        //$select = DB::table('campanias')->where('id', 24)->get();
+        $RET = '';
+        $start = "2022-01-01";
+        $end = "2022-01-31";
 
-        $var = $this->updatePosition($start, $end, $espacio);
-        return  $var;
+        $espacio = [1, 2];
+
+        $result = DB::table('bloqueos')
+            ->whereBetween('fecha', [$start, $end])
+            ->orderBy('fecha', 'asc')->get();
+
+        $fechas = $this->bloqueosFecha($start, $end);
+        return dd($fechas);
     }
+
+    //ver la cantidad de veces que ha sido bloqueada una fecha
+    public function bloqueosFecha($start, $end)
+    {
+        $result = false;
+
+        $date_start = new DateTime($start);
+        $date_end = new DateTime($end);
+        $date_end = $date_end->modify('+1 day');
+
+        //$intervalo = new DateInterval('P1D');
+        $intervalo = DateInterval::createFromDateString('1 days');
+        $periodo = new DatePeriod($date_start, $intervalo, $date_end);
+
+        foreach ($periodo as $dt) {
+
+            $date = $dt->format("Y-m-d");
+            $bloqueos = DB::table('bloqueos')->where('fecha', $dt)->get();
+
+            if ($bloqueos->count() == 0) {
+                $data =  DB::table('bloqueos')->insert([
+                    'fecha' => $date,
+                    'created_at' => now()
+                ]);
+                if ($data) {
+                    $this->result = true;
+                }
+            } else {
+                foreach ($bloqueos as $bloqueo) {
+                    if ($bloqueo->fecha == $date) {
+                        //
+
+                    } else {
+                        $data = DB::table('bloqueos')->insert([
+                            'fecha' => $date,
+                            'created_at' => now()
+                        ]);
+                        if ($data) {
+                            $this->result = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return  $result;
+    }
+
+    public function getBloqueoFecha($start, $end, $espacio)
+    {
+
+        $result = DB::table('vFechaBloqueo')
+            ->selectRaw('count(estatus) as total, estatus')
+            ->whereBetween('fecha', [$start, $end])
+            ->WhereIn('espacio', $espacio)
+            ->groupBy('estatus')->get();
+
+
+
+
+        return $result;
+    }
+
     //funciones para validar la asigancion de eventos a registrar
     //validacion de los espacios, si no está ocupados
     function validarEspacio($start, $end, $espacio)
@@ -239,6 +286,7 @@ class CampaniaController extends Controller
             ->get();
         return count($existen);
     }
+
     //consulta de los espacios por evento
     function getConsultaEspacio($id)
     {

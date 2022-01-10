@@ -15,11 +15,11 @@
                         <div class="p-2 grid grid-cols-4 gap-4">
                             <div class="col-span-4 pt-3">
                                 <x-form.label for="nombre">Nombre de la campaña</x-form.label>
-                                <x-input id="nombre" class="w-full" name="nombre" placeholder="Ingrese el nombre" type="text" required />
+                                <x-input id="nombre" class="w-full" name="nombre" title="Nombre completo" placeholder="Ingrese el nombre" type="text" required />
                             </div>
                             <div class="col-span-2 pt-2">
                                 <x-form.label for="cliente">Cliente</x-form.label>
-                                <x-form.select id="cliente" class="w-full" name="cliente" title="Cliente">
+                                <x-form.select id="cliente" class="w-full" name="cliente" title="Seleccione el Cliente">
                                     <option selected>Selecione el cliente</option>
                                     @foreach ( $clientes as $cliente)
                                     <option value="{{ $cliente->id }}">{{ $cliente->nombre }}</option>

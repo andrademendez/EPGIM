@@ -2,7 +2,7 @@
     {{ $import }}
 
     <div class=" overflow-hidden ">
-        <div class="p-2 ">
+        <div class="px-2 ">
             {{ $slot }}
         </div>
     </div>

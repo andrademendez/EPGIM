@@ -43,12 +43,13 @@
             </div>
         </div>
         <ul class="nav">
-            <x-nav-li :active="request()->routeIs('dashboard')">
+            <li class="nav-item {{ $activePage == 'dashboard' ? ' active' : '' }}">
+
                 <x-nav-link :href="route('dashboard')">
                     <i class="material-icons">dashboard</i>
                     <p>{{ __('Dashboard') }}</p>
                 </x-nav-link>
-            </x-nav-li>
+            </li>
             @if (auth()->user()->isAdmin())
             <li class="nav-item {{ $menuParent == 'users' ? 'active' : '' }}">
                 <a class="nav-link" data-toggle="collapse" href="#users" {{ ($menuParent == 'Users') ? ' aria-expanded="true"' : '' }}>

@@ -1,13 +1,11 @@
 <div class="py-2">
-    <x-slot name="title">Espacio</x-slot>
-    <x-slot name="titlePage">Editar Espacio - {{ $nombre }}</x-slot>
-
     <div class="max-w-7xl mx-auto sm:px-3 lg:px-4">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-4 bg-white border-b border-gray-200">
-                <div class="pb-4 flex justify-end">
-                    <a href="{{ route('espacios.index') }}">Volver a list</a>
-                </div>
+                <x-link-return :href="route('espacios.index')">
+                    Volver a espacios
+                </x-link-return>
+                <!--  -->
                 <div class="px-5">
                     <form method="post" class="lg:w-2/3 w-full shadow-xl p-4">
                         @csrf
@@ -32,7 +30,7 @@
 
                             <div class="pt-2 col-span-1">
                                 <x-form.label for="cantidad">Cantidad</x-form.label>
-                                <x-input type="text" wire:model="cantidad" class="w-full" />
+                                <x-input type="number" min="1" wire:model="cantidad" class="w-full" />
                             </div>
                             <div class="pt-2 col-span-1">
                                 <x-form.label for="precio">Precio</x-form.label>
@@ -81,7 +79,7 @@
                             </div>
                         </div>
                         <div class="pt-4 flex justify-end ">
-                            <x-button class="bg-purple-700">Guardar</x-button>
+                            <x-button class="">Guardar</x-button>
                         </div>
                     </form>
                     <div>

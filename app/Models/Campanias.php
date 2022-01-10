@@ -32,4 +32,9 @@ class Campanias extends Model
     {
         return $this->belongsTo(Clientes::class, 'id_cliente');
     }
+
+    public function bloqueos()
+    {
+        return $this->belongsToMany(Bloqueos::class, 'bloqueo_campania', 'id_bloqueo', 'id_campania');
+    }
 }
