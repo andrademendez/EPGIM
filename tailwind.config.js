@@ -7,6 +7,8 @@ module.exports = {
         "./resources/views/**/*.blade.php",
         "./public/js/offcanvas.js",
         "./public/material/js/material-dashboard.js",
+        "./vendor/usernotnull/tall-toasts/config/**/*.php",
+        "./vendor/usernotnull/tall-toasts/resources/views/**/*.blade.php",
     ],
 
     theme: {

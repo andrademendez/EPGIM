@@ -11,6 +11,9 @@ class Campanias extends Model
     use HasFactory;
 
     protected $table = "campanias";
+    protected $guarded = [];
+    protected $fillable = ['title', 'start', 'end', 'status', 'hold', 'display'];
+
 
     public function dateFormato($fecha)
     {
@@ -35,6 +38,11 @@ class Campanias extends Model
 
     public function bloqueos()
     {
-        return $this->belongsToMany(Bloqueos::class, 'bloqueo_campania', 'id_bloqueo', 'id_campania');
+        return $this->belongsToMany(Bloqueos::class, 'bloqueo_campania', 'id_campania', 'id_bloqueo');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user');
     }
 }

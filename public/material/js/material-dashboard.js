@@ -851,11 +851,8 @@ md = {
                 });
             },
             eventClick: function (event, jsEvent, view) {
-                var element = document.getElementById("confirmar");
-
                 $("#modificarEvento")[0].reset();
                 $("#modalEventEditar").modal("show");
-                element.classList.add("hidden");
                 var start = $.fullCalendar.formatDate(event.start, "DD-MMM-Y");
                 var end = $.fullCalendar.formatDate(event.end, "DD-MMM-Y");
 
@@ -868,15 +865,15 @@ md = {
                     event.estado + " (Hold - " + event.hold + ")"
                 );
                 let id = event.id;
+                //Livewire.emit("openModalEvent", id);
                 //console.log(view);
                 //datos(id);
                 var datos = {
                     id: id,
-                    hold: event.hold,
                 };
                 collection(datos);
                 consultar(datos);
-                actionStatus(datos);
+
                 //parametros
             },
         });
@@ -1380,7 +1377,7 @@ function collection(datos) {
                         "</span>" +
                         "</td>" +
                         "<td class='py-2 px-3 text-sm font-normal text-gray-700 whitespace-nowrap dark:text-white' >" +
-                        '<button type="button" id="delespacio" class="px-2 text-red-800" onclick="eliminar(' +
+                        '<button type="button" id="delespacio" class="px-2 text-red-600" onclick="eliminar(' +
                         data.id +
                         ", " +
                         data.id_campania +
@@ -1424,16 +1421,35 @@ function espacios(element, event) {
 }
 
 actionStatus = (camp) => {
-    if (camp.hold === "1") {
-        var element = document.getElementById("confirmar");
-        var challenge = document.getElementById("challenge");
-        element.classList.remove("hidden");
-        challenge.classList.add("hidden");
-    } else {
-        var element = document.getElementById("challenge");
-        var confirmar = document.getElementById("confirmar");
-        element.classList.remove("hidden");
-        confirmar.classList.add("hidden");
-        console.log("Soy btn-challenge");
-    }
+    data = {
+        id: camp.id,
+    };
+
+    $.ajax({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        url: "/campanias/first",
+        type: "GET",
+        data: data,
+        dataType: "json",
+        success: function (response) {
+            //console.log(response);
+            campania = response;
+            if (campania.id_campania == camp.id) {
+                var element = document.getElementById("confirmar");
+                var challenge = document.getElementById("challenge");
+                element.classList.remove("hidden");
+                challenge.classList.add("hidden");
+            } else {
+                var element = document.getElementById("challenge");
+                var confirmar = document.getElementById("confirmar");
+                element.classList.remove("hidden");
+                confirmar.classList.add("hidden");
+            }
+        },
+        error: function (r) {
+            console.log(r);
+        },
+    });
 };

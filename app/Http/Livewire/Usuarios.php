@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Campanias;
 use App\Models\Roles;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -14,7 +15,7 @@ class Usuarios extends Component
     use WithPagination, WithFileUploads;
 
     public $name, $email, $id_rol, $password, $repeat_password, $status, $id_user;
-    public $search = '', $open, $interno;
+    public $search = '', $open, $interno, $action;
 
     protected $queryString = [
         'search' => ['except' => '']
@@ -31,17 +32,41 @@ class Usuarios extends Component
     public function openModal()
     {
         $this->open = true;
+        $this->action = 'registrar';
     }
 
-    public function openDelete()
+    public function openDelete($id)
     {
         $this->open = true;
+        $this->id_user = $id;
+        $this->action = 'eliminar';
     }
 
     public function closeModal()
     {
         $this->open = false;
-        $this->reset(['id_rol', 'name', 'email', 'password', 'repeat_password', 'id_user', 'interno', 'status']);
+        $this->reset(['id_rol', 'name', 'email', 'password', 'repeat_password', 'id_user', 'interno', 'status', 'action']);
+    }
+
+    public function delete()
+    {
+        # code...
+        try {
+            $campanias = Campanias::where('id_user', $this->id_user)->count();
+            if ($campanias > 0) {
+                $this->showAlert('El Usuario tiene eventos activos', 'info');
+                $this->closeModal();
+            } else {
+                $user = User::find($this->id_user);
+                $delete = $user->forceDelete();
+                if ($delete) {
+                    $this->showAlert('El Usuario ha sido eliminado del sistema', 'success');
+                    $this->closeModal();
+                }
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
 
     public function store()

@@ -31,8 +31,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/only/get_espacio', [CampaniaController::class, 'get_espacio']);
     Route::get('/only/get_estatus', [CampaniaController::class, 'getOptions']);
     Route::post('/campanias/delete', [CampaniaController::class, 'destroy']);
+    Route::post('/campanias/update', [CampaniaController::class, 'update']);
     Route::post('/campanias/addespacio', [CampaniaController::class, 'agregarEspacio']);
     Route::post('/campanias/delespacio', [CampaniaController::class, 'eliminarEspacio']);
+    Route::get('/campanias/first', [CampaniaController::class, 'getFirstCampania']);
     Route::get('/challenge', function () {
         return view('pages.challenge');
     })->name('challenge');

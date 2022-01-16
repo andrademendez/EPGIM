@@ -15,15 +15,33 @@
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link href="{{ asset('css/toastr.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/filepond.min.css') }}" rel="stylesheet">
+    <script type="module" src="https://unpkg.com/ionicons@5.0.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule="" src="https://unpkg.com/ionicons@5.0.0/dist/ionicons/ionicons.js"></script>
+    <style>
+        .uk-active {
+
+            color: #121312;
+            border-bottom: #5f1366 2px;
+            border-style: solid;
+        }
+
+        .bootstrap-select:not([class*="col-"]):not([class*="form-control"]):not(.input-group-btn) {
+            width: 100%;
+        }
+
+    </style>
 
     @livewireStyles
-    @method('styles')
+    @stack('styles')
 
-</head>
-<body class=" flex items-center justify-center bg-white">
+
+<body class=" flex items-center justify-center bg-white ">
+    <livewire:toasts />
+
     <div class="max-w-screen-3xl w-full">
         @include('layouts.navbars.sidebar')
-        <div class="main-panel ">
+        <div class=" main-panel ">
             @include('layouts.navbars.navs.auth')
             {{ $slot }}
         </div>
@@ -31,14 +49,18 @@
 
     </div>
     @livewireScripts
-    <script src="{{ asset('js/app.js') }}"></script>
+    @toastScripts
+
+    <script src=" {{ asset('js/app.js') }}"></script>
+
+
     <script src="{{ asset('material/js/core/jquery.min.js') }}"></script>
     <script src="{{ asset('material/js/core/popper.min.js') }}"></script>
     <script src="{{ asset('material/js/plugins/moment.min.js') }}"></script>
     <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 
     <script src="{{ asset('material/js/core/bootstrap-material-design.min.js') }}"></script>
-    <script src="{{ asset('material/js/plugins/perfect-scrollbar.jquery.min.js') }}"></script>
+
     <script src="{{ asset('material/js/plugins/jquery.validate.min.js') }}"></script>
     <!-- Plugin for the Wizard, full documentation here: https://github.com/VinceG/twitter-bootstrap-wizard -->
     <script src="{{ asset('material/js/plugins/jquery.bootstrap-wizard.js') }}"></script>
@@ -54,6 +76,7 @@
     <script src="{{ asset('material/js/plugins/arrive.min.js') }}"></script>
     <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="{{ asset('material/js/material-dashboard.js?v=2.1.0') }}" type="text/javascript"></script>
+    <script src="{{ asset('material/js/plugins/perfect-scrollbar.jquery.min.js') }}"></script>
 
     <script src="{{ asset('material/js/application.js') }}"></script>
     <script src="{{ asset('js/offcanvas.js') }}"></script>
@@ -63,22 +86,8 @@
     <link rel="stylesheet" type="text/css" href="{{ asset("css/pikaday.css") }}">
     <script src="{{ asset("js/pikaday.js") }}"></script>
     <script src="{{ asset("js/campanias.js") }}"></script>
-    <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
 
-    @method('js')
-    <style>
-        .uk-active {
-
-            color: #121312;
-            border-bottom: #5f1366 2px;
-            border-style: solid;
-        }
-
-        .bootstrap-select:not([class*="col-"]):not([class*="form-control"]):not(.input-group-btn) {
-            width: 100%;
-        }
-
-    </style>
+    @stack('js')
 
 </body>
 </html>

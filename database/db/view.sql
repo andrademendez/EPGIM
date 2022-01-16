@@ -34,15 +34,18 @@ INNER JOIN espacios ON campania_espacio.id_espacio = espacios.id
 ORDER BY `hold`  ASC;
 
 /** pendiente */
-CREATE VIEW vFechaBloqueo AS
+CREATE VIEW vFechaBloqueov2 AS
+
+
 SELECT bl.fecha as fecha, cn.id as id_campania, cn.title as nombre, 
-	cn.status as estatus, cn.start as inicio, cn.end as final,( SELECT es.id FROM campania_espacio AS ce
-INNER JOIN campanias as ca ON ce.id_campania = ca.id
-INNER JOIN espacios AS es ON ce.id_espacio = es.id) as espacio
+	cn.status as estatus, cn.start as inicio, cn.end as final, es.nombre as pantalla, es.id as id_pantalla
 	FROM bloqueo_campania as bc
 INNER JOIN bloqueos AS bl ON bc.id_bloqueo = bl.id 
 INNER JOIN campanias AS cn ON bc.id_campania = cn.id
-ORDER BY 'fecha' ASC;
+
+INNER JOIN campania_espacio as ce ON cn.id = ce.id_campania
+INNER JOIN espacios AS es ON ce.id_espacio = es.id
+ORDER BY 'fecha' ASC ;
 
 
 

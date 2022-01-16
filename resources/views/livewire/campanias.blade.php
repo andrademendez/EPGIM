@@ -1,5 +1,8 @@
 <x-content>
     <x-slot name="import">
+        @if ($open == true)
+        @include('pages.campanias.modal-edit')
+        @endif
     </x-slot>
     <div class="pb-2 bg-white border-b border-gray-100">
         <div class="flex items-center justify-end">
@@ -13,38 +16,35 @@
         </div>
     </div>
     <div class="py-3">
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
         @if ($unidad == '1' )
         <div id="fullCalendarao">
-            <script>
-                $(document).ready(function() {
-                    md.initFullCalendar();
-                });
-
-            </script>
-
         </div>
 
         @elseif ($unidad == '4')
 
         <div id="fullCalendarsw">
-            <script>
-                $(document).ready(function() {
-                    md.initFullCalendar();
-                });
-
-            </script>
         </div>
         @else
-        <div id="fullCalendar">
-            <script>
-                $(document).ready(function() {
-                    md.initFullCalendar();
-                });
-
-            </script>
-
+        <div id="fullCalendar" wire:ignore>
         </div>
+
+
         @endif
     </div>
+
 </x-content>
+@push('js')
+
+<script>
+    $(document).ready(function() {
+        md.initFullCalendar();
+    });
+
+    @this.on(`refreshCalendar`, () => {
+        $calendar.refetchEvents()
+    });
+
+</script>
+
+@endpush

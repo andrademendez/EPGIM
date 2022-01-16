@@ -10,6 +10,7 @@ class Bloqueos extends Model
     use HasFactory;
 
     protected $table = "bloqueos";
+    protected $guarded = [];
 
     public function campanias()
     {

@@ -16,7 +16,7 @@ jQuery(document).ready(function ($) {
             espacio: espacio,
         };
         console.log(campania);
-        return false;
+        //return false;
         $.ajax({
             headers: {
                 "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
@@ -61,32 +61,35 @@ jQuery(document).ready(function ($) {
         $calendar.fullCalendar("refetchEvents");
         //location.reload();
     });
-    $("#uguardar").on("click", function (e) {
+    $("#actualizar").on("click", function (e) {
         e.preventDefault();
 
         let id = $("#id_up").val();
         let title = $("#unombre").val();
         let starts = $("#ustart").val();
+        let ended = $("#uend").val();
         let start = starts + " 00:00:00";
-        let end = starts + " 23:59:59";
-        let teventos = $("#utevento").val();
-        let eventos = {
+        let end = ended + " 23:59:59";
+        let medio = $("#umedio").val();
+        let cliente = $("#ucliente").val();
+        let datos = {
             id: id,
             title: title,
             start: start,
             end: end,
-            tevento: teventos,
+            medio: medio,
+            cliente: cliente,
         };
 
-        //console.log(uendz);
+        console.log(datos);
         //return false;
         $.ajax({
             headers: {
                 "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
             },
-            url: "/eventos/update",
+            url: "/campanias/update",
             type: "POST",
-            data: eventos,
+            data: datos,
             success: function (response) {
                 //console.log(response);
                 $calendar.fullCalendar("refetchEvents");
@@ -175,7 +178,7 @@ jQuery(document).ready(function ($) {
             return false;
         });
     });
-    $("#saveAddVenue").on("click", function (e) {
+    $("#addEspacios").on("click", function (e) {
         e.preventDefault();
 
         var id = $("#idEventEdit").val();
@@ -260,6 +263,20 @@ jQuery(document).ready(function ($) {
         return false;
     });
 });
+
+$("#confirmar").click(function (e) {
+    e.preventDefault();
+    let id = $("#id_up").val();
+    let archivo = $("#file-upload").val();
+    let datos = {
+        id: id,
+        archivo: archivo,
+    };
+    console.log(datos);
+});
+
+// Select the file input and use
+// create() to turn it into a pond
 
 function eliminar(id, evento) {
     var espacio = id;
