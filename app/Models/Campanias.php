@@ -17,10 +17,20 @@ class Campanias extends Model
 
     public function dateFormato($fecha)
     {
+        setlocale(LC_ALL, "es_ES");
         $date = new DateTime($fecha);
         $dateF = $date->format('Y-m-d');
         return $dateF;
     }
+
+    public function formatoMx($fecha)
+    {
+        setlocale(LC_ALL, "es_ES");
+        $date = new DateTime($fecha);
+        $dateF = $date->format('d-M-Y');
+        return $dateF;
+    }
+
     public function espacios()
     {
         return $this->belongsToMany(Espacios::class, 'campania_espacio', 'id_campania', 'id_espacio');
@@ -44,5 +54,10 @@ class Campanias extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'id_user');
+    }
+
+    public function attachStatusFile()
+    {
+        return $this->hasOne(AttachStatusFiles::class, 'id_campania');
     }
 }

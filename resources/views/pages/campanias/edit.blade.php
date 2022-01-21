@@ -1,4 +1,4 @@
-<div id="modalEventEditar" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+<div id="modalEventEditar" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg rounded-2xl">
         <div class="modal-content relative px-2">
             <div class="mb-2 py-2 px-2 text-md text-center font-bold modalheader">
@@ -9,9 +9,9 @@
             </div>
             <div class="w-full">
                 <div class="grid grid-cols-5 gap-1 ">
-                    <div class="col-span-3 mb-1">
+                    <div class="col-span-3 mb-1 border border-gray-400 px-2 rounded-lg shadow-lg">
                         <div class="bg-white">
-                            <form id="modificarEvento" method="POST" class="border border-gray-400 p-2 rounded-lg shadow-lg">
+                            <form id="modificarEvento" method="POST" class="">
                                 @csrf
                                 <input id="id_up" type="hidden" name="id" value="">
                                 <div class="mt-2 grid grid-cols-4 gap-2">
@@ -53,21 +53,26 @@
                                             @endforeach
                                         </x-form.select>
                                     </div>
-                                    <!-- Estado -->
-                                    <div class="col-span-2  pt-2 flex items-end justify-end">
-                                        <x-form.label for="ucliente" class="text-transparent">..</x-form.label>
-                                        <x-button id="actualizar" type="button" class="bg-gray-700">
-                                            Actualizar
-                                        </x-button>
-                                    </div>
+
+                                </div>
+                                <div class="mt-3 flex items-center justify-between ">
+                                    <x-button id="actualizar" type="button" class="bg-gray-700">
+                                        Actualizar
+                                    </x-button>
+                                    <x-button id="delete" type="submit" class=" bg-red-600" title="Eliminar campaña">
+                                        {{-- <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg> --}}
+                                        Eliminar
+                                    </x-button>
                                 </div>
                             </form>
-
                         </div>
+
                     </div>
                     <!-- agregar espacio -->
                     <div class="col-span-2 px-2 mb-1 border border-purple-500 rounded-2xl bg-white ">
-                        <div class="pt-4 px-2  w-full">
+                        <div class="pt-4 px-2">
                             <form id="agregarEspacios" method="POST">
                                 @csrf
                                 <input id="idEventEdit" type="hidden" name="event_id" value="">
@@ -90,7 +95,7 @@
                                 </div>
                             </form>
                         </div>
-                        <div class="pb-2  w-full">
+                        <div class="pb-2 ">
                             <x-table.table>
                                 <x-slot name="theader">
                                     <x-table.th colspan="2">Espacios</x-table.th>
@@ -100,7 +105,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>

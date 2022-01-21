@@ -5,9 +5,11 @@ namespace App\Providers;
 use Illuminate\Auth\Events\Registered;
 use App\Events\Confirmation;
 use App\Events\Challenge;
+use App\Events\Pending;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use App\Listeners\SendConfirmationNotification;
 use App\Listeners\SendChallengeNotification;
+use App\Listeners\SendPendingNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 
@@ -24,6 +26,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         Confirmation::class => [
             SendConfirmationNotification::class,
+        ],
+        Pending::class => [
+            SendPendingNotification::class,
         ],
         Challenge::class => [
             SendChallengeNotification::class,

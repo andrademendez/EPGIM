@@ -8,7 +8,8 @@
     <title>EPGIM - {{ $title }}</title>
     <link rel="shortcut icon" href="{{ asset('images/gim.png') }}" type="image/x-icon">
     <!--     Fonts and icons     -->
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
     <!-- CSS Files -->
     <link href="{{ asset('material/css/material-dashboard.css?v=2.1.2') }}" rel="stylesheet" />
@@ -16,8 +17,6 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link href="{{ asset('css/toastr.css') }}" rel="stylesheet">
     <link href="{{ asset('css/filepond.min.css') }}" rel="stylesheet">
-    <script type="module" src="https://unpkg.com/ionicons@5.0.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule="" src="https://unpkg.com/ionicons@5.0.0/dist/ionicons/ionicons.js"></script>
     <style>
         .uk-active {
 
@@ -31,7 +30,6 @@
         }
 
     </style>
-
     @livewireStyles
     @stack('styles')
 
@@ -39,7 +37,7 @@
 <body class=" flex items-center justify-center bg-white ">
     <livewire:toasts />
 
-    <div class="max-w-screen-3xl w-full">
+    <div class=" w-full">
         @include('layouts.navbars.sidebar')
         <div class=" main-panel ">
             @include('layouts.navbars.navs.auth')
@@ -52,7 +50,6 @@
     @toastScripts
 
     <script src=" {{ asset('js/app.js') }}"></script>
-
 
     <script src="{{ asset('material/js/core/jquery.min.js') }}"></script>
     <script src="{{ asset('material/js/core/popper.min.js') }}"></script>

@@ -74,7 +74,7 @@ class CampaniaController extends Controller
                 $campania->end = $end;
                 $campania->status = 'Solicitud';
                 $campania->hold = 1;
-                $campania->display = "#30a3cf";
+                $campania->display = "#13bfec";
                 $campania->id_user = Auth::id();
                 $campania->id_cliente = $request->cliente;
                 $campania->id_medio = $request->medio;
@@ -93,14 +93,14 @@ class CampaniaController extends Controller
                     $estatus = $this->getSolicitud($request->start, $request->end, $request->espacio);
                     $hold = $estatus->max('total');
 
-                    if ($estatus->max('total') < 12) {
+                    if ($estatus->max('total') <= 12) {
                         $campania = new Campanias();
                         $campania->title = $request->title;
                         $campania->start = $start;
                         $campania->end = $end;
                         $campania->status = 'Solicitud';
                         $campania->hold = $hold + 1;
-                        $campania->display = "#30a3cf";
+                        $campania->display = "#13bfec";
                         $campania->id_user = Auth::id();
                         $campania->id_cliente = $request->cliente;
                         $campania->id_medio = $request->medio;
@@ -127,7 +127,7 @@ class CampaniaController extends Controller
                             $campania->end = $end;
                             $campania->status = 'Solicitud';
                             $campania->hold = $hold + 1;
-                            $campania->display = "#30a3cf";
+                            $campania->display = "#13bfec";
                             $campania->id_user = Auth::id();
                             $campania->id_cliente = $request->cliente;
                             $campania->id_medio = $request->medio;
@@ -336,7 +336,7 @@ class CampaniaController extends Controller
         return $datos;
     }
 
-    public function getSolicitud($start, $end, $espacio)
+    public static function getSolicitud($start, $end, $espacio)
     {
         $date_start = new DateTime($start);
         $date_start = $date_start->format('Y-m-d');
@@ -348,14 +348,13 @@ class CampaniaController extends Controller
             ->selectRaw('count(estatus) as total, estatus, fecha')
             ->whereBetween('fecha', [$date_start, $date_end])
             ->whereIn('id_pantalla', $espacio)
-            ->where('estatus', 'Solicitud')
-            ->orWhere('estatus', 'Challenge')
+            ->whereIn('estatus', ['Solicitud', 'Challenge'])
             ->groupBy('fecha', 'pantalla')->get();
 
         return $result;
     }
 
-    public function getConfirmado($start, $end, $espacio)
+    public static function getConfirmado($start, $end, $espacio)
     {
         $date_start = new DateTime($start);
         $date_start = $date_start->format('Y-m-d');
@@ -441,19 +440,20 @@ class CampaniaController extends Controller
     }
 
     //obtener el primer elemento para poder confirmar
-    public function getFirstCampania(Request $request)
+    public static function getFirstCampania(Request $request)
     {
         # code...
         $camp = Campanias::find($request->id);
         $espacio = DB::table('vEspacio')->where('campania', $request->id)->get();
         $espacios = $espacio->pluck('espacio');
+
         $date_start = new DateTime($camp->start);
         $date_start = $date_start->format('Y-m-d');
         $date_end = new DateTime($camp->end);
         $date_end = $date_end->format('Y-m-d');
 
         $position = DB::table('vFechaBloqueov2')
-            ->where('estatus', 'Solicitud')
+            ->whereIn('estatus', ['Challenge', 'Solicitud'])
             ->whereBetween('fecha', [$date_start, $date_end])
             ->whereIn('id_pantalla', $espacios)
             ->groupBy('id_campania')
@@ -477,27 +477,32 @@ class CampaniaController extends Controller
     public function test()
     {
         # code...
-        $RET = '';
-        $start = "15-01-2022";
-        $end = "30-01-2022";
-        //$date_start = new DateTime($start);
-        //$date_start = $date_start->format('Y-m-d');
-        //$date_end = new DateTime($end);
-        //$date_end = $date_end->format('Y-m-d');
-        $espacio = [1, 2];
-        $id = 33;
-        $camp1 = $this->challege($id);;
-        foreach ($camp1 as $camp) {
-            if ($camp->id_campania == $id) {
-                break;
-            } else {
-                $user = Campanias::find($camp->id_campania);
-                echo $user->user->email . '<br>';
-            }
+        $id = '39';
+        $start = "15-02-2022";
+        $end = "27-03-2022";
+        $camp = Campanias::find($id);
+        $espacio = DB::table('vEspacio')->where('campania', $id)->get();
+        $espacios = $espacio->pluck('espacio');
 
-            # code...
-        }
-        dd($camp1->pluck('id_campania'));
+        $date_start = new DateTime($camp->start);
+        $date_start = $date_start->format('Y-m-d');
+        $date_end = new DateTime($camp->end);
+        $date_end = $date_end->format('Y-m-d');
+        $valcam = DB::table('vFechaBloqueov2')
+            ->where('estatus', 'Solicitud')
+            ->whereBetween('fecha', [$date_start, $date_end])
+            ->whereIn('id_pantalla', $espacios)
+            ->groupBy('id_campania')
+            ->get();
+
+        $position = DB::table('vFechaBloqueov2')
+            ->whereIn('estatus', ['Challenge', 'Solicitud'])
+            ->whereBetween('fecha', [$date_start, $date_end])
+            ->whereIn('id_pantalla', $espacios)
+            ->groupBy('id_campania')
+            ->first();
+
+        dd($position);
     }
 
     public function challege($id)

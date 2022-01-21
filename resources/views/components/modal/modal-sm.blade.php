@@ -1,7 +1,7 @@
-<div {{ $attributes }} class=" fixed w-full h-full top-0 left-0 flex items-center justify-center" tabindex="-1" style="z-index: 1000">
+<div {{ $attributes }} class=" fixed w-full h-full top-0 left-0 flex items-center justify-center" tabindex="-1">
     <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
 
-    <div class="bg-white w-10/12 sm:w-7/12 lg:w-4/12 2xl:w-3/12  mx-auto rounded-md shadow-lg z-50 overflow-y-auto">
+    <div class="bg-white w-10/12 sm:w-7/12 lg:w-4/12 2xl:w-3/12  mx-auto rounded-md shadow-lg z-50">
         <!-- Add margin if you want to see some of the overlay behind the modal-->
         <div class="modal-content  py-2 text-left px-6">
             <!--Title-->

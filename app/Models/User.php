@@ -68,4 +68,13 @@ class User extends Authenticatable
     {
         return $this->id_rol == 2;
     }
+
+    public function isMonitor()
+    {
+        return $this->id_rol == 3;
+    }
+    public function isValidator()
+    {
+        return $this->id_rol == 4;
+    }
 }

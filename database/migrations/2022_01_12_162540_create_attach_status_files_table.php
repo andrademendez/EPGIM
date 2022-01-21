@@ -16,9 +16,9 @@ class CreateAttachStatusFilesTable extends Migration
         Schema::create('attach_status_files', function (Blueprint $table) {
             $table->id();
             $table->string('title')->nullable();
-            $table->string('file');
             $table->string('process');
             $table->string('status')->default(true);
+            $table->text('comment')->nullable();
             $table->foreignId('id_campania')->constrained('campanias');
             $table->timestamps();
         });
