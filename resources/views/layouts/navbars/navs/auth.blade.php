@@ -10,7 +10,8 @@
             </div>
             <a class="navbar-brand" href="">{{ $titlePage }}</a>
         </div>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index"
+            aria-expanded="false" aria-label="Toggle navigation">
             <span class="sr-only">Toggle navigation</span>
             <span class="navbar-toggler-icon icon-bar"></span>
             <span class="navbar-toggler-icon icon-bar"></span>
@@ -28,15 +29,16 @@
                     </a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProfile" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
                         <i class="material-icons">person</i>
                         <p class="d-lg-none d-md-block">
                             {{ __('Cuenta') }}
                         </p>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
-                        <a class="dropdown-item" href="#">{{ __('Perfil') }}</a>
-                        <a class="dropdown-item" href="#">{{ __('Configuraciones') }}</a>
+                        <a class="dropdown-item" href="{{ route('perfil.edit', auth()->user()->id) }}">{{ __('Perfil')
+                            }}</a>
                         <div class="dropdown-divider"></div>
                         <div class="dropdown-item">
                             <form method="POST" action="{{ route('logout') }}">

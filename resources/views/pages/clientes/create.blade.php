@@ -30,12 +30,13 @@
             </div>
             <div class="pt-3">
                 <x-form.label for="user">Usuario</x-form.label>
-                <x-form.select wire:model="id_user">
+                <x-form.select wire:model="usuario">
                     <option selected>Seleccione el usuario</option>
                     @foreach ($users as $user)
                     <option value="{{ $user->id }}">{{ $user->name }}</option>
                     @endforeach
                 </x-form.select>
+                @error('usuario') <span class="text-xs text-red-600">{{ $message }}</span> @enderror
             </div>
 
             <div class="pt-4 flex justify-end">

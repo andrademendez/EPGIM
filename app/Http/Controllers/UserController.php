@@ -5,14 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         //
@@ -60,9 +58,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
-        $this->authorize('update', User::class);
 
+        $this->authorize('update', User::class);
+        # code...
         $usuario = User::find($id);
         $espacios = DB::table('campania_espacio')
             ->join('espacios', 'espacios.id', '=', 'campania_espacio.id_espacio')

@@ -29,6 +29,11 @@ class Espacios extends Component
         'id_ubicacion' => 'required',
     ];
 
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
+
     public function openModal()
     {
         $this->open = true;

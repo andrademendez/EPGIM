@@ -10,6 +10,7 @@ use App\Models\Espacios;
 use App\Models\FilesStatus;
 use App\Models\Medios;
 use App\Models\UnidadesNegocios;
+use App\Models\User;
 use DateInterval;
 use DatePeriod;
 use Illuminate\Http\Request;
@@ -483,6 +484,7 @@ class CampaniaController extends Controller
 
     public function test()
     {
+        $this->authorize('viewAny', User::class);
         # code...
         $id = 45;
         $camp = Campanias::find($id);

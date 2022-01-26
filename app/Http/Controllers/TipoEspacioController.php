@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Espacios;
 use Illuminate\Http\Request;
 
 class TipoEspacioController extends Controller
@@ -14,6 +15,7 @@ class TipoEspacioController extends Controller
     public function index()
     {
         //
+        $this->authorize('viewAny', Espacios::class);
         return view('pages.tipoespacio.index');
     }
 

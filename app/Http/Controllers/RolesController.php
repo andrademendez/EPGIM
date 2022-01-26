@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Roles;
 use Illuminate\Http\Request;
 
 class RolesController extends Controller
@@ -14,6 +15,7 @@ class RolesController extends Controller
     public function index()
     {
         //
+        $this->authorize('viewAny', Roles::class);
         return view('pages.roles.index');
     }
 

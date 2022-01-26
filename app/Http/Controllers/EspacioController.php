@@ -15,7 +15,7 @@ class EspacioController extends Controller
      */
     public function index()
     {
-        $this->authorize('viewAny', Campanias::class);
+        $this->authorize('viewAny', Espacios::class);
         //
         return view('pages.espacios.index');
     }
@@ -61,6 +61,7 @@ class EspacioController extends Controller
     public function edit($id)
     {
         //
+        $this->authorize('update', Espacios::class);
         $espacio = Espacios::find($id);
         return view('pages.espacios.edit', compact('espacio'));
     }

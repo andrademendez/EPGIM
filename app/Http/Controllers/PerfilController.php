@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PerfilController extends Controller
 {
@@ -59,8 +60,12 @@ class PerfilController extends Controller
     public function edit($id)
     {
         //
-        $user = User::find($id);
-        return view('pages.users.perfil', compact('user'));
+        if (Auth::id() == $id) {
+            $user = User::find($id);
+            return view('pages.users.perfil', compact('user'));
+        } else {
+            abort(403);
+        }
     }
 
     /**

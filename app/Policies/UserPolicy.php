@@ -4,17 +4,12 @@ namespace App\Policies;
 
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Auth;
 
 class UserPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Determine whether the user can see the users.
-     *
-     * @param  \App\User  $user
-     * @return boolean
-     */
     public function viewAny(User $user)
     {
         return $user->isAdmin();

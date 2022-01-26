@@ -1,5 +1,6 @@
 $(document).ready(function () {
     md.initFullCalendar();
+    md.initFormExtendedDatetimepickers();
 });
 
 $(".modal").modal({

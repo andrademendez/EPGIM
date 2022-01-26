@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Clientes;
 use Illuminate\Http\Request;
 
 class ClienteController extends Controller
@@ -14,7 +15,7 @@ class ClienteController extends Controller
     public function index()
     {
         //
-        $this->authorize('viewAny', Campanias::class);
+        $this->authorize('viewAny', Clientes::class);
         return view('pages.clientes.index');
     }
 

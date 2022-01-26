@@ -16,13 +16,14 @@ class Clientes extends Component
     use AuthorizesRequests;
 
     public $open, $action, $search = '';
-    public $nombre, $contacto, $email, $telefono, $id_cliente, $id_user;
+    public $nombre, $contacto, $email, $telefono, $id_cliente, $usuario;
 
     protected $rules = [
         'nombre' => 'required|min:4',
         'contacto' => 'required',
         'telefono' => 'nullable|size:10',
-        'email' => 'nullable|email:rfc,dns'
+        'email' => 'nullable|email:rfc,dns',
+        'usuario' => 'required',
     ];
 
     protected $queryString = [
@@ -45,7 +46,7 @@ class Clientes extends Component
         $this->action = 'Actualizar';
         $cliente = ModelsClientes::find($id);
         $this->id_cliente = $cliente->id;
-        $this->id_user = $cliente->id_user;
+        $this->usuario = $cliente->id_user;
         $this->nombre = $cliente->nombre;
         $this->email = $cliente->email;
         $this->telefono = $cliente->telefono;
@@ -56,13 +57,11 @@ class Clientes extends Component
     public function closeModal()
     {
         $this->open = false;
-        $this->reset(['nombre', 'contacto', 'telefono', 'email', 'id_cliente', 'id_user']);
+        $this->reset(['nombre', 'contacto', 'telefono', 'email', 'id_cliente', 'usuario']);
     }
 
     public function store()
     {
-        $this->authorize('create', ModelsClientes::class);
-
         $this->validate();
         try {
             if ($this->action == 'Registrar') {
@@ -71,7 +70,7 @@ class Clientes extends Component
                 $cliente->contacto = $this->contacto;
                 $cliente->email = $this->email;
                 $cliente->telefono = $this->telefono;
-                $cliente->id_user = $this->id_user;
+                $cliente->id_user = $this->usuario;
                 $cliente->save();
                 if ($cliente) {
                     toast()->success('Cliente Registrado!!')->push();

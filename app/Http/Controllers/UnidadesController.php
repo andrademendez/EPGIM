@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UnidadesController extends Controller
@@ -14,6 +15,7 @@ class UnidadesController extends Controller
     public function index()
     {
         //
+        $this->authorize('viewAny', User::class);
         return view('pages.unidades.index');
     }
 

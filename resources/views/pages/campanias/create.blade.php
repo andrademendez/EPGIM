@@ -15,11 +15,13 @@
                         <div class="p-2 grid grid-cols-4 gap-4">
                             <div class="col-span-4 pt-3">
                                 <x-form.label for="nombre">Nombre de la campaña</x-form.label>
-                                <x-input id="nombre" class="w-full" name="nombre" title="Nombre completo" placeholder="Ingrese el nombre" type="text" required />
+                                <x-input id="nombre" class="w-full" name="nombre" title="Nombre completo"
+                                    placeholder="Ingrese el nombre" type="text" required />
                             </div>
                             <div class="col-span-2 pt-2">
                                 <x-form.label for="cliente">Cliente</x-form.label>
-                                <x-form.select id="cliente" class="w-full" name="cliente" title="Seleccione el Cliente">
+                                <x-form.select id="cliente" class="w-full " name="cliente"
+                                    title="Seleccione el Cliente">
                                     <option selected>Selecione el cliente</option>
                                     @foreach ( $clientes as $cliente)
                                     <option value="{{ $cliente->id }}">{{ $cliente->nombre }}</option>
@@ -40,6 +42,14 @@
                                 <x-input id="start" name="start" type="text" title="Inicio de la campaña" />
 
                             </div>
+                            {{-- <div class="col-span-2 pt-2">
+                                <div class=" form-group ">
+                                    <x-form.label for="start">Fecha inicio</x-form.label>
+                                    <input id="start" class="form-control datepicker w-full mt-1"
+                                        placeholder="Please select date" type="text">
+                                </div>
+                            </div> --}}
+
                             <div class="col-span-2 pt-2">
                                 <x-form.label for="end">Fecha fin</x-form.label>
                                 <x-input id="end" name="end" type="text" title="Fin de la campaña" />
@@ -50,7 +60,8 @@
                                 <x-form.label>Espacios</x-form.label>
                                 <div class="form-group">
                                     <div class="dropdown bootstrap-select show" style="width: 100%">
-                                        <select name="espacio[]" class="selectpicker form-control" id="espacio" multiple data-style="btn btn-link" data-size="7" title="Selecione un espacio">
+                                        <select name="espacio[]" class="selectpicker form-control" id="espacio" multiple
+                                            data-style="btn btn-link" data-size="7" title="Selecione un espacio">
                                             @foreach ( $espacios as $espacio)
                                             <option value="{{ $espacio->id }}">{{ $espacio->nombre }} </option>
                                             @endforeach
@@ -62,7 +73,8 @@
                     </div>
                     <!-- Fecha Inicio-->
                     <div class="pt-2 flex justify-between px-10 ">
-                        <x-form.btn-secondary class="bg-gray-700" id="cancel" type="button" data-dismiss="modal">Cerrar</x-form.btn-secondary>
+                        <x-form.btn-secondary class="bg-gray-700" id="cancel" type="button" data-dismiss="modal">Cerrar
+                        </x-form.btn-secondary>
                         <x-form.btn-primary id="save" type="submit">Agregar</x-form.btn-primary>
                     </div>
                 </form>
