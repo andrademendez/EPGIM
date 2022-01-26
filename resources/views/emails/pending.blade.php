@@ -1,11 +1,21 @@
 @component('mail::message')
-# Datos de la Campaña
+@component('mail::panel')
+## Datos de la campaña
+Nombre: {{ $campaniaTitle }}
 
-{{ $comentario }}
+Inicio: {{ $campaniaStart }}
 
-@component('mail::button', ['url' => ''])
-Button Text
+Fin: {{ $campaniaEnd }}
+
+Tipo de solicitud: {{ $campaniaProcess }}
+
 @endcomponent
+
+> #### Observaciones del administrador
+>
+> {{ $comment }}
+
+---
 
 Thanks,<br>
 {{ config('app.name') }}

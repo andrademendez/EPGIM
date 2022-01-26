@@ -130,6 +130,12 @@ jQuery(document).ready(function ($) {
         console.log(id);
         Swal.fire({
             title: "Está seguro?",
+            showClass: {
+                popup: "animate__animated animate__fadeInDown",
+            },
+            hideClass: {
+                popup: "animate__animated animate__fadeOutUp",
+            },
             text: "¡No podrás revertir esta acción!",
             icon: "warning",
             showCancelButton: true,
@@ -262,17 +268,6 @@ jQuery(document).ready(function ($) {
         $calendar.fullCalendar("refetchEvents");
         return false;
     });
-});
-
-$("#confirmar").click(function (e) {
-    e.preventDefault();
-    let id = $("#id_up").val();
-    let archivo = $("#file-upload").val();
-    let datos = {
-        id: id,
-        archivo: archivo,
-    };
-    console.log(datos);
 });
 
 // Select the file input and use

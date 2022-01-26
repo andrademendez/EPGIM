@@ -56,7 +56,7 @@
 
                                 </div>
                                 <div class="mt-3 flex items-center justify-between ">
-                                    <x-button id="actualizar" type="button" class="bg-gray-700">
+                                    <x-button id="actualizar" type="button" class="bg-[#f609a2]">
                                         Actualizar
                                     </x-button>
                                     <x-button id="delete" type="submit" class=" bg-red-600" title="Eliminar campaña">

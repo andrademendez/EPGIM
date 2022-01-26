@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Http\Controllers\CampaniaController;
+use App\Mail\ChallengeNotification;
 use App\Mail\NotificarAdministrador;
 use App\Models\AttachStatusFiles;
 use App\Models\Campanias;
@@ -63,23 +64,37 @@ class Detalles extends Component
         $espacio = DB::table('vEspacio')->where('campania', $this->id_campania)->get();
         $confirmado = CampaniaController::getConfirmado($camp->start, $camp->end, $espacio->pluck('espacio'));
         $solicitud = CampaniaController::getSolicitud($camp->start, $camp->end, $espacio->pluck('espacio'));
-        if ($confirmado->max('total') <= 12 && $solicitud->max('total') <= 12) {
-            $camp->status = 'Challenge';
-            $camp->display = '#fbb904';
-            $camp->save();
-            if ($camp) {
-                $challenge = new AttachStatusFiles();
-                $challenge->process = $camp->status;
-                $challenge->status = 'Send';
-                $challenge->id_campania = $camp->id;
-                $challenge->save();
-                if ($challenge) {
-                    toast()->success('Porfavor cargue los archivos correspondientes para continuar con el proceso...')->push();
-                    //$this->showAlert('Porfavor cargue los archivos correspondientes.', 'success');
-                    $this->campania = Campanias::find($this->id_campania);
-                    $verificador = User::where('id_rol', 4)->first();
-                    Mail::to($verificador->email)->send(new NotificarAdministrador($camp));
-                    $this->attachStatusFile = Campanias::find($this->id_campania)->attachStatusFile;
+        if ($confirmado->max('total') <= 12) {
+            if ($solicitud->max('total') <= 12) {
+                $camp->status = 'Challenge';
+                $camp->display = '#feff00';
+                $camp->save();
+                if ($camp) {
+                    $challenge = new AttachStatusFiles();
+                    $challenge->process = $camp->status;
+                    $challenge->status = 'Send';
+                    $challenge->id_campania = $camp->id;
+                    $challenge->save();
+                    if ($challenge) {
+
+
+                        //$this->showAlert('Porfavor cargue los archivos correspondientes.', 'success');
+                        $this->campania = Campanias::find($this->id_campania);
+                        $verificador = User::where('id_rol', 4)->first();
+                        Mail::to($verificador->email)->send(new NotificarAdministrador($camp));
+
+                        $idCamp = $this->sendMailChallengue($camp->id);
+                        $campanias = Campanias::whereIn('id', $idCamp)->get();
+                        foreach ($campanias as $campania) {
+                            //$this->showAlert($campania->user->email, 'success');
+                            if ($camp->id == $campania->id) {
+                                break;
+                            }
+                            Mail::to($campania->user->email)->send(new ChallengeNotification($camp));
+                        }
+                        toast()->success('Porfavor cargue los archivos correspondientes para continuar con el proceso...')->push();
+                        $this->attachStatusFile = Campanias::find($this->id_campania)->attachStatusFile;
+                    }
                 }
             }
         }
@@ -161,6 +176,26 @@ class Detalles extends Component
         return $position->id_campania;
     }
 
+    public function sendMailChallengue($id)
+    {
+        $camp = Campanias::find($id);
+        $espacio = DB::table('vEspacio')->where('campania', $id)->get();
+        $espacios = $espacio->pluck('espacio');
+
+        $date_start = new DateTime($camp->start);
+        $date_start = $date_start->format('Y-m-d');
+        $date_end = new DateTime($camp->end);
+        $date_end = $date_end->format('Y-m-d');
+
+        $position = DB::table('vFechaBloqueov2')
+            ->whereIn('estatus', ['Challenge', 'Solicitud'])
+            ->whereBetween('fecha', [$date_start, $date_end])
+            ->whereIn('id_pantalla', $espacios)
+            ->groupBy('id_campania')
+            ->get();
+
+        return $position->pluck('id_campania');
+    }
     public function render()
     {
         return view('livewire.detalles', [

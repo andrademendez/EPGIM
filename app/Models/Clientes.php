@@ -15,4 +15,9 @@ class Clientes extends Model
         # code...
         return $this->hasMany(Campanias::class, 'id_clientes');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user');
+    }
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,23 +17,20 @@
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link href="{{ asset('css/toastr.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/filepond.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/pikaday.css') }}">
     <style>
-        .uk-active {
-
-            color: #121312;
-            border-bottom: #5f1366 2px;
-            border-style: solid;
-        }
-
         .bootstrap-select:not([class*="col-"]):not([class*="form-control"]):not(.input-group-btn) {
             width: 100%;
         }
 
+        ion-icon {
+            font-size: 64px;
+        }
     </style>
     @livewireStyles
     @stack('styles')
-
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
 <body class=" flex items-center justify-center bg-white ">
     <livewire:toasts />
@@ -51,40 +49,40 @@
 
     <script src=" {{ asset('js/app.js') }}"></script>
 
-    <script src="{{ asset('material/js/core/jquery.min.js') }}"></script>
+    {{-- <script src="{{ asset('material/js/core/jquery.min.js') }}"></script> --}}
     <script src="{{ asset('material/js/core/popper.min.js') }}"></script>
-    <script src="{{ asset('material/js/plugins/moment.min.js') }}"></script>
-    <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+    {{-- <script src="{{ asset('material/js/plugins/moment.min.js') }}"></script> --}}
+    {{-- <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script> --}}
 
     <script src="{{ asset('material/js/core/bootstrap-material-design.min.js') }}"></script>
 
-    <script src="{{ asset('material/js/plugins/jquery.validate.min.js') }}"></script>
+    {{-- <script src="{{ asset('material/js/plugins/jquery.validate.min.js') }}"></script> --}}
     <!-- Plugin for the Wizard, full documentation here: https://github.com/VinceG/twitter-bootstrap-wizard -->
-    <script src="{{ asset('material/js/plugins/jquery.bootstrap-wizard.js') }}"></script>
+    {{-- <script src="{{ asset('material/js/plugins/jquery.bootstrap-wizard.js') }}"></script> --}}
     <!--	Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
     <script src="{{ asset('material/js/plugins/bootstrap-selectpicker.js') }}"></script>
     <!--  Plugin for the DateTimePicker, full documentation here: https://eonasdan.github.io/bootstrap-datetimepicker/ -->
     <script src="{{ asset('material/js/plugins/bootstrap-datetimepicker.min.js') }}"></script>
     <script src="{{ asset('material/js/plugins/bootstrap-tagsinput.js') }}"></script>
     <!-- Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput -->
-    <script src="{{ asset('material/js/plugins/jasny-bootstrap.min.js') }}"></script>
+    {{-- <script src="{{ asset('material/js/plugins/jasny-bootstrap.min.js') }}"></script> --}}
     <script src="{{ asset('material/js/plugins/fullcalendar.min.js') }}"></script>
     <!-- Library for adding dinamically elements -->
-    <script src="{{ asset('material/js/plugins/arrive.min.js') }}"></script>
+    {{-- <script src="{{ asset('material/js/plugins/arrive.min.js') }}"></script> --}}
     <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="{{ asset('material/js/material-dashboard.js?v=2.1.0') }}" type="text/javascript"></script>
     <script src="{{ asset('material/js/plugins/perfect-scrollbar.jquery.min.js') }}"></script>
 
     <script src="{{ asset('material/js/application.js') }}"></script>
     <script src="{{ asset('js/offcanvas.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <script src="{{ asset('js/toast.js') }}"></script>
 
-    <link rel="stylesheet" type="text/css" href="{{ asset("css/pikaday.css") }}">
-    <script src="{{ asset("js/pikaday.js") }}"></script>
-    <script src="{{ asset("js/campanias.js") }}"></script>
+
+    {{-- <script src="{{ asset(" js/pikaday.js") }}"></script> --}}
+    <script src="{{ asset('js/campanias.js') }}"></script>
 
     @stack('js')
 
 </body>
+
 </html>

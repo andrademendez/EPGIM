@@ -31,9 +31,12 @@
                                 <span class="text-sm">Total Sales</span>
                             </x-dashboard.card>
                         </div>
-                        <div class="col-span-2">
-                            <div class="px-4 py-3 shadow-lg rounded-lg bg-gray-900">
-                            </div>
+                        <div class="col-span-2 bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-lg">
+                            <x-dashboard.card>
+                                <span>+24</span>
+                                <h1 class="text-lg font-medium">$27,000.00</h1>
+                                <span class="text-sm">Total Sales</span>
+                            </x-dashboard.card>
                         </div>
                     </div>
                     <div class="grid grid-cols-4 gap-4 pt-5">
@@ -112,9 +115,7 @@
         </div>
     </div>
 
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.2/chart.min.js"></script> --}}
-    <script src="https://www.chartjs.org/dist/master/chart.min.js"></script>
-
+    @push('js')
     <script>
         const ctx = document.getElementById('myChart');
         const ctx2 = document.getElementById('myChart2');
@@ -188,5 +189,8 @@
         });
 
     </script>
+
+    @endpush
+
 
 </x-material-layout>

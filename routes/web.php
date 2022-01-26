@@ -10,6 +10,7 @@ use App\Http\Controllers\TipoEspacioController;
 use App\Http\Controllers\UnidadesController;
 use App\Http\Controllers\UserController;
 use App\Http\Livewire\Unidades;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
@@ -35,9 +36,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/campanias/addespacio', [CampaniaController::class, 'agregarEspacio']);
     Route::post('/campanias/delespacio', [CampaniaController::class, 'eliminarEspacio']);
     Route::get('/campanias/first', [CampaniaController::class, 'getFirstCampania']);
-    Route::get('/challenge', function () {
-        return view('pages.challenge');
-    })->name('challenge');
+    Route::get('/challenge', [CampaniaController::class, 'show'])->name('challenge');
     Route::get('/campania/my-campania', function () {
         return view('pages.campanias.detalles');
     })->name('campania.detalles');

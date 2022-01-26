@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AttachStatusFiles;
 use App\Models\Bloqueos;
 use App\Models\Campanias;
 use App\Models\Clientes;
 use App\Models\Espacios;
+use App\Models\FilesStatus;
 use App\Models\Medios;
 use App\Models\UnidadesNegocios;
 use DateInterval;
@@ -37,6 +39,7 @@ class CampaniaController extends Controller
     public function store(Request $request)
     {
         //dd($request);
+        $this->authorize('create', Campanias::class);
         $validator = Validator::make($request->all(), [
             'title' => 'required|min:3',
             'start' => 'required',
@@ -148,9 +151,10 @@ class CampaniaController extends Controller
         }
     }
 
-    public function show($id)
+    public function show()
     {
-        //
+        $this->authorize('view', Campanias::class);
+        return view('pages.challenge');
     }
 
     public function edit($id)
@@ -205,13 +209,16 @@ class CampaniaController extends Controller
             if (Auth::id() == $campania->id_user) {
 
                 $delespacio = $campania->espacios()->detach();
-                $delcam = $campania->bloqueos()->detach();
+
                 if ($delespacio) {
+                    $delcam = $campania->bloqueos()->detach();
                     $gp = $campania->forceDelete();
                     if ($gp) {
                         return response()->json(['success', 'Campaña eliminado!!']);
                     }
                 }
+            } else {
+                return response()->json(['info', 'No tienes permiso para eliminar!!']);
             }
         } catch (\Throwable $th) {
             return response()->json(['error', 'Hay dependencias activos de este evento']);
@@ -477,9 +484,7 @@ class CampaniaController extends Controller
     public function test()
     {
         # code...
-        $id = '39';
-        $start = "15-02-2022";
-        $end = "27-03-2022";
+        $id = 45;
         $camp = Campanias::find($id);
         $espacio = DB::table('vEspacio')->where('campania', $id)->get();
         $espacios = $espacio->pluck('espacio');
@@ -488,21 +493,14 @@ class CampaniaController extends Controller
         $date_start = $date_start->format('Y-m-d');
         $date_end = new DateTime($camp->end);
         $date_end = $date_end->format('Y-m-d');
-        $valcam = DB::table('vFechaBloqueov2')
-            ->where('estatus', 'Solicitud')
-            ->whereBetween('fecha', [$date_start, $date_end])
-            ->whereIn('id_pantalla', $espacios)
-            ->groupBy('id_campania')
-            ->get();
 
-        $position = DB::table('vFechaBloqueov2')
-            ->whereIn('estatus', ['Challenge', 'Solicitud'])
-            ->whereBetween('fecha', [$date_start, $date_end])
-            ->whereIn('id_pantalla', $espacios)
-            ->groupBy('id_campania')
-            ->first();
-
-        dd($position);
+        $archive = AttachStatusFiles::where('id_campania', '=', 39)->first();
+        $file = FilesStatus::where('id_attach_status_file', $archive->id)->get();
+        //verificar estatus de archive sea send
+        //si es send, eliminar, registro y tmbien campaña
+        //$archive->filesStatus;
+        return $file;
+        // dump($campanias);
     }
 
     public function challege($id)
@@ -515,8 +513,10 @@ class CampaniaController extends Controller
         $date_end = new DateTime($camp->end);
         $date_end = $date_end->format('Y-m-d');
 
-        $camps = DB::table('vFechaBloqueo')->whereBetween('fecha', [$date_start, $date_end])->groupBy('id_campania')->get();
+        $camps = DB::table('vFechaBloqueo')->whereBetween('fecha', [$date_start, $date_end])
+            ->groupBy('id_campania')->get();
 
-        return $camps;
+        $camp = Campanias::whereIn('id', $camps);
+        dd($camps->pluck('id_campania'));
     }
 }

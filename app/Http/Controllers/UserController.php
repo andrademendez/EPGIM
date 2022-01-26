@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -15,6 +16,7 @@ class UserController extends Controller
     public function index()
     {
         //
+        $this->authorize('viewAny', User::class);
         return view('pages.users.index');
     }
 
@@ -59,8 +61,21 @@ class UserController extends Controller
     public function edit($id)
     {
         //
+        $this->authorize('update', User::class);
+
         $usuario = User::find($id);
-        return view('pages.users.edit', compact('usuario'));
+        $espacios = DB::table('campania_espacio')
+            ->join('espacios', 'espacios.id', '=', 'campania_espacio.id_espacio')
+            ->join('campanias', 'campanias.id', '=', 'campania_espacio.id_campania')
+            ->selectRaw('espacios.id as id, espacios.nombre as nombre, count(espacios.id) as total')
+            ->where('campanias.id_user', $id)
+            ->groupBy('espacios.nombre', 'espacios.id')
+            ->orderBy('id', 'asc')
+            ->get();
+        $espacioName = $espacios->pluck('nombre');
+        $espacioTotal = $espacios->pluck('total');
+
+        return view('pages.users.edit', compact('usuario', 'espacios', 'espacioName', 'espacioTotal'));
     }
 
     /**

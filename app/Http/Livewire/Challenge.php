@@ -2,9 +2,13 @@
 
 namespace App\Http\Livewire;
 
-use App\Events\Pending;
+use App\Mail\FilePending;
+use App\Mail\NotificacionConfirmacion;
 use App\Models\AttachStatusFiles;
 use App\Models\Campanias;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Usernotnull\Toast\Concerns\WireToast;
@@ -14,7 +18,8 @@ class Challenge extends Component
     use WithPagination;
     use WireToast;
 
-    public $search, $open, $action, $camp, $id_campania, $comentario;
+    public $search, $open, $action, $camp;
+    public $id_campania, $comentario;
 
     public function openPendiente($id)
     {
@@ -33,7 +38,33 @@ class Challenge extends Component
     public function confirmar()
     {
         # code...
-
+        if (Auth::user()->id_rol == '4') {
+            $campania = Campanias::findOrFail($this->id_campania);
+            $archive = DB::table('files_status')->where('id_attach_status_file', $campania->attachStatusFile->id)->get();
+            if ($archive->count() > 0) {
+                $campania->status = 'Confirmado';
+                $campania->display = '#f3a40c';
+                $campania->updated_at = now();
+                $campania->save();
+                if ($campania) {
+                    $attach = AttachStatusFiles::find($campania->attachStatusFile->id);
+                    $attach->comment = NULL;
+                    $attach->status = 'Confirmado';
+                    $attach->updated_at = now();
+                    $attach->save();
+                    if ($attach) {
+                        Mail::to($campania->user->email)->queue(new NotificacionConfirmacion($campania));
+                        toast()->success('Se ha confirmado la campaña', 'Campaña confirmado')->push();
+                        $this->closeModal();
+                    }
+                }
+            } else {
+                toast()->info('No se puede confirmar, ya que el usuario no cargado los archivos')->push();
+                $this->closeModal();
+            }
+        } else {
+            toast()->info('No tengo permiso para realizar la acción')->push();
+        }
     }
     public function closeModal()
     {
@@ -48,26 +79,27 @@ class Challenge extends Component
 
     public function pendiente()
     {
-        $campania = Campanias::find($this->id_campania);
+        $this->validate(['comentario' => 'required|min:10']);
+        $campania = Campanias::findOrFail($this->id_campania);
+        if (Auth::user()->id_rol == '4') {
+            try {
 
-        try {
-            $attach = AttachStatusFiles::find($campania->attachStatusFile->id);
-            $attach->comment = $this->comentario;
-            $attach->status = 'Pendiente';
-            $attach->updated_at = now();
-            $attach->save();
-            if ($attach) {
-                Pending::dispatch($campania->user->email, $attach->comment);
-                toast()->success('Se ha enviado notificacion al creador de la campaña')->push();
-                //$this->showAlert('Se ha enviado notificacion al usuario', 'success');
-                $this->closeModal();
-                //event
+                $attach = AttachStatusFiles::find($campania->attachStatusFile->id);
+                $attach->comment = $this->comentario;
+                $attach->status = 'Pendiente';
+                $attach->updated_at = now();
+                $attach->save();
+                if ($attach) {
+                    $campania['comment'] = $attach->comment;
+                    Mail::to($campania->user->email)->queue(new FilePending($campania));
+                    toast()->success('Se ha enviado notificacion al creador de la campaña')->push();
+                    $this->closeModal();
+                }
+            } catch (\Throwable $th) {
+                toast()->info('Verique la informacion o comuniquese con el administrador del sistema')->push();
             }
-        } catch (\Throwable $th) {
-            //throw $th;
-            //dd($this->id_campania);
-            //toast()->success($this->id_campania)->push();
-            toast()->success($campania->id)->push();
+        } else {
+            toast()->info('No tengo permiso para realizar la acción')->push();
         }
     }
 

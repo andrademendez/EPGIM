@@ -2,14 +2,18 @@
 
 namespace App\Http\Livewire\Espacio;
 
+use App\Models\Campanias;
 use App\Models\Espacios;
 use App\Models\TiposEspacios;
 use App\Models\Ubicacion;
 use App\Models\UnidadesNegocios;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class EditarEspacio extends Component
 {
+    use WithPagination;
     public $id_espacio, $nombre, $referencia, $medidas, $cantidad, $precio, $estatus, $id_unidad, $id_tipo, $id_ubicacion;
 
     public function mount()
@@ -31,6 +35,14 @@ class EditarEspacio extends Component
             'unidades' => UnidadesNegocios::all(),
             'tipos' => TiposEspacios::all(),
             'ubicaciones' => Ubicacion::all(),
+            'campanias' => DB::table('campania_espacio')
+                ->join('campanias', 'campanias.id', '=', 'campania_espacio.id_campania')
+                ->join('espacios', 'espacios.id', '=', 'campania_espacio.id_espacio')
+                ->join('users', 'users.id', '=', 'campanias.id_user')
+                ->select('campanias.*', 'users.name as userName')
+                ->where('espacios.id', '=', $this->id_espacio)
+                ->orderBy('campanias.created_at', 'asc')
+                ->paginate(10),
         ]);
     }
 }

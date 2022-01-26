@@ -11,9 +11,13 @@
         <h1 class="text text-gray-700 text-sm">No dispone actualmente de alguna solicitud</h1>
         <div class="flex items-center mt-2">
             @if ($id_campania == $camp_first)
-            <button wire:click="sendConfirmation()" class="bg-indigo-500 px-3 py-2  text-white text-xs uppercase hover:bg-indigo-600 rounded-md">Envíar Solicitud</button>
+            <button wire:click="sendConfirmation()"
+                class="bg-indigo-500 px-3 py-2  text-white text-xs uppercase hover:bg-indigo-600 rounded-md">Envíar
+                Solicitud</button>
             @else
-            <button wire:click="sendChallenge()" class="bg-indigo-500 px-3 py-2  text-white text-xs uppercase hover:bg-indigo-600 rounded-md">Envíar Solicitud</button>
+            <button wire:click="sendChallenge()"
+                class="bg-indigo-500 px-3 py-2  text-white text-xs uppercase hover:bg-indigo-600 rounded-md">Envíar
+                Solicitud</button>
             @endif
         </div>
     </div>
@@ -42,7 +46,7 @@
 
                 </x-table.td>
             </x-table.tr>
-            @if ($attachStatusFile->comment)
+            @if ($attachStatusFile->comment && $attachStatusFile->status == 'Pendiente')
             <x-table.tr>
                 <x-table.td colspan="3">
                     <div class="text-sm text-center">
@@ -56,12 +60,18 @@
     </div>
     <div>
         <form method="post" enctype="multipart/form-data">
-            <div class="mt-1 flex items-center justify-between px-4 pt-2 pb-3 border-2 border-gray-300 border-dashed rounded-md">
-                <div class="space-y-1 text-center w-full" x-data="{ isUploading: false, progress: 0 }" x-on:livewire-upload-start="isUploading = true" x-on:livewire-upload-finish="isUploading = false" x-on:livewire-upload-error="isUploading = false" x-on:livewire-upload-progress="progress = $event.detail.progress">
+            <div
+                class="mt-1 flex items-center justify-between px-4 pt-2 pb-3 border-2 border-gray-300 border-dashed rounded-md">
+                <div class="space-y-1 text-center w-full" x-data="{ isUploading: false, progress: 0 }"
+                    x-on:livewire-upload-start="isUploading = true" x-on:livewire-upload-finish="isUploading = false"
+                    x-on:livewire-upload-error="isUploading = false"
+                    x-on:livewire-upload-progress="progress = $event.detail.progress">
                     <div class=" text-sm text-gray-600">
-                        <label for="file-upload" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                        <label for="file-upload"
+                            class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
                             <span>Seleccion un archivo</span>
-                            <input id="file-upload" wire:model="documentos" name="file-upload" type="file" class="sr-only" accept=".docx,.pdf">
+                            <input id="file-upload" wire:model="documentos" name="file-upload" type="file"
+                                class="sr-only" accept=".docx,.pdf">
                         </label>
                     </div>
                     <p class="text-xs text-gray-500">
@@ -76,9 +86,13 @@
                 @if (empty($documentos))
 
                 @else
-                <button class=" text-purple-700 hover:text-purple-600 flex items-center justify-center p-1 bg-purple-200 rounded-full" wire:click.prevent="attachFiles()">
+                <button
+                    class=" text-purple-700 hover:text-purple-600 flex items-center justify-center p-1 bg-purple-200 rounded-full"
+                    wire:click.prevent="attachFiles()">
                     <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M5.5 13a3.5 3.5 0 01-.369-6.98 4 4 0 117.753-1.977A4.5 4.5 0 1113.5 13H11V9.413l1.293 1.293a1 1 0 001.414-1.414l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13H5.5z"></path>
+                        <path
+                            d="M5.5 13a3.5 3.5 0 01-.369-6.98 4 4 0 117.753-1.977A4.5 4.5 0 1113.5 13H11V9.413l1.293 1.293a1 1 0 001.414-1.414l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13H5.5z">
+                        </path>
                         <path d="M9 13h2v5a1 1 0 11-2 0v-5z"></path>
                     </svg>
                 </button>
@@ -88,8 +102,9 @@
 
         </form>
     </div>
-    @if (empty($attachStatusFile) )
 
+    @if (empty($attachStatusFile) )
+    <span>cargar los archivos</span>
     @else
     <div class="">
         <div class="grid grid-cols-2 gap-1">

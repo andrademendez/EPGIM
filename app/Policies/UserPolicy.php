@@ -38,7 +38,7 @@ class UserPolicy
      * @param  \App\User  $model
      * @return boolean
      */
-    public function update(User $user, User $model)
+    public function update(User $user)
     {
         return $user->isAdmin();
     }

@@ -14,7 +14,7 @@
 
     </div>
 
-    {{--<x-table.table>
+    <x-table.table>
 
         <x-slot name="theader">
             <x-table.th>Nombre</x-table.th>
@@ -31,43 +31,43 @@
         @forelse ($espacios as $espacio)
         <x-table.tr>
             <x-table.td>{{ $espacio->nombre }}</x-table.td>
-    <x-table.td>{{ $espacio->referencia }}</x-table.td>
-    <x-table.td>{{ $espacio->medidas }}</x-table.td>
-    <x-table.td>{{ $espacio->cantidad }}</x-table.td>
-    <x-table.td>$ {{ $espacio->precio }}</x-table.td>
-    <x-table.td>
-        @if ($espacio->estatus)
-        Disponible
-        @else
-        Ocupado
-        @endif
-    </x-table.td>
-    <x-table.td>{{ $espacio->unidad->nombre }}</x-table.td>
-    <x-table.td>{{ $espacio->tipo->nombre }}</x-table.td>
-    <x-table.td>{{ $espacio->ubicacion->nombre }}</x-table.td>
-    <x-table.td>
-        <div>
-            <x-nav-link :href="route('espacios.edit', $espacio->id)">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                </svg>
-            </x-nav-link>
-        </div>
-    </x-table.td>
-    </x-table.tr>
-    @empty
-    <tr>
-        <td colspan="9">
-            <div class="text-center px-10 py-3 font-medium text-gray-500">
-                <span>No hay informacion que mostrar</span>
-            </div>
-        </td>
-    </tr>
-    @endforelse
-    </x-table.table> --}}
+            <x-table.td>{{ $espacio->referencia }}</x-table.td>
+            <x-table.td>{{ $espacio->medidas }}</x-table.td>
+            <x-table.td>{{ $espacio->cantidad }}</x-table.td>
+            <x-table.td>$ {{ $espacio->precio }}</x-table.td>
+            <x-table.td>
+                @if ($espacio->estatus)
+                Disponible
+                @else
+                Ocupado
+                @endif
+            </x-table.td>
+            <x-table.td>{{ $espacio->unidad->nombre }}</x-table.td>
+            <x-table.td>{{ $espacio->tipo->nombre }}</x-table.td>
+            <x-table.td>{{ $espacio->ubicacion->nombre }}</x-table.td>
+            <x-table.td>
+                <div>
+                    <x-nav-link :href="route('espacios.edit', $espacio->id)">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                        </svg>
+                    </x-nav-link>
+                </div>
+            </x-table.td>
+        </x-table.tr>
+        @empty
+        <tr>
+            <td colspan="9">
+                <div class="text-center px-10 py-3 font-medium text-gray-500">
+                    <span>No hay informacion que mostrar</span>
+                </div>
+            </td>
+        </tr>
+        @endforelse
+    </x-table.table>
 
 
-    <div class="mt-4">
+    {{-- <div class="mt-4">
         <div class="grid grid-cols-6 gap-4">
             @forelse ($espacios as $espacio)
             <div class="col-span-6 md:col-span-6">
@@ -78,41 +78,41 @@
                     <div class="col-span-2">
                         <div class="flex flex-col justify-between p-4 leading-normal">
                             <h5 class="mb-2 text- estxl font-bold tracking-tight text-gray-900 dark:text-white">{{ $espacio->nombre }}</h5>
-                            <p class="mb-2 font-normal text-gray-700 dark:text-gray-400">{{ $espacio->referencia }}</p>
-                            <p class="mb-2 font-normal text-gray-700 dark:text-gray-400">Medidas: {{ $espacio->medidas }} | Cantidad: {{ $espacio->cantidad }}</p>
-                            <p class="mb-2 font-normal text-gray-700 dark:text-gray-400">Precio: $ {{ $espacio->precio }}.00</p>
-                            <p class="mb-2 font-normal text-gray-700 dark:text-gray-400">{{ $espacio->unidad->nombre }}</p>
-                            <p class="font-normal text-gray-700 dark:text-gray-400">{{ $espacio->tipo->nombre }} - {{ $espacio->ubicacion->nombre }}</p>
-                        </div>
-                    </div>
-                    <div class="col-span-1 py-2 flex justify-between px-3">
+    <p class="mb-2 font-normal text-gray-700 dark:text-gray-400">{{ $espacio->referencia }}</p>
+    <p class="mb-2 font-normal text-gray-700 dark:text-gray-400">Medidas: {{ $espacio->medidas }} | Cantidad: {{ $espacio->cantidad }}</p>
+    <p class="mb-2 font-normal text-gray-700 dark:text-gray-400">Precio: $ {{ $espacio->precio }}.00</p>
+    <p class="mb-2 font-normal text-gray-700 dark:text-gray-400">{{ $espacio->unidad->nombre }}</p>
+    <p class="font-normal text-gray-700 dark:text-gray-400">{{ $espacio->tipo->nombre }} - {{ $espacio->ubicacion->nombre }}</p>
+    </div>
+    </div>
+    <div class="col-span-1 py-2 flex justify-between px-3">
 
-                        <div class="flex items-end justify-center">
-                            <button class="text-xs uppercase text-center font-normal px-4 py-2 text-white bg-gray-800 rounded-md hover:bg-gray-700 duration-75">
-                                Ver campañas
-                            </button>
-                        </div>
-                        <div class="flex flex-col space-y-3 ">
-                            <x-nav-link :href="route('espacios.edit', $espacio->id)">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                </svg>
-                            </x-nav-link>
-                            <a href="#" class="text-red-700">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
-                                </svg>
-                            </a>
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-            @empty
-
-            @endforelse
+        <div class="flex items-end justify-center">
+            <button class="text-xs uppercase text-center font-normal px-4 py-2 text-white bg-gray-800 rounded-md hover:bg-gray-700 duration-75">
+                Ver campañas
+            </button>
+        </div>
+        <div class="flex flex-col space-y-3 ">
+            <x-nav-link :href="route('espacios.edit', $espacio->id)">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                </svg>
+            </x-nav-link>
+            <a href="#" class="text-red-700">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
+                </svg>
+            </a>
         </div>
 
     </div>
+
+    </div>
+    </div>
+    @empty
+
+    @endforelse
+    </div>
+
+    </div> --}}
 </x-content>

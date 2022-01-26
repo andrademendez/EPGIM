@@ -5,14 +5,18 @@ namespace App\Http\Livewire;
 use App\Models\Campanias;
 use App\Models\Roles;
 use App\Models\User;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
+use Usernotnull\Toast\Concerns\WireToast;
 
 class Usuarios extends Component
 {
     use WithPagination, WithFileUploads;
+    use WireToast, AuthorizesRequests;
 
     public $name, $email, $id_rol, $password, $repeat_password, $status, $id_user;
     public $search = '', $open, $interno, $action;
@@ -54,6 +58,7 @@ class Usuarios extends Component
         try {
             $campanias = Campanias::where('id_user', $this->id_user)->count();
             if ($campanias > 0) {
+
                 $this->showAlert('El Usuario tiene eventos activos', 'info');
                 $this->closeModal();
             } else {
@@ -83,11 +88,12 @@ class Usuarios extends Component
                 $user->interno = $this->interno;
                 $user->save();
                 if ($user) {
-                    $this->showAlert('Usuario registrado', 'success');
+                    toast()->success('Usuario creado!!')->push();
                     $this->closeModal();
                 }
             } else {
-                $this->showAlert('Las contraseña no coninciden', 'info');
+                toast()->info('Las contraseña no coninciden!!')->push();
+                //$this->showAlert('Las contraseña no coninciden', 'info');
             }
         } catch (\Throwable $th) {
             $this->showAlert('Verifique sus datos', 'info');
@@ -97,14 +103,22 @@ class Usuarios extends Component
     public function updateStatus($id)
     {
         $user = User::find($id);
-        if ($user->status == 0) {
-            $user->status = true;
+        if ($user->id != Auth::id()) {
+            if ($user->status == 0) {
+                $user->status = true;
+            } else {
+                $user->status = false;
+            }
+            $user->save();
+            if ($user) {
+                toast()
+                    ->success('Estatus actualizado!!')
+                    ->push();
+            }
         } else {
-            $user->status = false;
-        }
-        $user->save();
-        if ($user) {
-            $this->showAlert('Estatus cambiado', 'success');
+            toast()
+                ->info('He hombre no te puedes deshabilitar!!')
+                ->push();
         }
     }
 

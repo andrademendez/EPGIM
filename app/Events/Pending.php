@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\Campanias;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -14,13 +15,13 @@ class Pending
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $email;
+    public $campania;
     public $comentario;
 
-    public function __construct($email, $comentario)
+    public function __construct(Campanias $campania, $comentario)
     {
         //
-        $this->email = $email;
+        $this->campania = $campania;
         $this->comentario = $comentario;
     }
 }

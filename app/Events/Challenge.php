@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\Campanias;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -14,10 +15,19 @@ class Challenge
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $email, $nombre;
+    public $title;
+    public $start;
+    public $end;
+    public $userEmail;
+    public $userName;
 
-    public function __construct()
+    public function __construct(Campanias $campania)
     {
         //
+        $this->title = $campania->title;
+        $this->start = $campania->start;
+        $this->end = $campania->end;
+        $this->userEmail = $campania->user->email;
+        $this->userName = $campania->user->name;
     }
 }

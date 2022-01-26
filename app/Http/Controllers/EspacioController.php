@@ -15,6 +15,7 @@ class EspacioController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Campanias::class);
         //
         return view('pages.espacios.index');
     }

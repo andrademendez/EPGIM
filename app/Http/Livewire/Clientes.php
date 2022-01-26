@@ -3,24 +3,35 @@
 namespace App\Http\Livewire;
 
 use App\Models\Clientes as ModelsClientes;
+use App\Models\User;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Usernotnull\Toast\Concerns\WireToast;
 
 class Clientes extends Component
 {
-    use WithPagination;
+    use WithPagination, WireToast;
+    use AuthorizesRequests;
 
     public $open, $action, $search = '';
-    public $nombre, $contacto, $email, $telefono, $id_cliente;
+    public $nombre, $contacto, $email, $telefono, $id_cliente, $id_user;
 
     protected $rules = [
-        'nombre' => 'required',
+        'nombre' => 'required|min:4',
         'contacto' => 'required',
+        'telefono' => 'nullable|size:10',
+        'email' => 'nullable|email:rfc,dns'
     ];
 
     protected $queryString = [
         'search' => ['except' => '']
     ];
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
 
     public function openModal()
     {
@@ -34,25 +45,24 @@ class Clientes extends Component
         $this->action = 'Actualizar';
         $cliente = ModelsClientes::find($id);
         $this->id_cliente = $cliente->id;
+        $this->id_user = $cliente->id_user;
         $this->nombre = $cliente->nombre;
         $this->email = $cliente->email;
         $this->telefono = $cliente->telefono;
         $this->contacto = $cliente->contacto;
     }
 
-    public function openDelete()
-    {
-        $this->open = true;
-    }
 
     public function closeModal()
     {
         $this->open = false;
-        $this->reset(['nombre', 'contacto', 'telefono', 'email', 'id_cliente']);
+        $this->reset(['nombre', 'contacto', 'telefono', 'email', 'id_cliente', 'id_user']);
     }
 
     public function store()
     {
+        $this->authorize('create', ModelsClientes::class);
+
         $this->validate();
         try {
             if ($this->action == 'Registrar') {
@@ -61,9 +71,11 @@ class Clientes extends Component
                 $cliente->contacto = $this->contacto;
                 $cliente->email = $this->email;
                 $cliente->telefono = $this->telefono;
+                $cliente->id_user = $this->id_user;
                 $cliente->save();
                 if ($cliente) {
-                    $this->showAlert('Cliente Registrado', 'success');
+                    toast()->success('Cliente Registrado!!')->push();
+                    //$this->showAlert('Cliente Registrado', 'success');
                     $this->closeModal();
                 }
             } else {
@@ -74,7 +86,8 @@ class Clientes extends Component
                 $cliente->contacto = $this->contacto;
                 $cliente->save();
                 if ($cliente) {
-                    $this->showAlert('Datos del cliente actualizados!!', 'success');
+                    toast()->success('Datos del cliente actualizados!!')->push();
+                    //$this->showAlert('Datos del cliente actualizados!!', 'success');
                     $this->closeModal();
                 }
             }
@@ -82,10 +95,36 @@ class Clientes extends Component
             $this->showAlert('Error del sistema!!', 'error');
         }
     }
+
+    public function openDelete($id)
+    {
+        $this->open = true;
+        $this->id_cliente = $id;
+        $this->action = 'Eliminar';
+    }
+
+    public function delete()
+    {
+        try {
+            $cliente = ModelsClientes::find($this->id_cliente);
+            $campanias = DB::table('campanias')->where('id_cliente', $this->id_cliente)->get();
+            if ($campanias->count() == 0) {
+                # code...
+                $dep = $cliente->delete();
+                if ($dep) {
+                    toast()->success('Cliente Eliminado!!')->push();
+                    $this->closeModal();
+                }
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+    }
     public function render()
     {
         return view('livewire.clientes', [
             'clientes' => ModelsClientes::where('nombre', 'LIKE', "%$this->search%")->paginate(10),
+            'users' => User::where('id_rol', 2)->get(),
         ]);
     }
 

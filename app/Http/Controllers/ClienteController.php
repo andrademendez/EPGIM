@@ -14,6 +14,7 @@ class ClienteController extends Controller
     public function index()
     {
         //
+        $this->authorize('viewAny', Campanias::class);
         return view('pages.clientes.index');
     }
 

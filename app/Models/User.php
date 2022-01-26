@@ -77,4 +77,16 @@ class User extends Authenticatable
     {
         return $this->id_rol == 4;
     }
+
+    public function campanias()
+    {
+        # code...
+        return $this->hasMany(Campanias::class);
+    }
+
+    public function clientes()
+    {
+        # code...
+        return $this->hasMany(Clientes::class);
+    }
 }

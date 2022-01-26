@@ -12,11 +12,12 @@ class SendChallengeNotification
 {
     public function handle(Challenge $event)
     {
-        Mail::to('jandrade@delking.mx')->send(
+        Mail::to($event->userName)->send(
             new ChallengeNotification(
-                $event->nombre,
-                $event->correo,
-                $event->mensaje
+                $event->title,
+                $event->start,
+                $event->end,
+                $event->userName,
             )
         );
     }
