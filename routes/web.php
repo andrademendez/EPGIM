@@ -12,9 +12,6 @@ use App\Http\Controllers\UnidadesController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-
-
-
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [HomeController::class, 'dashboard'])->name('dashboard');
     Route::get('/ciudades', [HomeController::class, 'ciudad'])->name('ciudades');

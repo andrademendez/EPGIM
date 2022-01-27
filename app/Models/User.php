@@ -54,7 +54,7 @@ class User extends Authenticatable
             return $this->perfil;
         }
 
-        return 'http://i.pravatar.cc/200';
+        return 'https://i.pravatar.cc/300';
     }
 
 

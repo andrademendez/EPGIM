@@ -2,23 +2,23 @@
     <x-slot name="import">
     </x-slot>
     <div class="grid grid-cols-6 gap-4">
-        <div class="col-span-2 flex flex-col items-center justify-center shadow-lg py-4 px-3">
-            <img src="{{ $perfil->profilePicture() }}" alt="" srcset="" class="w-28 h-28 rounded-full">
-            <div class="text-center pt-3 inline-block">
-
-                <div>
-                    <span>{{ $name }}</span>
+        <div class="col-span-2 rounded-lg shadow-lg py-4 px-3 bg-gray-700">
+            <div class="flex flex-col items-center justify-center text-white">
+                <img src="{{ $perfil->profilePicture() }}" alt="" srcset="" class="w-28 h-28 rounded-full">
+                <div class="text-center pt-3 inline-block">
+                    <div class="text-ld font-medium uppercase ">
+                        <span>{{ $name }}</span>
+                    </div>
+                    <div class="text-sm">
+                        <span>{{ $email }}</span>
+                    </div>
+                    <div class="text-sm uppercase mt-3 font-medium">
+                        <span> {{ $rol }}</span>
+                    </div>
                 </div>
-                <div>
-                    <span>{{ $email }}</span>
-                </div>
-                <div>
-                    <span>Tipo de Usuario: </span>{{ $rol }}
-                </div>
-
             </div>
         </div>
-        <div class="col-span-2 py-4 px-3 shadow-lg">
+        <div class="col-span-2 py-4 px-3 shadow-lg bg-gray-100 rounded-lg">
             <form action="#" method="post">
                 <div class="">
                     <x-form.label for="name">Nombre</x-form.label>
@@ -33,7 +33,7 @@
                 </div>
             </form>
         </div>
-        <div class="col-span-2 py-4 px-3 shadow-lg">
+        <div class="col-span-2 py-4 px-3 shadow-lg bg-gray-100 rounded-lg">
             <form action="#" method="post">
                 <div class="">
                     <x-form.label for="password">Contraseña</x-form.label>
