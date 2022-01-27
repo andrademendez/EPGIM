@@ -114,20 +114,23 @@
                 <div class="collapse {{ $menuParent == 'administracion' ? ' show' : '' }}" id="admin">
                     <ul class="nav">
                         @if (auth()->user()->isAdmin())
-                        <x-nav-li :active="request()->routeIs('unidades.index')">
-                            <x-nav-link :href="route('unidades.index')">
+                        <x-nav-li :active="request()->routeIs('espacios.index')">
+                            <x-nav-link :href="route('espacios.index')">
                                 <span class="sidebar-mini">
-                                    <i class="material-icons">
-                                        business
-                                    </i>
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M2 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1H3a1 1 0 01-1-1V4zM8 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1H9a1 1 0 01-1-1V4zM15 3a1 1 0 00-1 1v12a1 1 0 001 1h2a1 1 0 001-1V4a1 1 0 00-1-1h-2z">
+                                        </path>
+                                    </svg>
                                 </span>
-                                <span class="sidebar-normal"> {{ __('Unidades de Negocios') }} </span>
+                                <span class="sidebar-normal"> {{ __('Espacios') }} </span>
                             </x-nav-link>
                         </x-nav-li>
-                        <x-nav-li :active="request()->routeIs('ciudades')">
-                            <x-nav-link :href="route('ciudades')">
-                                <span class="sidebar-mini"> CU </span>
-                                <span class="sidebar-normal"> {{ __('Ciudades') }} </span>
+                        <x-nav-li :active="request()->routeIs('tipoespacio.index')">
+                            <x-nav-link :href="route('tipoespacio.index')">
+                                <span class="sidebar-mini"> TE </span>
+                                <span class="sidebar-normal"> {{ __('Tipo Espacio') }} </span>
                             </x-nav-link>
                         </x-nav-li>
                         @endif
@@ -149,51 +152,7 @@
                 </div>
             </li>
             @endif
-            @if (auth()->user()->isAdmin())
-            {{-- ESpacios --}}
-            <li class="nav-item {{ $menuParent == 'espacios' ? 'active' : '' }}">
-                <a class="nav-link" data-toggle="collapse" href="#espacios" {{ $menuParent=='espacios'
-                    ? 'aria-expanded="true"' : '' }}>
-                    <i class="material-icons">
-                        view_module
-                    </i>
 
-                    <p> {{ __('Espacios') }}
-                        <b class="caret"></b>
-                    </p>
-                </a>
-                <div class="collapse {{ $menuParent == 'espacios' ? ' show' : '' }}" id="espacios">
-                    <ul class="nav">
-                        <x-nav-li :active="request()->routeIs('espacios.index')">
-                            <x-nav-link :href="route('espacios.index')">
-                                <span class="sidebar-mini">
-                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M2 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1H3a1 1 0 01-1-1V4zM8 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1H9a1 1 0 01-1-1V4zM15 3a1 1 0 00-1 1v12a1 1 0 001 1h2a1 1 0 001-1V4a1 1 0 00-1-1h-2z">
-                                        </path>
-                                    </svg>
-                                </span>
-                                <span class="sidebar-normal"> {{ __('Espacios') }} </span>
-                            </x-nav-link>
-                        </x-nav-li>
-                        <x-nav-li :active="request()->routeIs('tipoespacio.index')">
-                            <x-nav-link :href="route('tipoespacio.index')">
-                                <span class="sidebar-mini"> TE </span>
-                                <span class="sidebar-normal"> {{ __('Tipo Espacio') }} </span>
-                            </x-nav-link>
-                        </x-nav-li>
-                        <x-nav-li :active="request()->routeIs('medios.index')">
-                            <x-nav-link :href="route('medios.index')">
-                                <span class="sidebar-mini"> ME </span>
-                                <span class="sidebar-normal"> {{ __('Medios') }} </span>
-                            </x-nav-link>
-                        </x-nav-li>
-                    </ul>
-                </div>
-            </li>
-            <!-- Calendario -->
-            @endif
             <li class="nav-item {{ $menuParent == 'calendario' ? 'active' : '' }}">
                 <a class="nav-link" data-toggle="collapse" href="#calendario" {{ $menuParent=='calendario'
                     ? 'aria-expanded="true"' : '' }}>

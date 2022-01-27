@@ -1,9 +1,9 @@
-<x-content>
-    <x-slot name="import">
+<div>
+    <div>
         @if ($open == true)
         @include('pages.unidades.create')
         @endif
-    </x-slot>
+    </div>
     <div class="pb-3 flex items-center justify-between">
         <div>
             <x-form.search type="search" name="buscar" wire:model="buscar" id="buscar" placeholder="Buscar..." />
@@ -40,4 +40,4 @@
         @endforelse
     </x-table.table>
 
-</x-content>
+</div>

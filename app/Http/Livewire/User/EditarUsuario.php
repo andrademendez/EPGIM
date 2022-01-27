@@ -18,6 +18,11 @@ class EditarUsuario extends Component
     public $id_usuario, $name, $email, $password, $repeat_password, $status, $id_rol, $profile;
     public $open;
 
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
+
     public function openModal()
     {
         $this->open = true;
@@ -40,16 +45,21 @@ class EditarUsuario extends Component
 
     public function updateData()
     {
+        $this->validate([
+            'name' => 'required',
+            'id_rol' => 'required'
+        ]);
+
         try {
             $user = User::find($this->id_usuario);
             $user->name = $this->name;
             $user->id_rol = $this->id_rol;
             $user->save();
             if ($user) {
-                $this->showAlert('Datos actualizados', 'success');
+                toast()->success('Datos actualizados!!')->push();
             }
         } catch (\Throwable $th) {
-            $this->showAlert('Problemas con la aplicacion', 'error');
+            toast()->danger('Verica tus datos!!')->push();
         }
     }
 
@@ -66,28 +76,31 @@ class EditarUsuario extends Component
         $user->save();
         if ($user) {
             $this->status = $user->status;
-            toast()
-                ->success('Se a cambiado el estatus del usuario!!')
-                ->push();
+            toast()->success('Se a cambiado el estatus del usuario!!')->push();
             $this->closeModal();
         }
     }
     public function updatePassword()
     {
+        $this->validate([
+            'password' => 'required|min:8',
+            'repeat_password' => 'required|min:8'
+        ]);
+
         try {
             if ($this->password == $this->repeat_password) {
                 $user = User::find($this->id_usuario);
                 $user->password = Hash::make($this->password);
                 $user->save();
                 if ($user) {
-                    $this->showAlert('Contraseña ha sido actualizado!!', 'success');
+                    toast()->success('Contraseña ha sido actualizado!!')->push();
                     $this->reset(['password', 'repeat_password']);
                 }
             } else {
-                $this->showAlert('Las contraseñas no coinciden', 'error');
+                toast()->danger('Las contraseñas no coinciden!!')->push();
             }
         } catch (\Throwable $th) {
-            $this->showAlert('Revise sus datos', 'error');
+            toast()->danger('Verifique tus datos!!')->push();
         }
     }
 
@@ -96,16 +109,6 @@ class EditarUsuario extends Component
         return view('livewire.user.editar-usuario', [
             'roles' => Roles::all(),
             'role' => Roles::find($this->id_rol),
-        ]);
-    }
-
-    public function showAlert($mensaje, $icons)
-    {
-        $this->emit('swal:alert', [
-            'icon' => $icons,
-            'type'    => 'success',
-            'title'   => $mensaje,
-            'timeout' => 3000
         ]);
     }
 }

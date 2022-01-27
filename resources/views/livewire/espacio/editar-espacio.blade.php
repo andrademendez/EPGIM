@@ -1,5 +1,7 @@
 <x-content>
-    <x-slot name="import"></x-slot>
+    <x-slot name="import">
+
+    </x-slot>
     <div class="">
         <x-link-return :href="route('espacios.index')">
             Volver a espacios
@@ -17,21 +19,23 @@
                         <div class="pt-4 col-span-2">
                             <x-form.label for="nombre">Nombre</x-form.label>
                             <x-input type="text" wire:model="nombre" class="w-full" />
+                            @error('nombre') <span class="text-xs text-red-600">{{ $message }}</span>@enderror
 
                         </div>
 
                         <div class="pt-4 col-span-2">
                             <x-form.label for="nombre">Referencia</x-form.label>
                             <x-input type="text" wire:model="referencia" class="w-full" />
+                            @error('referencia') <span class="text-xs text-red-600">{{ $message }}</span>@enderror
                         </div>
                         <div class="col-span-4">
                             <div class="grid grid-cols-3 gap-1">
                                 <div class="pt-2 col-span-1">
                                     <x-form.label for="medidas">Medidas</x-form.label>
                                     <x-input type="text" wire:model="medidas" class="w-full" />
+                                    @error('medidas') <span class="text-xs text-red-600">{{ $message }}</span>
+                                    @enderror
                                 </div>
-
-
                                 <div class="pt-2 col-span-1">
                                     <x-form.label for="precio">Precio</x-form.label>
                                     <x-input type="text" wire:model="precio" class="w-full" />
@@ -43,9 +47,13 @@
                                     </div>
                                     <div class="pl-2">
                                         <x-form.label for="estatus">Estatus</x-form.label>
-                                        <label for="toggle-example-checked" class="flex relative items-center mb-4 cursor-pointer">
-                                            <input type="checkbox" id="toggle-example-checked" wire:model="estatus" class=" sr-only">
-                                            <div class="w-11 h-6 bg-gray-200 rounded-full border border-gray-200 toggle-bg dark:bg-gray-700 dark:border-gray-600"></div>
+                                        <label for="toggle-example-checked"
+                                            class="flex relative items-center mb-4 cursor-pointer">
+                                            <input type="checkbox" id="toggle-example-checked" wire:model="estatus"
+                                                class=" sr-only">
+                                            <div
+                                                class="w-11 h-6 bg-gray-200 rounded-full border border-gray-200 toggle-bg dark:bg-gray-700 dark:border-gray-600">
+                                            </div>
                                         </label>
                                     </div>
 
@@ -60,6 +68,7 @@
                                 <option value="{{ $unidad->id }}">{{ $unidad->nombre }}</option>
                                 @endforeach
                             </x-form.select>
+                            @error('id_unidad') <span class="text-xs text-red-600">{{ $message }}</span> @enderror
                         </div>
                         <div class="pt-2 col-span-2">
                             <x-form.label for="id_tipo">Tipo de pantalla</x-form.label>
@@ -69,20 +78,24 @@
                                 <option value="{{ $tipo->id }}">{{ $tipo->nombre }}</option>
                                 @endforeach
                             </x-form.select>
+                            @error('id_tipo') <span class="text-xs text-red-600">{{ $message }}</span> @enderror
 
                         </div>
                         <div class="pt-2 col-span-2">
                             <x-form.label for="id_ubicacion">Precio</x-form.label>
-                            <x-form.select name="id_ubicacion" id="id_ubicacion" class="w-full" wire:model="id_ubicacion">
+                            <x-form.select name="id_ubicacion" id="id_ubicacion" class="w-full"
+                                wire:model="id_ubicacion">
                                 <option value="">Slecciones tipo pantalla</option>
                                 @foreach ($ubicaciones as $ubicacion)
                                 <option value="{{ $ubicacion->id }}">{{ $ubicacion->nombre }}</option>
                                 @endforeach
+                                @error('id_ubicacion') <span class="text-xs text-red-600">{{ $message }}</span>
+                                @enderror
                             </x-form.select>
                         </div>
                     </div>
                     <div class="pt-4 flex justify-end ">
-                        <x-button class="">Guardar</x-button>
+                        <x-button class="" wire:click.prevent="update()">Guardar</x-button>
                     </div>
                 </form>
                 <div>

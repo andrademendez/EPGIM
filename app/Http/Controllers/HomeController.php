@@ -11,7 +11,7 @@ class HomeController extends Controller
 
     public function dashboard()
     {
-        $this->authorize('viewAny', User::class);
+
         return view('dashboard');
     }
 

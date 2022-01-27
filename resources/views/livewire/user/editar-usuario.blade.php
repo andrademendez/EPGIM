@@ -86,6 +86,7 @@
                         <x-form.label for="password">Password</x-form.label>
                         <x-input type="password" name="password" wire:model="password" id="password" class="w-full"
                             placeholder="**********" />
+                        @error('password') <span class="text-xs text-red-600">{{ $message }}</span> @enderror
                     </div>
                     <div class="pt-4">
                         <x-form.label for="repeat_password">Repeat Password</x-form.label>

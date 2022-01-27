@@ -198,15 +198,31 @@ class Detalles extends Component
     }
     public function render()
     {
-        return view('livewire.detalles', [
-            'campanias' => Campanias::where(
-                [
-                    ['id_user', '=', Auth::id()],
-                    ['title', 'LIKE', "%$this->search%"]
-                ]
-            )->orderBy('start', 'asc')
-                ->paginate(15)
-        ]);
+        $user = User::find(Auth::id());
+        if ($user->isAdmin()) {
+            return view('livewire.detalles', [
+                'campanias' => Campanias::where(
+                    [[
+                        'title',
+                        'LIKE',
+                        "%$this->search%"
+                    ]]
+                )->orderBy('start', 'asc')
+                    ->paginate(15),
+                'user' =>  $user,
+            ]);
+        } else {
+            return view('livewire.detalles', [
+                'campanias' => Campanias::where(
+                    [
+                        ['id_user', '=', Auth::id()],
+                        ['title', 'LIKE', "%$this->search%"]
+                    ]
+                )->orderBy('start', 'asc')
+                    ->paginate(15),
+                'user' =>  $user,
+            ]);
+        }
     }
 
     public function showAlert($mensaje, $icons)

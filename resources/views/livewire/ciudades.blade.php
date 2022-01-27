@@ -1,12 +1,12 @@
-<x-content>
-    <x-slot name="import">
+<div>
+    <div>
         @if ($open == true)
         @include('pages.ciudad.create')
         @endif
-    </x-slot>
+    </div>
     <div class="pb-3 flex items-center justify-between">
         <div>
-            <x-input wire:model="buscar" type="search" name="buscar" id="buscar" placeholder="Buscar..." />
+            <x-input wire:model="buscar" type="search" name="buscar" placeholder="Buscar..." />
         </div>
         <div class="">
             <x-form.btn-primary wire:click="openModal()">Registrar</x-form.btn-primary>
@@ -42,4 +42,4 @@
         {{ $ciudades->links() }}
     </div>
 
-</x-content>
+</div>

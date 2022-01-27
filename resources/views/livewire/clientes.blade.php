@@ -6,7 +6,7 @@
         @elseif ($action == 'Eliminar')
         @include('pages.clientes.confirm')
         @endif
-
+        @include('pages.clientes.create')
         @endif
 
     </x-slot>
@@ -41,16 +41,7 @@
                 {{ $client->user->name }}
             </x-table.td>
             <x-table.td>
-                <x-form.icon-option :id="$client->id">
-                    <button type="button" class="focus:outline-none focus:ring-offset-transparent px-2">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z">
-                            </path>
-                        </svg>
-                    </button>
-                </x-form.icon-option>
+                <x-form.icon-option :id="$client->id" />
             </x-table.td>
         </x-table.tr>
         @empty
