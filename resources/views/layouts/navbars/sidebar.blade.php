@@ -10,7 +10,7 @@
     <div class="sidebar-wrapper">
         <div class="user">
             <div class="photo">
-                <img src="{{ auth()->user()->profilePicture() }}" />
+                <img src="{{ auth()->user()->perfil }}" />
             </div>
             <div class="user-info">
                 <a data-toggle="collapse" href="#collapseExample" class="username">
@@ -129,8 +129,11 @@
                         </x-nav-li>
                         <x-nav-li :active="request()->routeIs('tipoespacio.index')">
                             <x-nav-link :href="route('tipoespacio.index')">
-                                <span class="sidebar-mini"> TE </span>
-                                <span class="sidebar-normal"> {{ __('Tipo Espacio') }} </span>
+                                <span class="sidebar-mini">
+                                    <span class="material-icons">
+                                        view_carousel
+                                    </span> </span>
+                                <span class="sidebar-normal"> {{ __('Varios') }} </span>
                             </x-nav-link>
                         </x-nav-li>
                         @endif

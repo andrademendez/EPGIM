@@ -7,6 +7,8 @@ import "jquery-ui/ui/widgets/draggable";
 import "jquery-ui/ui/widgets/droppable";
 import "jquery-ui/ui/widgets/datepicker";
 import "boxicons";
+import "@fortawesome/fontawesome-free";
+
 import Swal from "sweetalert2";
 
 // CommonJS

@@ -54,7 +54,7 @@ class User extends Authenticatable
             return $this->perfil;
         }
 
-        return 'https://i.pravatar.cc/300';
+        return  asset('images/logo.png');
     }
 
 

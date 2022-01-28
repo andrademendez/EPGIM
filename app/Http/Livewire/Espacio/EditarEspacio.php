@@ -17,23 +17,25 @@ class EditarEspacio extends Component
     use WithPagination;
     use WireToast;
 
-    public $id_espacio, $nombre, $referencia, $medidas, $cantidad, $precio, $estatus, $id_unidad, $id_tipo, $id_ubicacion;
+    public $id_espacio, $nombre, $referencia, $clave, $medidas, $cantidad, $precio, $estatus, $id_unidad, $id_tipo, $id_ubicacion;
 
     protected $rules = [
         'nombre' => 'required|min:4',
         'referencia' => 'required',
+        'clave' => 'required',
         'cantidad' => 'required|integer',
+        'precio' => 'nullable|integer',
         'id_unidad' => 'required',
         'id_tipo' => 'required',
         'id_ubicacion' => 'required',
     ];
-
 
     public function mount()
     {
         $espacio = Espacios::find($this->id_espacio);
         $this->nombre = $espacio->nombre;
         $this->referencia = $espacio->referencia;
+        $this->clave = $espacio->clave;
         $this->medidas = $espacio->medidas;
         $this->cantidad = $espacio->cantidad;
         $this->precio = $espacio->precio;
@@ -52,6 +54,7 @@ class EditarEspacio extends Component
     {
         $espacio = Espacios::find($this->id_espacio);
         $espacio->nombre = $this->nombre;
+        $espacio->clave = $this->clave;
         $espacio->referencia = $this->referencia;
         $espacio->medidas = $this->medidas;
         $espacio->cantidad = $this->cantidad;

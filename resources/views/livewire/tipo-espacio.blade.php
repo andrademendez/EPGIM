@@ -1,7 +1,7 @@
 <div>
     <div>
         @if ($open == true)
-        @include('pages.tipoespacio.create')
+        @include('pages.tipoespacio.create.tipo')
         @endif
     </div>
     <div class="pb-3 flex items-center justify-between ">

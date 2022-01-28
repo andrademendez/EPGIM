@@ -14,7 +14,7 @@ class Espacios extends Component
     use WithPagination;
 
     public $search = '', $open, $action;
-    public $nombre, $referencia, $medidas, $cantidad, $precio, $id_unidad, $id_tipo, $id_ubicacion;
+    public $nombre, $referencia, $clave, $medidas, $cantidad, $precio, $id_unidad, $id_tipo, $id_ubicacion;
 
     protected $queryString = [
         'search' => ['except' => '']
@@ -23,7 +23,8 @@ class Espacios extends Component
     protected $rules = [
         'nombre' => 'required',
         'referencia' => 'required',
-        'cantidad' => 'required',
+        'clave' => 'required',
+        'cantidad' => 'required|integer',
         'id_unidad' => 'required',
         'id_tipo' => 'required',
         'id_ubicacion' => 'required',
@@ -64,6 +65,7 @@ class Espacios extends Component
             $espacio->nombre = $this->nombre;
             $espacio->referencia = $this->referencia;
             $espacio->medidas = $this->medidas;
+            $espacio->clave = $this->clave;
             $espacio->cantidad = $this->cantidad;
             $espacio->precio = $this->precio;
             $espacio->estatus = true;

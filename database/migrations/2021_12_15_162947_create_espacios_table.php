@@ -19,6 +19,7 @@ class CreateEspaciosTable extends Migration
             $table->string('referencia');
             $table->string('medidas');
             $table->integer('cantidad');
+            $table->string('clave', 20);
             $table->double('precio');
             $table->boolean('estatus');
             $table->foreignId('id_unidad_negocio')->constrained('unidades_negocios');

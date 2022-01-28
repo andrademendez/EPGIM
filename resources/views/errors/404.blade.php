@@ -1,4 +1,5 @@
-<x-material-layout :activePage="'NotFound'" :menuParent="'NotFound'">
+@auth
+<x-material-layout :activePage="'errors'" :menuParent="'errors'">
 
     <x-slot name="title">Not Found</x-slot>
     <x-slot name="titlePage">Not Found</x-slot>
@@ -20,3 +21,12 @@
         </div>
     </div>
 </x-material-layout>
+
+@endauth
+@guest
+@extends('errors::illustrated-layout')
+
+@section('title', __('Not Found'))
+@section('code', '404')
+@section('message', __( $exception->getMessage() ?: 'Not Found'))
+@endguest

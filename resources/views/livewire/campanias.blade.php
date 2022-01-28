@@ -35,16 +35,14 @@
 
 </x-content>
 @push('js')
-
 <script>
-    $(document).ready(function() {
-        md.initFullCalendar();
-    });
-
-    @this.on(`refreshCalendar`, () => {
-        $calendar.refetchEvents()
-    });
-
+    document.addEventListener('livewire:load', function () {
+           $(document).ready(function() {
+            md.initFullCalendar();
+            });
+        })
 </script>
+{{-- <script src="{{ asset(" js/pikaday.js") }}"></script> --}}
+<script src="{{ asset('js/campanias.js') }}"></script>
 
 @endpush

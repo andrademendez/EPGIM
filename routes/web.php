@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [HomeController::class, 'dashboard'])->name('dashboard');
-    Route::get('/ciudades', [HomeController::class, 'ciudad'])->name('ciudades');
+    // Route::get('/ciudades', [HomeController::class, 'ciudad'])->name('ciudades');
 
     Route::get('/test', [CampaniaController::class, 'test']);
 
@@ -43,7 +43,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('perfil', PerfilController::class)->only('edit');
     Route::resource('tipoespacio', TipoEspacioController::class)->only('index');
     Route::resource('clientes', ClienteController::class)->only('index');
-    Route::resource('unidades', UnidadesController::class)->only('index');
-    Route::resource('medios', MediosController::class)->only('index');
+    // Route::resource('unidades', UnidadesController::class)->only('index');
+    // Route::resource('medios', MediosController::class)->only('index');
     Route::resource('espacios', EspacioController::class)->only('index', 'edit');
 });

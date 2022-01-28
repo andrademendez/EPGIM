@@ -1,3 +1,4 @@
+@auth
 <x-material-layout :activePage="'errors'" :menuParent="'errors'">
 
     <x-slot name="title">Forbidden</x-slot>
@@ -20,3 +21,4 @@
         </div>
     </div>
 </x-material-layout>
+@endauth
