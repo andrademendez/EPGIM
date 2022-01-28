@@ -486,22 +486,13 @@ class CampaniaController extends Controller
     {
         $this->authorize('viewAny', User::class);
         # code...
-        $id = 45;
-        $camp = Campanias::find($id);
-        $espacio = DB::table('vEspacio')->where('campania', $id)->get();
-        $espacios = $espacio->pluck('espacio');
-
-        $date_start = new DateTime($camp->start);
-        $date_start = $date_start->format('Y-m-d');
-        $date_end = new DateTime($camp->end);
-        $date_end = $date_end->format('Y-m-d');
-
-        $archive = AttachStatusFiles::where('id_campania', '=', 39)->first();
-        $file = FilesStatus::where('id_attach_status_file', $archive->id)->get();
-        //verificar estatus de archive sea send
-        //si es send, eliminar, registro y tmbien campaña
-        //$archive->filesStatus;
-        return $file;
+        $campanias = DB::table('campania_espacio')
+            ->join('espacios', 'espacios.id', '=', 'campania_espacio.id_espacio')
+            ->join('campanias', 'campanias.id', '=', 'campania_espacio.id_campania')
+            ->select('espacios.id')
+            ->where('espacios.id', '=', 2)
+            ->get();
+        return $campanias->count();
         // dump($campanias);
     }
 

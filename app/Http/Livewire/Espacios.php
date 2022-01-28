@@ -2,19 +2,24 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Campanias;
 use App\Models\Espacios as ModelsEspacios;
 use App\Models\TiposEspacios;
 use App\Models\Ubicacion;
 use App\Models\UnidadesNegocios;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
+use phpDocumentor\Reflection\Types\This;
+use Usernotnull\Toast\Concerns\WireToast;
 
 class Espacios extends Component
 {
     use WithPagination;
+    use WireToast;
 
     public $search = '', $open, $action;
-    public $nombre, $referencia, $clave, $medidas, $cantidad, $precio, $id_unidad, $id_tipo, $id_ubicacion;
+    public $id_espacio, $nombre, $referencia, $clave, $medidas, $cantidad, $precio, $id_unidad, $id_tipo, $id_ubicacion;
 
     protected $queryString = [
         'search' => ['except' => '']
@@ -45,11 +50,38 @@ class Espacios extends Component
         $this->open = true;
     }
 
-    public function openDelete()
+    public function openDelete($id)
     {
         $this->open = true;
+        $this->action = 'Eliminar';
+        $this->id_espacio = $id;
     }
 
+    public function delete()
+    {
+        try {
+            $campanias = DB::table('campania_espacio')
+                ->join('espacios', 'espacios.id', '=', 'campania_espacio.id_espacio')
+                ->join('campanias', 'campanias.id', '=', 'campania_espacio.id_campania')
+                ->select('espacios.id')
+                ->where('espacios.id', '=', $this->id_espacio)
+                ->get();
+            if ($campanias->count() == 0) {
+                $espacio = ModelsEspacios::find($this->id_espacio);
+                $espacio->delete();
+                if ($espacio) {
+                    $this->reset('id_espacio');
+                    $this->open = false;
+                    toast()->success('Espacio Eliminado')->push();
+                }
+            } else {
+                toast()->warning('No se puede eliminar espacio hay dpendencias activas')->push();
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            toast()->warning('Error del sistema')->push();
+        }
+    }
     public function closeModal()
     {
         $this->open = false;

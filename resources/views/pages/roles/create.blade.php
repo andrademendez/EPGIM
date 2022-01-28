@@ -1,5 +1,5 @@
 <x-modal.modal-sm>
-    <x-slot name="modalhead">Nuevo rol</x-slot>
+    <x-slot name="modalhead">{{ $action }} rol</x-slot>
     <form method="post">
         <div class="mb-3">
             <x-form.label for="nombre">Nombre</x-form.label>

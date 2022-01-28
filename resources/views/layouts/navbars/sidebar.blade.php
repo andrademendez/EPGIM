@@ -1,11 +1,12 @@
 <div class="sidebar" data-color="rose" data-background-color="black" data-image="{{ asset('images/panel.jpg') }}">
-    <div class="logo ">
-        <a href="" class="logo-mini">
-            <img width="40" src="{{ asset('images/logo.png') }}" alt="">
+    <div class="logo">
+        <a href="#" class="logo-mini w-8">
+            <img class="h-7 w-8" src="{{ asset('images/logo_light.png') }}" alt="">
         </a>
         <a href="{{ route('dashboard') }}" class="simple-text logo-normal">
             {{ __('SHOWCENTER') }}
         </a>
+
     </div>
     <div class="sidebar-wrapper">
         <div class="user">
@@ -133,7 +134,7 @@
                                     <span class="material-icons">
                                         view_carousel
                                     </span> </span>
-                                <span class="sidebar-normal"> {{ __('Varios') }} </span>
+                                <span class="sidebar-normal"> {{ __('Catálogos') }} </span>
                             </x-nav-link>
                         </x-nav-li>
                         @endif

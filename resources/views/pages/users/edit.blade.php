@@ -38,7 +38,7 @@
     <script>
         let espaciosName = {{ Js::from($espacioName) }};
         let espaciosTotal = {{ Js::from($espacioTotal) }};
-        const ctx3 = document.getElementById('chartEspacios');
+        const ctx3 = document.getElementById('chartEspacios').getContext('2d');
         const myChart = new Chart(ctx3, {
             type: 'pie',
             data: {
@@ -55,11 +55,6 @@
             },
             options: {
                 responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                },
                 plugins: {
                     title: {
                         display: true,

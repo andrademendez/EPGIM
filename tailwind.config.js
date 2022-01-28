@@ -9,6 +9,7 @@ module.exports = {
         "./public/material/js/material-dashboard.js",
         "./vendor/usernotnull/tall-toasts/config/**/*.php",
         "./vendor/usernotnull/tall-toasts/resources/views/**/*.blade.php",
+        "./node_modules/@themesberg/flowbite/**/*.js",
     ],
 
     theme: {

@@ -2,13 +2,13 @@
     <x-slot name="import">
 
     </x-slot>
-    <div class="">
+    <div class="bg-gray-50 p-2 rounded-lg">
         <x-link-return :href="route('espacios.index')">
             Volver a espacios
         </x-link-return>
         <!--  -->
         <div class="grid grid-cols-4 gap-4">
-            <div class="px-2 pt-3 pb-1 col-span-2 border border-gray-200 rounded-lg shadow-lg">
+            <div class="px-2 pt-3 pb-1 col-span-2 border bg-white bg-opacity-20 border-gray-200 rounded-lg shadow-lg">
                 <form method="post" class=" ">
                     @csrf
                     <div class="pb-2 text-xl text-gray-800 text-center uppercase ">

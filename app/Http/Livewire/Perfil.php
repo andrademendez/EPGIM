@@ -4,15 +4,17 @@ namespace App\Http\Livewire;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Usernotnull\Toast\Concerns\WireToast;
 
 class Perfil extends Component
 {
-    use WireToast;
+    use WireToast, WithFileUploads;
 
     public $id_user;
-    public $name, $email, $rol;
+    public $name, $email, $rol, $foto;
     public $password, $repeat_password;
 
     protected $rules = [
@@ -26,6 +28,7 @@ class Perfil extends Component
         $this->email = $user->email;
         $this->rol = $user->rol->nombre;
     }
+
     public function update()
     {
         $this->validate([
@@ -65,24 +68,55 @@ class Perfil extends Component
             }
         } catch (\Throwable $th) {
             //toast()->error('Revise sus datos!!')->push();
-            $this->showAlert('Revise sus datos', 'error');
+            toast()->warning('Revise sus datos!!')->push();
         }
     }
 
+    public function changePerfil()
+    {
+        $this->validate([
+            'foto' => 'image',
+        ]);
+
+        try {
+            $user = User::find($this->id_user);
+            if ($user->perfil == NULL) {
+                $url = $this->foto->store('profile', 'public');
+                $url = Storage::url($url);
+                $user->perfil = $url;
+                $user->save();
+                if ($user) {
+                    toast()->success('Perfil Actualizado!!')->push();
+                    $this->reset('foto');
+                }
+            } else {
+                $asPath = str_replace('storage', 'public', $user->perfil);
+                Storage::delete($asPath);
+
+                $url = $this->foto->store('profile', 'public');
+                $url = Storage::url($url);
+                $user->perfil = $url;
+                $user->save();
+                if ($user) {
+                    $this->reset('foto');
+                    toast()->success('Foto de Perfil Actualizado!!')->push();
+                }
+            }
+
+            // $user->perfil = $this->foto;
+            // $user->updated_at = now();
+            // $user->save();
+            // if ($user) {
+            //     # code...
+            // }
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+    }
     public function render()
     {
         return view('livewire.perfil', [
             'perfil' => User::find($this->id_user),
-        ]);
-    }
-
-    public function showAlert($mensaje, $icons)
-    {
-        $this->emit('swal:alert', [
-            'icon' => $icons,
-            'type'    => 'success',
-            'title'   => $mensaje,
-            'timeout' => 3000
         ]);
     }
 }

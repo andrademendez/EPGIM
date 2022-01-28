@@ -1,7 +1,12 @@
 <x-content>
     <x-slot name="import">
         @if ($open == true)
+        @if ($action == 'Registrar')
         @include('pages.espacios.create')
+        @else
+        @include('pages.roles.delete')
+        @endif
+
         @endif
     </x-slot>
     <div class="mb-3 flex items-center justify-between">
@@ -48,8 +53,8 @@
             <x-table.td>{{ $espacio->tipo->nombre }}</x-table.td>
             <x-table.td>{{ $espacio->ubicacion->nombre }}</x-table.td>
             <x-table.td>
-                <div>
-                    <x-nav-link :href="route('espacios.edit', $espacio->id)">
+                <div class="flex items-center justify-center">
+                    <x-nav-link :href="route('espacios.edit', $espacio->id)" class="text-indigo-700">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -57,6 +62,14 @@
                             </path>
                         </svg>
                     </x-nav-link>
+                    <button class="mx-2  text-red-500 focus:outline-none focus:ring-offset-transparent"
+                        wire:click="openDelete( {{ $espacio->id }})">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
                 </div>
             </x-table.td>
         </x-table.tr>
