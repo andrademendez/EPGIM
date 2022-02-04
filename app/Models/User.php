@@ -73,11 +73,19 @@ class User extends Authenticatable
     {
         return $this->id_rol == 3;
     }
+
     public function isValidator()
     {
         return $this->id_rol == 4;
     }
 
+    public function isAdminCierre()
+    {
+        return $this->id_rol == 5;
+    }
+
+    //end roles
+    //start relationship
     public function campanias()
     {
         # code...

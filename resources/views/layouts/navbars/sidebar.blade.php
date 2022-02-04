@@ -1,10 +1,10 @@
 <div class="sidebar" data-color="rose" data-background-color="black" data-image="{{ asset('images/panel.jpg') }}">
-    <div class="logo">
-        <a href="#" class="logo-mini w-8">
-            <img class="h-7 w-8" src="{{ asset('images/logo_light.png') }}" alt="">
+    <div class="logo flex items-center">
+        <a href="#" class="logo-mini ">
+            <img class="h-6 w-9" src="{{ asset('images/logo_light.png') }}" alt="">
         </a>
         <a href="{{ route('dashboard') }}" class="simple-text logo-normal">
-            {{ __('SHOWCENTER') }}
+            {{ __('G I M') }}
         </a>
 
     </div>

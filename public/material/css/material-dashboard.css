@@ -18682,7 +18682,7 @@ thead.thead-inverse th,
  .sidebar .logo {
      padding: 15px 0px;
      margin: 0;
-     display: block;
+     display: flex;
      position: relative;
      z-index: 4;
  }

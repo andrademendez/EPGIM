@@ -10,28 +10,32 @@
                         <h1>Overview</h1>
                     </div>
                     <div class="grid grid-cols-6 gap-4 ">
-                        <div class="col-span-1 bg-gradient-to-r from-violet-600 to-fuchsia-700 hover:bg-gradient-to-r hover:from-violet-700 hover:to-fuchsia-500 rounded-lg">
+                        <div
+                            class="col-span-3 md:col-span-1 bg-gradient-to-r from-violet-600 to-fuchsia-700 hover:bg-gradient-to-r hover:from-violet-700 hover:to-fuchsia-500 rounded-lg">
                             <x-dashboard.card>
                                 <span>+24</span>
                                 <h1 class="text-lg font-medium">$27,000.00</h1>
                                 <span class="text-sm">Total Sales</span>
                             </x-dashboard.card>
                         </div>
-                        <div class="col-span-1 bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-lg">
+                        <div
+                            class="col-span-3 md:col-span-1 bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-lg">
                             <x-dashboard.card>
                                 <span>+24</span>
                                 <h1 class="text-lg font-medium">$27,000.00</h1>
                                 <span class="text-sm">Total Sales</span>
                             </x-dashboard.card>
                         </div>
-                        <div class="col-span-2 bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-lg">
+                        <div
+                            class="col-span-3 md:col-span-2 bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-lg">
                             <x-dashboard.card>
                                 <span>+24</span>
                                 <h1 class="text-lg font-medium">$27,000.00</h1>
                                 <span class="text-sm">Total Sales</span>
                             </x-dashboard.card>
                         </div>
-                        <div class="col-span-2 bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-lg">
+                        <div
+                            class="col-span-3 md:col-span-2 bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-lg">
                             <x-dashboard.card>
                                 <span>+24</span>
                                 <h1 class="text-lg font-medium">$27,000.00</h1>
@@ -40,15 +44,15 @@
                         </div>
                     </div>
                     <div class="grid grid-cols-4 gap-4 pt-5">
-                        <div class="col-span-2 shadow-lg px-2">
+                        <div class="col-span-4 md:col-span-2 shadow-lg px-2">
                             <canvas id="myChart" width="400" height="200"></canvas>
                         </div>
-                        <div class="col-span-2 px-2 shadow-lg">
+                        <div class="col-span-4 md:col-span-2 px-2 shadow-lg">
                             <canvas id="myChart2" width="400" height="200"></canvas>
                         </div>
                     </div>
                     <div class="mt-3 pt-2 grid grid-cols-6 gap-4 ">
-                        <div class="col-span-2 ">
+                        <div class="col-span-6 md:col-span-2 ">
                             <div class="shadow-lg rounded-lg p-3  m-2">
                                 <div class="py-4  font-medium text-sm ">
                                     <h1>Data dristribution</h1>
@@ -73,7 +77,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-span-4 shadow-lg p-3 rounded-lg  m-2">
+                        <div class="col-span-6 md:col-span-4 shadow-lg p-3 rounded-lg  m-2">
                             <div class="py-3">
                                 <h1>Productos populares</h1>
                             </div>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Campanias;
 
 use App\Mail\FilePending;
 use App\Mail\NotificacionConfirmacion;
@@ -71,8 +71,7 @@ class Challenge extends Component
         $this->open = false;
         $this->reset(['id_campania', 'camp', 'action', 'comentario']);
     }
-
-    public function openDelete()
+    public function openDelete($id)
     {
         $this->open = true;
     }
@@ -105,8 +104,8 @@ class Challenge extends Component
 
     public function render()
     {
-        return view('livewire.challenge', [
-            'campanias' => AttachStatusFiles::all(),
+        return view('livewire.campanias.challenge', [
+            'campanias' => AttachStatusFiles::whereIn('status', ['Challenge', 'Solicitud'])->get(),
         ]);
     }
 

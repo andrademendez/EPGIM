@@ -6,10 +6,10 @@
 
         </x-slot>
         <div class="grid grid-cols-6 gap-2">
-            <div class="col-span-4">
+            <div class="col-span-6 md:col-span-4">
                 <livewire:perfil :id_user="$user->id" />
             </div>
-            <div class="col-span-2 py-4 px-3 shadow-lg  rounded-lg">
+            <div class="col-span-6 md:col-span-2 py-4 px-3 shadow-lg  rounded-lg">
                 <div class="w-full">
                     <canvas id="myChart" class="max-h-60 md:max-h-72 h-full"></canvas>
                 </div>

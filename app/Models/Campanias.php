@@ -58,6 +58,6 @@ class Campanias extends Model
 
     public function attachStatusFile()
     {
-        return $this->hasOne(AttachStatusFiles::class, 'id_campania');
+        return $this->hasMany(AttachStatusFiles::class, 'id_campania');
     }
 }

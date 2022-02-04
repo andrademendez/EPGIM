@@ -13,61 +13,77 @@
 
     <x-table.table>
         <x-slot name="theader">
+            @if ($user->isAdmin())
+            <x-table.th class="pl-3">Id</x-table.th>
+            @endif
             <x-table.th>Nombre</x-table.th>
             <x-table.th>Estado</x-table.th>
             <x-table.th>Fecha</x-table.th>
             <x-table.th>Medio</x-table.th>
             <x-table.th>Espacios</x-table.th>
-            <x-table.th>Estatus</x-table.th>
+            {{-- <x-table.th>Estatus</x-table.th> --}}
             @if ($user->isAdmin())
-            <x-table.th>User</x-table.th>
+            <x-table.th>Usuario</x-table.th>
             @endif
 
             <x-table.th></x-table.th>
         </x-slot>
         @forelse ($campanias as $campania)
-        <x-table.tr>
-            <x-table.td class="border-l-4 border-[{{ $campania->display }}]">
-                <div class="text-left pl-2">
-                    <div class="text-sm font-medium text-gray-900">
+        <x-table.tr class="border-l-4 border-[{{ $campania->display }}]">
+            @if ($user->isAdmin())
+            <x-table.td class="">{{ $campania->id }}</x-table.td>
+            @endif
+            <x-table.td class="">
+                <div class="text-left">
+                    <div class="text-xs font-medium text-gray-800">
                         {{ $campania->title }}
                     </div>
-                    <div class=" text-xs text-gray-500 uppercase">
+                    <div class=" text-xs text-gray-500 lowercase">
                         {{ $campania->cliente->nombre }}
                     </div>
                 </div>
             </x-table.td>
 
-            <x-table.td>{{ $campania->status }} - {{ $campania->hold }}</x-table.td>
+            <x-table.td>
+                @if ($campania->status == 'Confirmado')
+                <span class="text-green-700 bg-green-200 py-1 px-2 rounded-md hover:text-green-600 ">
+                    {{ $campania->status }}
+                </span>
+                @else
+                {{ $campania->status }} - {{ $campania->hold }}
+                @endif
+            </x-table.td>
             <x-table.td>
                 <div class="flex flex-col ">
-                    <span class="text-sm text-gray-700">{{ $campania->formatoMx($campania->start) }}</span>
+                    <span class="text-xs text-gray-700 font-medium">{{ $campania->formatoMx($campania->start) }}</span>
                     <span class="text-xs text-gray-500">{{ $campania->formatoMx($campania->end) }}</span>
                 </div>
             </x-table.td>
             <x-table.td>{{ $campania->medio->nombre }}</x-table.td>
             <x-table.td class="whitespace-normal">
-                @forelse ($campania->espacios as $espacio)
-                {{ $espacio->nombre }}
-                @if ($loop->remaining)
-                ,
-                @endif
-                @empty
-                <span>No has asignado ningun espacio</span>
-                @endforelse
+                @foreach ($campania->espacios as $espacio)
+                <div class="flex flex-col mb-1">
+                    <span class="text-xs font-medium text-gray-700">
+                        {{ $espacio->nombre }}
+                    </span>
+                    <span class="text-xs text-gray-500 capitalize">
+                        {{ $espacio->unidad->nombre }}
+                    </span>
+                </div>
+                @endforeach
             </x-table.td>
-            <x-table.td class="text-green-700 flex items-center justify-center text-center">
+            {{-- <x-table.td class="text-green-700 flex items-center justify-center text-center">
                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd"
                         d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                         clip-rule="evenodd">
                     </path>
                 </svg>
-            </x-table.td>
+            </x-table.td> --}}
 
             @if ($user->isAdmin())
             <x-table.td>
-                <div class="flex flex-col items-center">
+                <div class="flex flex-col justify-start">
                     <span class="text-sm font-medium">{{ $campania->user->name }}</span>
                     <span class="text-xs lowercase">{{ $campania->user->email }}</span>
                 </div>
@@ -76,7 +92,7 @@
 
             <x-table.td>
                 <div class="flex items-center justify-center">
-                    <button
+                    <button type="button"
                         class="rounded-full  p-1.5 bg-[#e0f1f8] ml-2 text-[#30a3cf] hover:text-[#2bb1e6] focus:outline-none focus:ring-transparent disabled:opacity-25 transition ease-in-out duration-150"
                         wire:click="openModal({{ $campania->id }})" title="Challenge">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">

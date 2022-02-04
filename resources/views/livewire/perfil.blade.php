@@ -1,5 +1,5 @@
 <div class="grid grid-cols-4 gap-2">
-    <div class="col-span-2  ">
+    <div class="col-span-4 md:col-span-2  ">
         <div class="flex flex-col items-center justify-center rounded-lg shadow-lg py-4 px-3 bg-gray-50">
             <div class="flex flex-col items-center">
                 @if ($foto)
@@ -54,7 +54,7 @@
             </div>
         </div>
     </div>
-    <div class="col-span-2 ">
+    <div class="col-span-4 md:col-span-2 ">
         <div class="pt-4 pb-1 px-3 shadow-lg bg-gray-50 rounded-lg">
             <form action="#" method="post">
                 <div class="">

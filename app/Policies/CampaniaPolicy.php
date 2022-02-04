@@ -43,7 +43,7 @@ class CampaniaPolicy
     public function create(User $user)
     {
         //
-        return $user->isCreator();
+        return $user->isCreator() || $user->isAdmin();
     }
 
     /**

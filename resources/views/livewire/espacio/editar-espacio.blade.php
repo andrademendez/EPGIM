@@ -8,7 +8,8 @@
         </x-link-return>
         <!--  -->
         <div class="grid grid-cols-4 gap-4">
-            <div class="px-2 pt-3 pb-1 col-span-2 border bg-white bg-opacity-20 border-gray-200 rounded-lg shadow-lg">
+            <div
+                class="px-2 pt-3 pb-1 col-span-4 md:col-span-2 border bg-white bg-opacity-20 border-gray-200 rounded-lg shadow-lg">
                 <form method="post" class=" ">
                     @csrf
                     <div class="pb-2 text-xl text-gray-800 text-center uppercase ">
@@ -99,7 +100,7 @@
 
                 </div>
             </div>
-            <div class="h-auto px-2 pt-3 pb-1  col-span-2 border border-gray-200 rounded-lg shadow-lg">
+            <div class="h-auto px-2 pt-3 pb-1  col-span-4 md:col-span-2 border border-gray-200 rounded-lg shadow-lg">
                 <div>
                     <x-table.table>
                         <x-slot name="theader">

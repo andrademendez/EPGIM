@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use DateTime;
 
+use function PHPUnit\Framework\isNull;
+
 class CampaniaController extends Controller
 {
 
@@ -26,7 +28,7 @@ class CampaniaController extends Controller
     {
         //
         $medios = Medios::all();
-        $clientes = Clientes::all();
+        $clientes = Clientes::where('id_user', Auth::id())->get();
         $espacios = Espacios::all();
         $unidades = UnidadesNegocios::all();
         return view('pages.campanias.index', compact('medios', 'clientes', 'espacios', 'unidades'));
@@ -155,7 +157,8 @@ class CampaniaController extends Controller
     public function show()
     {
         $this->authorize('view', Campanias::class);
-        return view('pages.challenge');
+        $user = User::find(Auth::id());
+        return view('pages.challenge', compact('user'));
     }
 
     public function edit($id)
@@ -486,13 +489,21 @@ class CampaniaController extends Controller
     {
         $this->authorize('viewAny', User::class);
         # code...
-        $campanias = DB::table('campania_espacio')
-            ->join('espacios', 'espacios.id', '=', 'campania_espacio.id_espacio')
-            ->join('campanias', 'campanias.id', '=', 'campania_espacio.id_campania')
-            ->select('espacios.id')
-            ->where('espacios.id', '=', 2)
-            ->get();
-        return $campanias->count();
+        $start = '2022-02-04';
+        $end = '2022-02-24';
+        $espacio = [1];
+        $date_start = new DateTime($start);
+        $date_start = $date_start->format('Y-m-d');
+        $date_end = new DateTime($end);
+        $date_end = $date_end->format('Y-m-d');
+
+        $position = DB::table('vFechaBloqueov2')
+            ->whereIn('estatus', ['Solicitud', 'Challenge'])
+            ->whereBetween('fecha', [$date_start, $date_end])
+            ->whereIn('id_pantalla', $espacio)
+            ->groupBy('id_campania')
+            ->first();
+        dd(($date_end));
         // dump($campanias);
     }
 

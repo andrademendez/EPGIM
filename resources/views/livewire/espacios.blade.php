@@ -22,6 +22,7 @@
     <x-table.table>
 
         <x-slot name="theader">
+            <x-table.th>Id</x-table.th>
             <x-table.th>Nombre</x-table.th>
             <x-table.th>Referencia</x-table.th>
             <x-table.th>Medidas</x-table.th>
@@ -36,6 +37,7 @@
         </x-slot>
         @forelse ($espacios as $espacio)
         <x-table.tr>
+            <x-table.td>{{ $espacio->id }}</x-table.td>
             <x-table.td>{{ $espacio->nombre }}</x-table.td>
             <x-table.td>{{ $espacio->referencia }}</x-table.td>
             <x-table.td>{{ $espacio->medidas }}</x-table.td>
@@ -54,6 +56,13 @@
             <x-table.td>{{ $espacio->ubicacion->nombre }}</x-table.td>
             <x-table.td>
                 <div class="flex items-center justify-center">
+                    <a href="#" class="">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z">
+                            </path>
+                        </svg>
+                    </a>
                     <x-nav-link :href="route('espacios.edit', $espacio->id)" class="text-indigo-700">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
@@ -84,7 +93,9 @@
         @endforelse
     </x-table.table>
 
-
+    <div class="">
+        {{ $espacios->links() }}
+    </div>
     {{-- <div class="mt-4">
         <div class="grid grid-cols-6 gap-4">
             @forelse ($espacios as $espacio)

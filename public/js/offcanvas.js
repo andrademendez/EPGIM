@@ -228,7 +228,7 @@ jQuery(document).ready(function ($) {
                         datas.forEach(function (data) {
                             content +=
                                 "<tr class='bg-white border-b dark:bg-gray-800 dark:border-gray-700'>" +
-                                "<td class='py-2 px-3 text-sm font-normal text-gray-700 whitespace-nowrap dark:text-white'>" +
+                                "<td class='py-2 px-3 text-xs uppercase font-normal text-gray-700 dark:text-white'>" +
                                 '<span class="iconify w-6 h-6" data-icon="mdi:office-building-marker" data-inline="false"></span>' +
                                 '<span class="pl-2">' +
                                 data.nombre +
@@ -313,7 +313,7 @@ function eliminar(id, evento) {
                     datas.forEach(function (data) {
                         content +=
                             "<tr class='bg-white border-b dark:bg-gray-800 dark:border-gray-700'>" +
-                            "<td class='py-2 px-3 text-sm font-normal text-gray-700 whitespace-nowrap dark:text-white'>" +
+                            "<td class='py-2 px-3 text-xs font-normal text-gray-700 uppercase dark:text-white'>" +
                             '<span class="iconify w-6 h-6" data-icon="mdi:office-building-marker" data-inline="false"></span>' +
                             '<span class="pl-2">' +
                             data.nombre +

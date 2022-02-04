@@ -1371,7 +1371,7 @@ function collection(datos) {
                 //console.log(data.nombre);
                 $("#cargadatos").append(
                     "<tr class='bg-white border-b dark:bg-gray-800 dark:border-gray-700'>" +
-                        "<td class='py-2 px-3 text-sm font-normal text-gray-700 whitespace-nowrap dark:text-white'>" +
+                        "<td class='py-2 px-3 text-xs uppercase font-normal text-gray-700 dark:text-white'>" +
                         "<span class='pl-2'>" +
                         data.nombre +
                         "</span>" +

@@ -39,8 +39,13 @@ class Detalles extends Component
         $this->open = true;
         $this->action = 'Registrar';
         $this->id_campania = $id;
+        $cmp = Campanias::find($id);
+        if ($cmp->status == 'Confirmado') {
+            $this->camp_first = $cmp->id;
+        } else {
+            $this->camp_first = $this->getFirstCampania($id);
+        }
         $this->attachStatusFile = Campanias::find($id)->attachStatusFile;
-        $this->camp_first = $this->getFirstCampania($id);
     }
 
     public function openEdit()
@@ -170,7 +175,8 @@ class Detalles extends Component
             ->whereIn('estatus', ['Challenge', 'Solicitud'])
             ->whereBetween('fecha', [$date_start, $date_end])
             ->whereIn('id_pantalla', $espacios)
-            ->groupBy('id_campania')
+            ->select('id_campania', 'nombre')
+            ->groupBy('id_campania', 'nombre')
             ->first();
 
         return $position->id_campania;
