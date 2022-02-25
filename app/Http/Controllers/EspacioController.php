@@ -92,7 +92,7 @@ class EspacioController extends Controller
     public function getOnlyEspacio(Request $request)
     {
         $espacio = DB::table('vEspacio')
-            ->select('nombre')
+            ->select('nombre', 'referencia')
             ->where('campania', $request->id)
             ->get()->toArray();
         return response()->json($espacio);

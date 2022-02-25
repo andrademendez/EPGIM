@@ -19,3 +19,5 @@ mix.js("resources/js/app.js", "public/js")
     ])
     .sass("resources/sass/toastr.scss", "public/css")
     .sass("resources/sass/fontawesome.scss", "public/css");
+
+mix.disableNotifications();

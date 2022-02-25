@@ -95,8 +95,10 @@
                 <x-table.td class="whitespace-nowrap">
                     @if ($campania->status == 'Confirmado' )
                     @if ($campania->attachStatusFile->count() == 1)
-                    <button class="w-full py-2 px-3 bg-indigo-700 font-medium text-white uppercase" type="button"
-                        wire:click="registrarCierre({{ $campania->id }})">Cerrar campaña
+                    <button
+                        class="w-full py-2 px-3 bg-indigo-700 rounded-md hover:bg-indigo-800 font-medium text-white uppercase"
+                        type="button" wire:click="registrarCierre({{ $campania->id }})">
+                        Cerrar campaña
                     </button>
                     @endif
                     @foreach ($campania->attachStatusFile as $attach)

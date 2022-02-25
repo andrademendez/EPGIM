@@ -1,6 +1,6 @@
 <x-material-layout :activePage="'challenge'" :menuParent="'calendario'">
     <x-slot name="title">Challenge</x-slot>
-    <x-slot name="titlePage">Challenge</x-slot>
+    <x-slot name="titlePage">Eventos</x-slot>
     <x-content>
         <x-slot name="import"></x-slot>
         <div class="" x-data="{ tab: 'challenge' }">

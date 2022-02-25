@@ -34,7 +34,7 @@ class FilePending extends Mailable
                 'campaniaTitle' => $this->campania->title,
                 'campaniaStart' => $this->campania->start,
                 'campaniaEnd' => $this->campania->end,
-                'campaniaProcess' => $this->campania->attachStatusFile->process,
+                'campaniaProcess' => $this->campania->process,
                 'comment' => $this->campania->comment,
             ])
             ->subject('Documentos pendientes');

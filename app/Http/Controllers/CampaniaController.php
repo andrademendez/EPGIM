@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use DateTime;
+use Illuminate\Support\Arr;
+use PhpParser\Node\Stmt\Foreach_;
 
 use function PHPUnit\Framework\isNull;
 
@@ -27,10 +29,14 @@ class CampaniaController extends Controller
     public function index()
     {
         //
+        $calendario = "";
         $medios = Medios::all();
         $clientes = Clientes::where('id_user', Auth::id())->get();
         $espacios = Espacios::all();
         $unidades = UnidadesNegocios::all();
+        if ($calendario) {
+            # code...
+        }
         return view('pages.campanias.index', compact('medios', 'clientes', 'espacios', 'unidades'));
     }
 
@@ -274,11 +280,6 @@ class CampaniaController extends Controller
 
     //funcion para obtener todo los eventos getData
 
-    public function getCampanias()
-    {
-        $campanias = DB::table('vCampanias')->get();
-        return response()->json($campanias);
-    }
 
     public function getOptions(Request $request)
     {
@@ -401,7 +402,7 @@ class CampaniaController extends Controller
     {
         $espacio = DB::table('campania_espacio')
             ->join('espacios', 'espacios.id', '=', 'campania_espacio.id_espacio')
-            ->select('espacios.id as id', 'id_campania', 'espacios.nombre')
+            ->select('espacios.id as id', 'id_campania', 'espacios.nombre', 'espacios.referencia')
             ->where('id_campania', '=', $id)
             ->get();
         return $espacio;
@@ -429,7 +430,7 @@ class CampaniaController extends Controller
     {
         $espacio = DB::table('campania_espacio')
             ->join('espacios', 'espacios.id', '=', 'campania_espacio.id_espacio')
-            ->select('espacios.id as id', 'id_campania', 'espacios.nombre')
+            ->select('espacios.id as id', 'id_campania', 'espacios.nombre', 'espacios.referencia')
             ->where('id_campania', '=', $id)
             ->get();
         return $espacio;
@@ -487,24 +488,34 @@ class CampaniaController extends Controller
 
     public function test()
     {
-        $this->authorize('viewAny', User::class);
-        # code...
-        $start = '2022-02-04';
-        $end = '2022-02-24';
-        $espacio = [1];
-        $date_start = new DateTime($start);
-        $date_start = $date_start->format('Y-m-d');
-        $date_end = new DateTime($end);
-        $date_end = $date_end->format('Y-m-d');
-
-        $position = DB::table('vFechaBloqueov2')
-            ->whereIn('estatus', ['Solicitud', 'Challenge'])
-            ->whereBetween('fecha', [$date_start, $date_end])
-            ->whereIn('id_pantalla', $espacio)
-            ->groupBy('id_campania')
-            ->first();
-        dd(($date_end));
-        // dump($campanias);
+        # total vendido
+        $totals = array();
+        $unidad = array();
+        // $total;
+        $totalVendido = DB::table('campania_espacio')
+            ->join('campanias', 'campanias.id', '=', 'campania_espacio.id_campania')
+            ->join('espacios', 'espacios.id', '=', 'campania_espacio.id_espacio')
+            ->join('unidades_negocios', 'unidades_negocios.id', '=', 'espacios.id_unidad_negocio')
+            ->selectRaw('sum(precio) as total, unidades_negocios.nombre as unidad')
+            ->whereIn('status', ['Confirmado', 'Cerrado'])
+            ->groupBy('unidad')
+            ->get();
+        foreach ($totalVendido as $total) {
+            # code...
+            $totals = ($total->total * 100) / $totalVendido->sum('total');
+            $unidad[] = ($total->unidad);
+            $toatl[] = [round($totals, 2)];
+        }
+        foreach ($toatl as $key => $total) {
+            # code...
+            $total[] = $total[0];
+        }
+        //$totalVendido = $totalVendido->pluck('unidad');
+        $camp = AttachStatusFiles::where([
+            ['id_campania',  9],
+            ['process', 'Cierre']
+        ])->first();
+        dd(empty($camp));
     }
 
     public function challege($id)

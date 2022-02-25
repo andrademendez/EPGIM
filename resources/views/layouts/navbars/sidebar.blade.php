@@ -170,8 +170,8 @@
                 </a>
                 <div class="collapse{{ $menuParent  == 'calendario' ? ' show' : '' }}" id="calendario">
                     <ul class="nav">
-                        <x-nav-li :active="request()->routeIs('campanias.index')">
-                            <x-nav-link :href="route('campanias.index')">
+                        <x-nav-li :active="request()->routeIs('calendario.general')">
+                            <x-nav-link :href="route('calendario.general', ['calendario' => 'general'])">
                                 <span class="sidebar-mini">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                         xmlns="http://www.w3.org/2000/svg">

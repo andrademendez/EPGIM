@@ -16,12 +16,12 @@
         "axios": "^0.25",
         "laravel-mix": "^6.0.41",
         "lodash": "^4.17.21",
-        "postcss": "^8.4.5",
+        "postcss": "^8.4.6",
         "postcss-import": "^14.0.2",
         "resolve-url-loader": "^5.0.0",
-        "sass": "^1.49.0",
+        "sass": "^1.49.7",
         "sass-loader": "^12.4.0",
-        "tailwindcss": "^3.0.15"
+        "tailwindcss": "^3.0.18"
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^6.0.0-beta3",
@@ -33,7 +33,7 @@
         "jquery-ui": "^1.13.1",
         "moment": "^2.29.1",
         "pikaday": "^1.8.2",
-        "sweetalert2": "^11.3.6",
+        "sweetalert2": "^11.3.10",
         "toastr": "^2.1.4"
     }
 }

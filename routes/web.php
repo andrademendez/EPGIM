@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CalendarioController;
 use App\Http\Controllers\CampaniaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\EspacioController;
@@ -18,7 +19,16 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/test', [CampaniaController::class, 'test']);
 
-    Route::get('/all/campanias', [CampaniaController::class, 'getCampanias']);
+    //obtencion de los eventos por unidades
+    Route::get('/all/campanias', [CalendarioController::class, 'getCampanias']);
+    Route::get('/calendario/{calendario}', [CalendarioController::class, 'calendario'])->name('calendario.general');
+
+    Route::get('/eventos/showcenter', [CalendarioController::class, 'getCampaniaShowcenter']);
+    Route::get('/eventos/airo', [CalendarioController::class, 'getCampaniaAiro']);
+    Route::get('/eventos/main', [CalendarioController::class, 'getCampaniaMain']);
+    Route::get('/eventos/fashion', [CalendarioController::class, 'getCampaniaFashion']);
+
+    //
     Route::get('/all/only_espacio', [CampaniaController::class, 'getEspacios']);
     Route::get('/only/espacio', [EspacioController::class, 'getOnlyEspacio']);
     Route::get('/only/get_espacio', [CampaniaController::class, 'get_espacio']);

@@ -230,9 +230,12 @@ jQuery(document).ready(function ($) {
                                 "<tr class='bg-white border-b dark:bg-gray-800 dark:border-gray-700'>" +
                                 "<td class='py-2 px-3 text-xs uppercase font-normal text-gray-700 dark:text-white'>" +
                                 '<span class="iconify w-6 h-6" data-icon="mdi:office-building-marker" data-inline="false"></span>' +
-                                '<span class="pl-2">' +
+                                "<div class='flex flex-col'><span class='text-xs'>" +
                                 data.nombre +
                                 "</span>" +
+                                "<span class='text-[10px] text-gray-500'>" +
+                                data.referencia +
+                                "</span> </div>" +
                                 "</td>" +
                                 "<td class='py-2 px-3 text-sm font-normal text-gray-700 whitespace-nowrap dark:text-white'>" +
                                 '<button type="button" id="delespacio" class="px-2 text-red-800" onclick="eliminar(' +
@@ -315,9 +318,13 @@ function eliminar(id, evento) {
                             "<tr class='bg-white border-b dark:bg-gray-800 dark:border-gray-700'>" +
                             "<td class='py-2 px-3 text-xs font-normal text-gray-700 uppercase dark:text-white'>" +
                             '<span class="iconify w-6 h-6" data-icon="mdi:office-building-marker" data-inline="false"></span>' +
-                            '<span class="pl-2">' +
+                            "<div class='flex flex-col'><span class='text-xs'>" +
                             data.nombre +
-                            "</span></td>" +
+                            "</span>" +
+                            "<span class='text-[10px] text-gray-500'>" +
+                            data.referencia +
+                            "</span> </div>" +
+                            "</td>" +
                             "<td class='py-2 px-3 text-sm font-normal text-gray-700 whitespace-nowrap dark:text-white'>" +
                             '<button type="button" id="delespacio" class="px-2 text-red-800" onclick="eliminar(' +
                             data.id +

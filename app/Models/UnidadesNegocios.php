@@ -19,6 +19,6 @@ class UnidadesNegocios extends Model
 
     public function espacios()
     {
-        return $this->hasMany(Espacios::class);
+        return $this->hasMany(Espacios::class, 'id_unidad_negocio');
     }
 }

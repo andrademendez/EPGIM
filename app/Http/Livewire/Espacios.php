@@ -18,12 +18,13 @@ class Espacios extends Component
     use WithPagination;
     use WireToast;
 
-    public $search = '', $open, $action;
+    public $search = '', $open, $action, $search_unidad;
     public $id_espacio, $nombre, $referencia, $clave, $medidas, $cantidad, $precio, $id_unidad, $id_tipo, $id_ubicacion;
 
     protected $queryString = [
         'search' => ['except' => '']
     ];
+    protected $listeners = ['reloadPage'];
 
     protected $rules = [
         'nombre' => 'required',
@@ -35,6 +36,10 @@ class Espacios extends Component
         'id_ubicacion' => 'required',
     ];
 
+    public function reloadPage()
+    {
+        # code...
+    }
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
@@ -56,6 +61,7 @@ class Espacios extends Component
         $this->action = 'Eliminar';
         $this->id_espacio = $id;
     }
+
 
     public function delete()
     {
@@ -115,10 +121,39 @@ class Espacios extends Component
             $this->showAlert('Verifica tus datos!', 'error');
         }
     }
+
+    public function deshabilitar($id)
+    {
+        # code...
+        $espacio = ModelsEspacios::find($id);
+        if ($espacio->estatus == true) {
+            $espacio->estatus = false;
+            $espacio->save();
+
+            if ($espacio) {
+                toast()->success('Espacio deshabilitado!!')->push();
+                $this->emit('reloadPage');
+            }
+        } else {
+            $espacio->estatus = true;
+            $espacio->save();
+
+            if ($espacio) {
+                toast()->success('Espacio habilitado!!')->push();
+                $this->emit('reloadPage');
+            }
+        }
+    }
+
     public function render()
     {
         return view('livewire.espacios', [
-            'espacios' => ModelsEspacios::where('nombre', 'LIKE', "%$this->search%")->paginate(15),
+            'espacios' => ModelsEspacios::where(
+                [
+                    ['nombre', 'LIKE', "%$this->search%"],
+                    ['id_unidad_negocio', 'LIKE', "%$this->search_unidad%"]
+                ]
+            )->paginate(15),
             'ubicaciones' => Ubicacion::all(),
             'tipos' => TiposEspacios::all(),
             'unidades' => UnidadesNegocios::all(),

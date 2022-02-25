@@ -7,8 +7,12 @@ use App\Mail\ChallengeNotification;
 use App\Mail\NotificarAdministrador;
 use App\Models\AttachStatusFiles;
 use App\Models\Campanias;
+use App\Models\Espacios;
 use App\Models\FilesStatus;
+use App\Models\Medios;
 use App\Models\Roles;
+use App\Models\Ubicacion;
+use App\Models\UnidadesNegocios;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -27,7 +31,7 @@ class Detalles extends Component
     use WithFileUploads;
     use WireToast;
 
-    public $search = '', $open, $action;
+    public $search = '', $open, $action, $searchMedio = "", $searchUnidad = "", $searchUbicacion = "", $searchStatus;
     public $documentos, $id_campania, $solicitudes, $attachStatusFile, $camp_first;
 
     protected $queryString = [
@@ -140,13 +144,20 @@ class Detalles extends Component
         $this->validate([
             'documentos' => 'required'
         ]);
+        // $this->showAlert($this->attachStatusFile->id, 'error');
+        // return false;
         try {
             $url = $this->documentos->store('challenge', 'public');
             $url = Storage::url($url);
 
             $attach = new FilesStatus();
             $attach->file = $url;
-            $attach->id_attach_status_file = $this->attachStatusFile->id;
+            foreach ($this->attachStatusFile as $key => $atach) {
+                # code...
+                if ($atach->process == 'Confirmacion') {
+                    $attach->id_attach_status_file = $atach->id;
+                }
+            }
             $attach->save();
             if ($attach) {
                 toast()->success('Archivo cargado!!')->push();
@@ -207,26 +218,42 @@ class Detalles extends Component
         $user = User::find(Auth::id());
         if ($user->isAdmin()) {
             return view('livewire.detalles', [
-                'campanias' => Campanias::where(
-                    [[
-                        'title',
-                        'LIKE',
-                        "%$this->search%"
-                    ]]
-                )->orderBy('start', 'asc')
+                'campanias' =>  Campanias::where(
+                    [
+                        ['title', 'LIKE', "%$this->search%"],
+                        ['id_medio',  'LIKE', "%$this->searchMedio%"],
+                        ['status', 'LIKE', "%$this->searchStatus%"],
+                        // ['espacios.id_unidad_negocio',  'LIKE', "%$this->searchUnidad%"],
+                        // ['espacios.id_ubicacion',  'LIKE', "%$this->searchUbicacion%"],
+                    ]
+                )
+                    // ->join('campania_espacio', 'campanias.id', '=', 'campania_espacio.id_campania')
+                    // ->join('espacios', 'espacios.id', '=', 'campania_espacio.id_espacio')
+                    ->orderBy('campanias.start')
                     ->paginate(15),
+
                 'user' =>  $user,
+                'medios' => Medios::all(),
+                'unidades' => UnidadesNegocios::all(),
+                'ubicaciones' => Ubicacion::all(),
             ]);
         } else {
             return view('livewire.detalles', [
-                'campanias' => Campanias::where(
+                'campanias' =>  Campanias::where(
                     [
                         ['id_user', '=', Auth::id()],
-                        ['title', 'LIKE', "%$this->search%"]
+                        ['title', 'LIKE', "%$this->search%"],
+                        ['id_medio',  'LIKE', "%$this->searchMedio%"],
+                        ['status', 'LIKE', "%$this->searchStatus%"],
                     ]
-                )->orderBy('start', 'asc')
+                )
+                    ->orderBy('start')
                     ->paginate(15),
                 'user' =>  $user,
+                'medios' => Medios::all(),
+                'unidades' => UnidadesNegocios::all(),
+                'ubicaciones' => Ubicacion::all(),
+
             ]);
         }
     }
@@ -239,5 +266,14 @@ class Detalles extends Component
             'title'   => $mensaje,
             'timeout' => 3000
         ]);
+    }
+
+    public function resetear()
+    {
+        # code...
+        $this->searchMedio = '';
+        $this->searchUbicacion = '';
+        $this->searchUnidad = '';
+        $this->searchStatus = '';
     }
 }

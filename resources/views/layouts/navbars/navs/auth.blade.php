@@ -1,6 +1,6 @@
 <!-- Navbar -->
 <nav class="navbar bg-dark navbar-expand-lg flex-md-nowrap px-0 py-0">
-    <div class="container-fluid ">
+    <div class="container-fluid flex items-center justify-between ">
         <div class="navbar-wrapper ">
             <div class="navbar-minimize">
                 <button id="minimizeSidebar" class="btn btn-just-icon btn-white btn-fab btn-round">
@@ -17,17 +17,41 @@
             <span class="navbar-toggler-icon icon-bar"></span>
             <span class="navbar-toggler-icon icon-bar"></span>
         </button>
+        <div class="flex justify-end py-2">
+            @if (request()->routeIs('calendario.general'))
+            <div class="flex items-center justify-end space-x-3">
+                <div class="whitespace-nowrap uppercase text-xs font-bold">
+                    <a href="{{ route('calendario.general', ['calendario' => 'general']) }}"
+                        class="px-3 py-2 bg-purple-700 text-white rounded-lg hover:bg-indigo-600">General</a>
+                </div>
+                <div class="whitespace-nowrap uppercase text-xs font-bold">
+                    <a href="{{ route('calendario.general', ['calendario' => 'airo']) }}"
+                        class="px-3 py-2 bg-purple-700 text-white rounded-lg hover:bg-indigo-600">Airó</a>
+                </div>
+                <div class="whitespace-nowrap uppercase text-xs font-bold">
+                    <a href="{{ route('calendario.general', ['calendario' => 'fashion']) }}"
+                        class="px-3 py-2 bg-purple-700 text-white rounded-lg hover:bg-indigo-600" href="#">Fashion
+                        Drive</a>
+                </div>
+                <div class="whitespace-nowrap uppercase text-xs font-bold">
+                    <a href="{{ route('calendario.general', ['calendario' => 'main']) }}"
+                        class="px-3 py-2 bg-purple-700 text-white rounded-lg hover:bg-indigo-600" href="#">Main
+                        Entrance</a>
+                </div>
+                <div class="whitespace-nowrap uppercase text-xs font-bold">
+                    <a href="{{ route('calendario.general', ['calendario' => 'showcenter']) }}"
+                        class="px-3 py-2 bg-purple-700 text-white rounded-lg hover:bg-indigo-600">Showcenter</a>
+                </div>
 
-        <div class="collapse navbar-collapse justify-content-end ">
+            </div>
+
+            @endif
+        </div>
+
+
+        <div class="collapse navbar-collapse justify-content-end w-full">
             <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="material-icons">support_agent</i>
-                        <p class="d-lg-none d-md-block">
-                            {{ __('Stats') }}
-                        </p>
-                    </a>
-                </li>
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProfile" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">

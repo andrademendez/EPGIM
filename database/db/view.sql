@@ -8,7 +8,9 @@ espacios.nombre
 FROM campania_espacio
     INNER JOIN campanias ON campania_espacio.id_campania = campanias.id
     INNER JOIN espacios ON campania_espacio.id_espacio = espacios.id
-where campanias.status = 'Confirmado';
+where campanias.status IN  ('Confirmado', 'Cerrado');
+
+
 /**view_espacio */
 CREATE VIEW vCampaniaEspacio AS
 SELECT campanias.id as id_campania,
@@ -18,12 +20,20 @@ end,
 campanias.status,
 display,
 hold,
+users.name AS users,
+clientes.nombre as cliente,
+medios.nombre AS medios,
 espacios.id as id_espacio,
 espacios.nombre
 FROM campania_espacio
     INNER JOIN campanias ON campania_espacio.id_campania = campanias.id
     INNER JOIN espacios ON campania_espacio.id_espacio = espacios.id
+     INNER JOIN users ON users.id = campanias.id_user
+    INNER JOIN clientes ON clientes.id = campanias.id_cliente
+    INNER JOIN medios ON medios.id = campanias.id_medio
 ORDER BY `hold` ASC;
+
+/** vCampanias **/
 CREATE VIEW vCampanias AS
 SELECT campanias.id AS id,
     title,
@@ -40,10 +50,12 @@ FROM campanias
     INNER JOIN clientes ON clientes.id = campanias.id_cliente
     INNER JOIN medios ON medios.id = campanias.id_medio
 ORDER BY `id` ASC;
+/** **/
 CREATE VIEW vEspacio AS
 SELECT campanias.id as campania,
     espacios.id as espacio,
-    espacios.nombre
+    espacios.nombre,
+    espacios.referencia
 FROM campania_espacio
     INNER JOIN campanias ON campania_espacio.id_campania = campanias.id
     INNER JOIN espacios ON campania_espacio.id_espacio = espacios.id

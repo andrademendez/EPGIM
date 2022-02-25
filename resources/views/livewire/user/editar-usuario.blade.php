@@ -3,7 +3,6 @@
         @if ($open == true)
         @include('pages.users.confirm')
         @endif
-
     </div>
     <x-link-return :href="route('user.index')">
         Volver a usuarios
@@ -50,10 +49,12 @@
                 <div class="pb-3 font-medium uppercase text-center text-sm">
                     <h2>Actualizar nombre</h2>
                 </div>
-                <form action="#" method="post">
+                <form method="post">
+                    @csrf
                     <div class="">
                         <x-form.label for="name">Nombre</x-form.label>
                         <x-input type="text" name="name" id="name" class="w-full" wire:model="name" required />
+                        @error('name') <span class="text-xs text-red-600">{{ $message }}</span> @enderror
                     </div>
                     <div class="pt-4">
                         <x-form.label for="email">Correo</x-form.label>
@@ -68,6 +69,7 @@
                                 <option value="{{ $rol->id }}">{{ $rol->nombre }}</option>
                                 @endforeach
                             </x-form.select>
+                            @error('rol') <span class="text-xs text-red-600">{{ $message }}</span> @enderror
                         </div>
                         <div class="col-span-2 flex items-end justify-end">
                             <x-button wire:click.prevent="updateData()" class="bg-purple-700">Actualizar</x-button>
@@ -81,7 +83,8 @@
                 <div class="pb-3 font-medium uppercase text-center text-sm">
                     <h2>Actualizar contraseña</h2>
                 </div>
-                <form action="#" method="post">
+                <form method="post">
+                    @csrf
                     <div class="">
                         <x-form.label for="password">Password</x-form.label>
                         <x-input type="password" name="password" wire:model="password" id="password" class="w-full"

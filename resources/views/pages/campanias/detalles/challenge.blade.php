@@ -8,7 +8,7 @@
     @endif
 
 
-    @if (empty($attachStatusFile) )
+    @if ($attachStatusFile->count() == 0 )
     <div class="inline-block  px-2 pb-4">
         <h1 class="text text-gray-700 text-sm">No dispone actualmente de alguna solicitud</h1>
         <div class="flex items-center mt-2">

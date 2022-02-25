@@ -18,10 +18,10 @@ class EditarUsuario extends Component
     public $id_usuario, $name, $email, $password, $repeat_password, $status, $id_rol, $profile;
     public $open;
 
-    public function updated($propertyName)
-    {
-        $this->validateOnly($propertyName);
-    }
+    // public function updated($propertyName)
+    // {
+    //     $this->validateOnly($propertyName);
+    // }
 
     public function openModal()
     {

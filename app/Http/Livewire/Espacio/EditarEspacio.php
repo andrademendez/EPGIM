@@ -30,6 +30,8 @@ class EditarEspacio extends Component
         'id_ubicacion' => 'required',
     ];
 
+    protected $listeners = ['reloadPage' => 'mount'];
+
     public function mount()
     {
         $espacio = Espacios::find($this->id_espacio);
@@ -69,6 +71,30 @@ class EditarEspacio extends Component
             $this->mount();
         }
     }
+
+    public function deshabilitar($id)
+    {
+        # code...
+        $espacio = Espacios::find($id);
+        if ($espacio->estatus == true) {
+            $espacio->estatus = false;
+            $espacio->save();
+
+            if ($espacio) {
+                toast()->success('Espacio deshabilitado!!')->push();
+                $this->emit('reloadPage');
+            }
+        } else {
+            $espacio->estatus = true;
+            $espacio->save();
+
+            if ($espacio) {
+                toast()->success('Espacio habilitado!!')->push();
+                $this->emit('reloadPage');
+            }
+        }
+    }
+
     public function render()
     {
         return view('livewire.espacio.editar-espacio', [

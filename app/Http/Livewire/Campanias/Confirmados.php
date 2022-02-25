@@ -73,7 +73,7 @@ class Confirmados extends Component
             if ($attach) {
                 $campania = Campanias::find($attach->id_campania);
                 $campania->status = 'Cerrado';
-                $campania->display = '#00ff64';
+                $campania->display = '#2eb74a';
                 $campania->created_at = now();
                 $campania->save();
                 if ($campania) {
@@ -89,14 +89,11 @@ class Confirmados extends Component
     {
         # code...
         $camp = AttachStatusFiles::where([
-            [
-                'id_campania',
-                $this->id_campania
-            ],
+            ['id_campania',  $this->id_campania],
             ['process', 'Cierre']
         ])->first();
 
-        if (isNull($camp)) {
+        if (empty($camp)) {
             $attach = new AttachStatusFiles();
             $attach->process = 'Cierre';
             $attach->status = 'Send';

@@ -17,8 +17,8 @@
     <script src="{{ asset('js/campanias.js') }}"></script>
     <script>
         $(document).ready(function () {
-            md.initFullCalendar();
-        });
+                md.initFullCalendar();
+            });
 
     </script>
     @endpush

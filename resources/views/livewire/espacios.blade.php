@@ -11,7 +11,15 @@
     </x-slot>
     <div class="mb-3 flex items-center justify-between">
         <x-form.search type="search" name="search" id="search" wire:model="search" placeholder="Buscar..." />
-        <div>
+        <div class="flex items-center justify-between">
+            <div>
+                <x-form.select name="" id="" wire:model="search_unidad">
+                    <option value="">Unidades</option>
+                    @foreach ($unidades as $unidad)
+                    <option value="{{ $unidad->id }}">{{ $unidad->nombre }}</option>
+                    @endforeach
+                </x-form.select>
+            </div>
             <x-form.btn-primary wire:click="openModal()">
                 <span class="pl-1">Agregar</span>
             </x-form.btn-primary>
@@ -46,9 +54,25 @@
             <x-table.td>${{ number_format($espacio->precio) }}.00</x-table.td>
             <x-table.td>
                 @if ($espacio->estatus)
-                Disponible
+                <button type="button" wire:click="deshabilitar({{ $espacio->id }})"
+                    class="text-green-700 bg-green-200  hover:text-green-600 rounded text-xs">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+
                 @else
-                Ocupado
+                <button type="button" wire:click="deshabilitar({{ $espacio->id }})"
+                    class="text-red-700 bg-red-200 hover:text-red-600  rounded text-xs">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+
                 @endif
             </x-table.td>
             <x-table.td>{{ $espacio->unidad->nombre }}</x-table.td>
@@ -56,13 +80,6 @@
             <x-table.td>{{ $espacio->ubicacion->nombre }}</x-table.td>
             <x-table.td>
                 <div class="flex items-center justify-center">
-                    <a href="#" class="">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z">
-                            </path>
-                        </svg>
-                    </a>
                     <x-nav-link :href="route('espacios.edit', $espacio->id)" class="text-indigo-700">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
