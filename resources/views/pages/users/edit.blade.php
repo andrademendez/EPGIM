@@ -8,29 +8,8 @@
 
         <livewire:user.editar-usuario :id_usuario="$usuario->id" />
         <div class="mt-4 mb-2">
-            <div class="grid grid-cols-6 gap-2">
-                <div class="md:col-span-4 col-span-6">
-                    <livewire:user.campanias :id_usuario="$usuario->id" />
-                </div>
-                <div class="md:col-span-2 col-span-6">
-                    {{-- <x-table.table>
-                        <x-slot name=theader>
-                            <x-table.th>Id</x-table.th>
-                            <x-table.th>Pantalla</x-table.th>
-                            <x-table.th>Total</x-table.th>
-                        </x-slot>
-                        @foreach($espacios as $espacio)
-                        <x-table.tr>
-                            <x-table.td>{{ $espacio->id }}</x-table.td>
-                            <x-table.td>{{ $espacio->nombre }}</x-table.td>
-                            <x-table.td>{{ $espacio->total }}</x-table.td>
-                        </x-table.tr>
-                        @endforeach
-                    </x-table.table> --}}
-                    <div class="w-full" class="">
-                        <canvas id="chartEspacios" class="max-h-60 md:max-h-72 h-full"></canvas>
-                    </div>
-                </div>
+            <div class="w-full">
+                <livewire:user.campanias :id_usuario="$usuario->id" />
             </div>
         </div>
     </x-content>

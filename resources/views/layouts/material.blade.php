@@ -75,10 +75,7 @@
     <script src="{{ asset('material/js/application.js') }}"></script>
     <script src="{{ asset('js/offcanvas.js') }}"></script>
     <script src="{{ asset('js/toast.js') }}"></script>
-
-
-
-
+    <script src="{{ asset('js/flowbite.js') }}"></script>
     @stack('js')
 
 </body>

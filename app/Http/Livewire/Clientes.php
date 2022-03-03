@@ -15,7 +15,7 @@ class Clientes extends Component
     use WithPagination, WireToast;
     use AuthorizesRequests;
 
-    public $open, $action, $search = '';
+    public $open, $action, $search = '', $searchUser = "";
     public $nombre, $contacto, $email, $telefono, $id_cliente, $usuario;
 
     protected $rules = [
@@ -122,7 +122,10 @@ class Clientes extends Component
     public function render()
     {
         return view('livewire.clientes', [
-            'clientes' => ModelsClientes::where('nombre', 'LIKE', "%$this->search%")->paginate(10),
+            'clientes' => ModelsClientes::where([
+                ['nombre', 'LIKE', "%$this->search%"],
+                ['id_user', 'LIKE', "%$this->searchUser%"],
+            ])->paginate(10),
             'users' => User::where('id_rol', 2)->get(),
         ]);
     }

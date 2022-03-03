@@ -40,7 +40,7 @@
             </div>
 
             <div class="pt-4 flex justify-end">
-                <x-form.btn-primary wire:click.prevent="store()">Guardar</x-form.btn-primary>
+                <x-form.btn-primary class="py-1.5" wire:click.prevent="store()">Guardar</x-form.btn-primary>
             </div>
         </form>
     </div>

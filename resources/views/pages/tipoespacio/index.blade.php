@@ -1,6 +1,6 @@
 <x-material-layout :activePage="'tipoespacio'" :menuParent="'administracion'">
-    <x-slot name="title">Tipos de Espacios</x-slot>
-    <x-slot name="titlePage">Tipos de Espacios </x-slot>
+    <x-slot name="title">Catálogos</x-slot>
+    <x-slot name="titlePage">Catálogos</x-slot>
     <x-content>
         <x-slot name="import">
         </x-slot>
@@ -23,7 +23,7 @@
                 <li class="mr-2">
                     <a href="#"
                         class="inline-block py-3 px-2 text-sm font-medium text-center text-gray-500 rounded-t-lg border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 "
-                        :class="{ 'itext-blue-600 border-blue-600 active' : tab === 'medios' }"
+                        :class="{ 'text-blue-600 border-blue-600 active' : tab === 'medios' }"
                         @click.prevent="tab = 'medios'">
                         <span class="material-icons">spatial_tracking</span>
                         <span class="ml-2">Medios</span>

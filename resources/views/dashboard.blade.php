@@ -6,8 +6,8 @@
         <div class="mx-auto">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-4 bg-white border-b border-gray-200">
-                    <div class="pb-3 text-lg font-medium">
-                        <h1>Overview</h1>
+                    <div class="text-xl font-semibold py-2 mb-3 border-b-2 border-violet-600">
+                        <span>Hola, {{ auth()->user()->name }}</span>
                     </div>
                     <div class="grid grid-cols-8 gap-2 ">
                         <div class="col-span-8 md:col-span-2  rounded-lg">
@@ -52,15 +52,28 @@
                         </div>
 
                     </div>
-                    <div class="grid grid-cols-6 gap-4 pt-5">
-                        <div class="col-span-6 md:col-span-2 md:col-span-2 shadow-lg px-2">
-                            <canvas id="ocupacionPorcentual" width="400" height="200"></canvas>
-                        </div>
-                        <div class="col-span-6 md:col-span-2 px-2 shadow-lg">
-                            <canvas id="ocupacionMonetaria" width="400" height="200"></canvas>
-                        </div>
-                        <div class="col-span-6 md:col-span-2 px-2 shadow-lg">
-                            <canvas id="ocupacionPorEspacio" width="400" height="200"></canvas>
+                    <div class=" ">
+                        <div class="grid grid-cols-6 gap-2 pt-5 ">
+                            <div class="col-span-4">
+                                <div class="grid grid-cols-4 gap-2">
+                                    <div class="col-span-4 md:col-span-2 shadow-lg  py-3 ">
+                                        <canvas id="ocupacionPorcentual" class="md:max-h-96"></canvas>
+                                    </div>
+                                    <div class="col-span-4 md:col-span-2 shadow-lg py-3">
+                                        <canvas id="ocupacionMonetaria" class="md:max-h-96 h-full"></canvas>
+                                    </div>
+                                    <div class="col-span-4 md:col-span-2 shadow-lg py-3">
+                                        <canvas id="ocupacionPorEspacio" class="md:max-h-96"></canvas>
+                                    </div>
+                                    <div class="col-span-4 md:col-span-2 shadow-lg py-3">
+                                        <canvas id="porEspacioPorcentual" class="md:max-h-96"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-span-2">
+
+                            </div>
+
                         </div>
                     </div>
                     <div class="mt-3 pt-2 grid grid-cols-6 gap-4 ">
@@ -125,7 +138,6 @@
                             </x-table.table>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -133,16 +145,32 @@
 
     @push('js')
     <script>
-        let totalEspacioVenta = {{Js::from($totalChart)}};
-        let totalVentaPorcentaje = {{Js::from($totalPorcentaje)}};
-        let unidadesNombre = {{Js::from($unidades->pluck('nombre'))}};
-        let unidadNombre = {{Js::from($ventaPorUnidad->pluck('unidad'))}};
-        let unidadTotal = {{Js::from($ventaPorUnidad->pluck('total'))}};
+        let totalEspacioVenta = {{
+                Js::from($totalChart)
+            }};
+        let totalVentaPorcentaje = {{
+                Js::from($totalPorcentaje)
+            }};
+        let unidadesNombre = {{
+                Js::from($unidades->pluck('nombre'))
+            }};
+        let unidadNombre = {{
+                Js::from($ventaPorUnidad->pluck('unidad'))
+            }};
+        let unidadTotal = {{
+                Js::from($ventaPorUnidad->pluck('total'))
+             }};
+        let negocioPorcentual = {{
+            Js::from($negocioPorcentual)
+        }};
 
         const ocupacionPorcentual = document.getElementById('ocupacionPorcentual');
-        // const ctx = document.getElementById('myChart');
         const ocupacionMonetaria = document.getElementById('ocupacionMonetaria');
+        // const ctx = document.getElementById('myChart');
+
         const ocupacionPorEspacio = document.getElementById('ocupacionPorEspacio');
+        const porEspacioPorcentual = document.getElementById('porEspacioPorcentual');
+
         new Chart(ocupacionPorcentual, {
             type: 'doughnut',
             data: {
@@ -165,6 +193,13 @@
                         display: true,
                         text: 'OCUPACIÓN PORCENTUAL',
                     },
+                    legend: {
+                        labels: {
+                            usePointStyle: true,
+                            pointStyle: 'rectRot',
+                            pointRadius: 5,
+                        },
+                    }
                 },
             }
         });
@@ -173,7 +208,6 @@
             data: {
                 labels: ['Ocupado', 'Disponible'],
                 datasets: [{
-                    label: '# of Votes',
                     data: totalEspacioVenta,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)', 'rgba(75, 192, 192, 0.2)',
@@ -190,6 +224,13 @@
                     title: {
                         display: true,
                         text: 'OCUPACIÓN MONETARIA',
+                    },
+                    legend: {
+                        labels: {
+                            usePointStyle: true,
+                            pointStyle: 'rectRot',
+                            pointRadius: 5,
+                        },
                     }
                 }
             }
@@ -199,8 +240,47 @@
             type: 'doughnut',
             data: {
                 labels: unidadNombre,
+                labels: unidadNombre,
                 datasets: [{
-                    data: unidadTotal,
+                    data: unidadTotal,data: unidadTotal,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'NEGOCIO MONETARIA',
+                    },
+                    legend: {
+                        labels: {
+                            usePointStyle: true,
+                            pointStyle: 'rectRot',
+                            pointRadius: 5,
+                        },
+                    }
+                }
+            }
+        });
+
+        new Chart(porEspacioPorcentual, {
+            type: 'doughnut',
+            data: {
+                labels: unidadNombre,
+                datasets: [{
+                    data: negocioPorcentual,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
@@ -221,6 +301,13 @@
                     title: {
                         display: true,
                         text: 'NEGOCIO PORCENTUAL',
+                    },
+                    legend: {
+                        labels: {
+                            usePointStyle: true,
+                            pointStyle: 'rectRot',
+                            pointRadius: 5,
+                        },
                     }
                 }
             }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Exports\CampaniaExport;
 use App\Http\Controllers\CampaniaController;
 use App\Mail\ChallengeNotification;
 use App\Mail\NotificarAdministrador;
@@ -23,6 +24,7 @@ use Illuminate\Support\Facades\Storage;
 use DateTime;
 use Usernotnull\Toast\Concerns\WireToast;
 use Illuminate\Support\Facades\Mail;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Detalles extends Component
 {
@@ -256,6 +258,18 @@ class Detalles extends Component
 
             ]);
         }
+    }
+
+    public function exportExcel()
+    {
+
+        return Excel::download(new CampaniaExport($this->searchStatus, $this->searchMedio), 'campañas.xlsx');
+    }
+
+    public function exportPDF()
+    {
+
+        // return Excel::download(new CampaniaExport($this->searchStatus, $this->searchMedio), 'campañas.pdf');
     }
 
     public function showAlert($mensaje, $icons)

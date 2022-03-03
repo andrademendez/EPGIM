@@ -9,7 +9,7 @@
             <x-form.search type="search" name="buscar" wire:model="buscar" id="buscar" placeholder="Buscar..." />
         </div>
         <div>
-            <x-form.btn-primary wire:click="openModal()">Registrar</x-form.btn-primary>
+            <x-form.btn-primary wire:click="openModal()" class="py-1.5">Registrar</x-form.btn-primary>
         </div>
     </div>
 

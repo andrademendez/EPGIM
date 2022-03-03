@@ -27,6 +27,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/eventos/airo', [CalendarioController::class, 'getCampaniaAiro']);
     Route::get('/eventos/main', [CalendarioController::class, 'getCampaniaMain']);
     Route::get('/eventos/fashion', [CalendarioController::class, 'getCampaniaFashion']);
+    Route::get('/campania/manager', [CalendarioController::class, 'managerCampania'])->name('campania.manager');
 
     //
     Route::get('/all/only_espacio', [CampaniaController::class, 'getEspacios']);

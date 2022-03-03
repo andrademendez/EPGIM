@@ -99,6 +99,7 @@ class CampaniaController extends Controller
                     return response()->json(['success', 'Campaña registrado!!']);
                 }
             } else {
+
                 $confirmados = $this->getConfirmado($request->start, $request->end, $request->espacio);
                 if ($confirmados->count() == 0) {
 
@@ -238,21 +239,32 @@ class CampaniaController extends Controller
     public function agregarEspacio(Request $request)
     {
         //$this->authorize('update', Calendario::class);
+        $validator = Validator::make($request->all(), [
+            'espacios' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['info', 'El campo espacio es requerido!']);
+            //return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
+        }
+
         $user = Auth::id();
         $id = $request->id;
         $campania = Campanias::find($id);
-
-        if ($user == $campania->id_user) {
-            $existen = $this->validarEspacio($campania->start, $campania->end, $request->espacios);
-            if ($existen <= 12) {
-                $campania->espacios()->syncWithoutDetaching($request->espacios);
-                $espacio = $this->getConsultaEspacio($id);
-                return response()->json($espacio);
-            } else {
-                return response()->json(['info', 'El espacio esta reservado']);
-            }
+        if ($campania->status = 'Confirmado' || $campania->status == 'Cerrado') {
+            return response()->json(['info', 'Ya no puedes agregar espacio una ves confirmado']);
         } else {
-            return response()->json(['info', 'No tienes los permisos necesarios']);
+            if ($user == $campania->id_user) {
+                $existen = $this->validarEspacio($campania->start, $campania->end, $request->espacios);
+                if ($existen <= 12) {
+                    $campania->espacios()->syncWithoutDetaching($request->espacios);
+                    $espacio = $this->getConsultaEspacio($id);
+                    return response()->json($espacio);
+                } else {
+                    return response()->json(['info', 'El espacio esta reservado']);
+                }
+            } else {
+                return response()->json(['info', 'No tienes los permisos necesarios']);
+            }
         }
     }
     //quitar espacio en el formulario de editar
@@ -260,13 +272,13 @@ class CampaniaController extends Controller
     {
         $user = Auth::id();
         $espacio = $request->espacio;
-        $evento = Campanias::findOrFail($request->id);
+        $campania = Campanias::findOrFail($request->id);
         try {
-            if ($user == $evento->id_user) {
-                if ($evento->status == 'Confirmado') {
+            if ($user == $campania->id_user) {
+                if ($campania->status == 'Confirmado' || $campania->status == 'Cerrado') {
                     return response()->json(['info', 'Espacios reservados no se pueden eliminar']);
                 } else {
-                    $delof = $evento->espacios()->detach($espacio);
+                    $delof = $campania->espacios()->detach($espacio);
                     if ($delof) {
                         $espacios = $this->getConsultaEspacio($request->id);
                         return response()->json($espacios);
@@ -384,6 +396,8 @@ class CampaniaController extends Controller
 
         return $result;
     }
+
+
     //funciones para validar la asigancion de eventos a registrar
     //validacion de los espacios, si no está ocupados
     function validarEspacio($start, $end, $espacio)
@@ -488,36 +502,63 @@ class CampaniaController extends Controller
 
     public function test()
     {
-        # total vendido
-        $totals = array();
-        $unidad = array();
-        // $total;
-        $totalVendido = DB::table('campania_espacio')
+
+        $start = "2022-03-01";
+        $end = "2022-03-30";
+        $espacios = [1, 15];
+
+        foreach ($espacios as $value) {
+            # code...
+
+            $espacio = Espacios::find($value);
+            if ($espacio->tipo->nombre == "Pantalla digital") {
+                # code...
+                $vars[] = $this->getConfirmado2($start, $end, $value);
+            }
+        }
+        if (empty($vars)) {
+            # code...
+            echo "vacio";
+        } else {
+            foreach ($vars as $v) {
+                if ($v <= 12) {
+                    echo "espacio disponible";
+                } else {
+                    echo "insertar campaña";
+                }
+            }
+        }
+        $invoices = DB::table('campania_espacio')
             ->join('campanias', 'campanias.id', '=', 'campania_espacio.id_campania')
+            ->join('clientes', 'clientes.id', '=', 'campanias.id_cliente')
+            ->join('medios', 'medios.id', '=', 'campanias.id_medio')
             ->join('espacios', 'espacios.id', '=', 'campania_espacio.id_espacio')
             ->join('unidades_negocios', 'unidades_negocios.id', '=', 'espacios.id_unidad_negocio')
-            ->selectRaw('sum(precio) as total, unidades_negocios.nombre as unidad')
-            ->whereIn('status', ['Confirmado', 'Cerrado'])
-            ->groupBy('unidad')
+            ->join('tipos_espacios', 'tipos_espacios.id', '=', 'espacios.id_tipo_espacio')
+            ->join('ubicaciones_espacios', 'ubicaciones_espacios.id', '=', 'espacios.id_ubicacion')
+            ->selectRaw("campanias.*, medios.nombre as medio, clientes.contacto as contacto, clientes.nombre as cliente, espacios.*, unidades_negocios.nombre as unidad, tipos_espacios.nombre as tipo, ubicaciones_espacios.nombre as ubicacion")
             ->get();
-        foreach ($totalVendido as $total) {
-            # code...
-            $totals = ($total->total * 100) / $totalVendido->sum('total');
-            $unidad[] = ($total->unidad);
-            $toatl[] = [round($totals, 2)];
-        }
-        foreach ($toatl as $key => $total) {
-            # code...
-            $total[] = $total[0];
-        }
-        //$totalVendido = $totalVendido->pluck('unidad');
-        $camp = AttachStatusFiles::where([
-            ['id_campania',  9],
-            ['process', 'Cierre']
-        ])->first();
-        dd(empty($camp));
+
+        return ($invoices);
     }
 
+    function getConfirmado2($start, $end, $espacio)
+    {
+        $date_start = new DateTime($start);
+        $date_start = $date_start->format('Y-m-d');
+
+        $date_end = new DateTime($end);
+        $date_end = $date_end->format('Y-m-d');
+
+        $result = DB::table('vFechaBloqueov2')
+            ->selectRaw('count(estatus) as total, estatus, fecha')
+            ->whereBetween('fecha', [$date_start, $date_end])
+            ->where('id_pantalla', $espacio)
+            ->whereIn('estatus', ['Confirmado', 'Cerrado'])
+            ->groupBy('fecha', 'pantalla')->get();
+        $total = $result->max('total');
+        return $total;
+    }
     public function challege($id)
     {
 

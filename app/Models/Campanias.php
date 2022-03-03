@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use DateTime;
+use Illuminate\Support\Facades\DB;
 
 class Campanias extends Model
 {
@@ -31,6 +32,16 @@ class Campanias extends Model
         return $dateF;
     }
 
+    public function costoCampania($id)
+    {
+        $costo = DB::table('campania_espacio')
+            ->join('campanias', 'campanias.id', '=', 'campania_espacio.id_campania')
+            ->join('espacios', 'espacios.id', '=', 'campania_espacio.id_espacio')
+            ->selectRaw("sum(precio) as costo")
+            ->where('campania_espacio.id_campania', '=', $id)->first();
+
+        return $costo->costo;
+    }
     public function espacios()
     {
         return $this->belongsToMany(Espacios::class, 'campania_espacio', 'id_campania', 'id_espacio');

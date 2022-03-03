@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Campanias;
 use App\Models\Espacios;
 use App\Models\UnidadesNegocios;
 use App\Models\User;
@@ -36,7 +37,9 @@ class HomeController extends Controller
 
         $ventaUnidad = $this->unidadVenta();
         $ventaPorUnidad = $this->ventaPorUnidad();
-        return view('dashboard', compact('totalVenta', 'totalChart', 'totalPorcentaje', 'unidades', 'ventaUnidad', 'ventaPorUnidad'));
+        $negocioPorcentual = $this->porcentajePorUnidad();
+        //$espacios = Espacios::selectRaw('')->get();
+        return view('dashboard', compact('totalVenta', 'totalChart', 'totalPorcentaje', 'unidades', 'ventaUnidad', 'ventaPorUnidad', 'negocioPorcentual'));
     }
 
     public function unidadVenta()
@@ -67,10 +70,11 @@ class HomeController extends Controller
         $totales['Fashion Drive'] =  $varl2;
         $totales['Main Entrance'] = $varl3;
         $totales['Showcenter'] = $varl4;
+
         return ($totales);
     }
 
-    public function ventaPorUnidad()
+    private function ventaPorUnidad()
     {
         # code...
         $totalVendido = DB::table('campania_espacio')
@@ -84,6 +88,20 @@ class HomeController extends Controller
         return $totalVendido;
     }
 
+    private function porcentajePorUnidad()
+    {
+        # code...
+        $totalVendido = $this->ventaPorUnidad();
+        foreach ($totalVendido as $total) {
+            # code...
+            $totals[] = [(($total->total * 100) / $totalVendido->sum('total'))];
+            $unidad[] = ($total->unidad);
+        }
+        //$totalVendido = $totalVendido->pluck('unidad');
+        $t[] = round($totals[0][0], 2);
+        $t[] =  round($totals[1][0], 2);
+        return ($t);
+    }
     public function ciudad()
     {
         $this->authorize('viewAny', User::class);

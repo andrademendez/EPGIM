@@ -1,6 +1,6 @@
 <x-material-layout :activePage="'campania'" :menuParent="'calendario'">
     <x-slot name="title">Campañas</x-slot>
-    <x-slot name="titlePage">Calendario</x-slot>
+    <x-slot name="titlePage">Campañas</x-slot>
     <x-content>
         <x-slot name="import">
             @include("pages.campanias.create")

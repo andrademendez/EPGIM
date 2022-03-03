@@ -22,25 +22,27 @@
             <div class="flex items-center justify-end space-x-3">
                 <div class="whitespace-nowrap uppercase text-xs font-bold">
                     <a href="{{ route('calendario.general', ['calendario' => 'general']) }}"
-                        class="px-3 py-2 bg-purple-700 text-white rounded-lg hover:bg-indigo-600">General</a>
+                        class="px-3 py-2 border-b-2 border-indigo-700 text-white rounded-lg hover:bg-gray-700">General</a>
                 </div>
                 <div class="whitespace-nowrap uppercase text-xs font-bold">
                     <a href="{{ route('calendario.general', ['calendario' => 'airo']) }}"
-                        class="px-3 py-2 bg-purple-700 text-white rounded-lg hover:bg-indigo-600">Airó</a>
+                        class="px-3 py-2 border-b-2 border-indigo-700 text-white rounded-lg hover:bg-gray-700"">Airó</a>
                 </div>
-                <div class="whitespace-nowrap uppercase text-xs font-bold">
-                    <a href="{{ route('calendario.general', ['calendario' => 'fashion']) }}"
-                        class="px-3 py-2 bg-purple-700 text-white rounded-lg hover:bg-indigo-600" href="#">Fashion
-                        Drive</a>
+                <div class=" whitespace-nowrap uppercase text-xs font-bold">
+                        <a href="{{ route('calendario.general', ['calendario' => 'fashion']) }}"
+                            class="px-3 py-2 border-b-2 border-indigo-700 text-white rounded-lg hover:bg-gray-700"" href="
+                            #">Fashion
+                            Drive</a>
                 </div>
                 <div class="whitespace-nowrap uppercase text-xs font-bold">
                     <a href="{{ route('calendario.general', ['calendario' => 'main']) }}"
-                        class="px-3 py-2 bg-purple-700 text-white rounded-lg hover:bg-indigo-600" href="#">Main
+                        class="px-3 py-2 border-b-2 border-indigo-700 text-white rounded-lg hover:bg-gray-700"" href="
+                        #">Main
                         Entrance</a>
                 </div>
                 <div class="whitespace-nowrap uppercase text-xs font-bold">
                     <a href="{{ route('calendario.general', ['calendario' => 'showcenter']) }}"
-                        class="px-3 py-2 bg-purple-700 text-white rounded-lg hover:bg-indigo-600">Showcenter</a>
+                        class="px-3 py-2 border-b-2 border-indigo-700 text-white rounded-lg hover:bg-gray-700"">Showcenter</a>
                 </div>
 
             </div>
@@ -49,34 +51,35 @@
         </div>
 
 
-        <div class="collapse navbar-collapse justify-content-end w-full">
-            <ul class="navbar-nav">
+        <div class=" collapse navbar-collapse justify-content-end w-full">
+                        <ul class="navbar-nav">
 
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProfile" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        <i class="material-icons">person</i>
-                        <p class="d-lg-none d-md-block">
-                            {{ __('Cuenta') }}
-                        </p>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
-                        <a class="dropdown-item" href="{{ route('perfil.edit', auth()->user()->id) }}">{{ __('Perfil')
-                            }}</a>
-                        <div class="dropdown-divider"></div>
-                        <div class="dropdown-item">
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <x-nav-items :href="route('logout')" onclick="event.preventDefault();
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProfile"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="material-icons">person</i>
+                                    <p class="d-lg-none d-md-block">
+                                        {{ __('Cuenta') }}
+                                    </p>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
+                                    <a class="dropdown-item" href="{{ route('perfil.edit', auth()->user()->id) }}">{{
+                                        __('Perfil')
+                                        }}</a>
+                                    <div class="dropdown-divider"></div>
+                                    <div class="dropdown-item">
+                                        <form method="POST" action="{{ route('logout') }}">
+                                            @csrf
+                                            <x-nav-items :href="route('logout')" onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                    {{ __('Cerrar sesión') }}
-                                </x-nav-items>
-                            </form>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
+                                                {{ __('Cerrar sesión') }}
+                                            </x-nav-items>
+                                        </form>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                </div>
+            </div>
 </nav>
 <!-- End Navbar -->

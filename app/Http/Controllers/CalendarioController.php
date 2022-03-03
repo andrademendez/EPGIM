@@ -111,4 +111,9 @@ class CalendarioController extends Controller
             ->get();
         return response()->json($campanias);
     }
+
+    public function managerCampania()
+    {
+        return view('pages.calendarios.configuracion');
+    }
 }

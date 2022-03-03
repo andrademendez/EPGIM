@@ -82,7 +82,7 @@
                                         <span>Fecha inicio</span>
                                     </div>
                                 </x-form.label>
-                                <x-input id="start" name="start" type="text" class="mt-2"
+                                <x-input id="start" name="start" type="text" class="mt-2 datepicker"
                                     title="Inicio de la campaña" />
 
                             </div>
@@ -97,7 +97,8 @@
                                         <span>Fecha fin</span>
                                     </div>
                                 </x-form.label>
-                                <x-input id="end" name="end" type="text" class="mt-2" title="Fin de la campaña" />
+                                <x-input id="end" name="end" type="text" class="mt-2 datepicker"
+                                    title="Fin de la campaña" />
                             </div>
 
                             <div class="col-span-4 py-2">
@@ -127,7 +128,8 @@
                     </div>
                     <!-- Fecha Inicio-->
                     <div class="mt-3 flex justify-between px-10 ">
-                        <x-form.btn-secondary class="bg-gray-700" id="cancel" type="button" data-dismiss="modal">Cerrar
+                        <x-form.btn-secondary class="bg-gray-700 py-1.5" id="cancel" type="button" data-dismiss="modal">
+                            Cerrar
                         </x-form.btn-secondary>
                         <x-form.btn-primary id="save" type="submit">Agregar</x-form.btn-primary>
                     </div>

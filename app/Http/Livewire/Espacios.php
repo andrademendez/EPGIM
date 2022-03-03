@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Exports\EspaciosExport;
 use App\Models\Campanias;
 use App\Models\Espacios as ModelsEspacios;
 use App\Models\TiposEspacios;
@@ -10,7 +11,7 @@ use App\Models\UnidadesNegocios;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
-use phpDocumentor\Reflection\Types\This;
+use Maatwebsite\Excel\Facades\Excel;
 use Usernotnull\Toast\Concerns\WireToast;
 
 class Espacios extends Component
@@ -18,7 +19,7 @@ class Espacios extends Component
     use WithPagination;
     use WireToast;
 
-    public $search = '', $open, $action, $search_unidad;
+    public $search = '', $open, $action, $searchTipo, $searchUbicacion, $search_unidad;
     public $id_espacio, $nombre, $referencia, $clave, $medidas, $cantidad, $precio, $id_unidad, $id_tipo, $id_ubicacion;
 
     protected $queryString = [
@@ -112,13 +113,11 @@ class Espacios extends Component
             $espacio->id_ubicacion = $this->id_ubicacion;
             $espacio->save();
             if ($espacio) {
-                $this->showAlert('Espacio registrado!', 'success');
+                toast()->success('Espacio registrado!!')->push();
                 $this->closeModal();
-            } else {
-                $this->showAlert('Verifica tus datos!', 'error');
             }
         } catch (\Throwable $th) {
-            $this->showAlert('Verifica tus datos!', 'error');
+            toast()->warning('Verifica tus datos!!')->push();
         }
     }
 
@@ -144,14 +143,26 @@ class Espacios extends Component
             }
         }
     }
+    public function exportExcel()
+    {
 
+        return Excel::download(new EspaciosExport($this->search_unidad, $this->searchTipo, $this->searchUbicacion), 'espacios.xlsx');
+    }
+
+    public function exportPDF()
+    {
+
+        // return Excel::download(new EspaciosExport($this->search_unidad, $this->searchTipo, $this->searchUbicacion), 'espacios.pdf');
+    }
     public function render()
     {
         return view('livewire.espacios', [
             'espacios' => ModelsEspacios::where(
                 [
                     ['nombre', 'LIKE', "%$this->search%"],
-                    ['id_unidad_negocio', 'LIKE', "%$this->search_unidad%"]
+                    ['id_unidad_negocio', 'LIKE', "%$this->search_unidad%"],
+                    ['id_tipo_espacio', 'LIKE', "%$this->searchTipo%"],
+                    ['id_ubicacion', 'LIKE', "%$this->searchUbicacion%"]
                 ]
             )->paginate(15),
             'ubicaciones' => Ubicacion::all(),
@@ -160,13 +171,12 @@ class Espacios extends Component
         ]);
     }
 
-    public function showAlert($mensaje, $icons)
+    public function resetear()
     {
-        $this->emit('swal:alert', [
-            'icon' => $icons,
-            'type'    => 'success',
-            'title'   => $mensaje,
-            'timeout' => 3000
-        ]);
+        # code...
+        $this->search = '';
+        $this->search_unidad = '';
+        $this->searchTipo = '';
+        $this->searchUbicacion = '';
     }
 }

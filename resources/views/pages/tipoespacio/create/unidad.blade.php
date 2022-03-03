@@ -4,7 +4,8 @@
         <form action="#" method="post">
             <div class="pt-3">
                 <x-form.label for="nombre">Nombre</x-form.label>
-                <x-input type="text" name="nombre" wire:model="nombre" id="nombre" placeholder="Nombre de la unidad" class="w-full" required />
+                <x-input type="text" name="nombre" wire:model="nombre" id="nombre" placeholder="Nombre de la unidad"
+                    class="w-full" required />
             </div>
             <div class="pt-3">
                 <x-form.label for="ciudad">Municipio</x-form.label>

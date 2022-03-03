@@ -16,7 +16,7 @@ class Campanias extends Component
     {
         return view('livewire.user.campanias', [
             'campanias' => ModelsCampanias::where('id_user', $this->id_usuario)
-                ->orderBy('created_at', 'asc')
+                ->orderBy('created_at', 'desc')
                 ->paginate(10),
 
         ]);
