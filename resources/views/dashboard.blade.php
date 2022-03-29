@@ -12,7 +12,7 @@
                     <div class="grid grid-cols-8 gap-2 ">
                         <div class="col-span-8 md:col-span-2  rounded-lg">
                             <x-dashboard.card>
-                                <h1 class="text-2xl font-bold">${{number_format($totalVenta) }}.00</h1>
+                                <h1 class="text-2xl font-bold">${{ number_format($totalVenta) }}.00</h1>
                                 <span class="text-sm uppercase text-gray-100 font-medium">Costo Total de Espacios</span>
                             </x-dashboard.card>
                         </div>
@@ -20,31 +20,33 @@
                             <div class="grid grid-cols-8 gap-2">
                                 <div class="col-span-4 md:col-span-2 rounded-lg">
                                     <x-dashboard.card>
-                                        <h1 class="text-xl font-bold">${{ number_format($ventaUnidad['Airó']) }}.00
+                                        <h1 class="text-xl font-bold">
+                                            ${{ number_format($ventaUnidad['Airó'], 2) }}
                                         </h1>
                                         <span class="text-sm uppercase text-gray-100 font-medium">Airó</span>
                                     </x-dashboard.card>
                                 </div>
                                 <div class="col-span-4 md:col-span-2 rounded-lg">
                                     <x-dashboard.card>
-                                        <h1 class="text-xl font-bold">${{ number_format($ventaUnidad['Fashion Drive'])
-                                            }}.00
+                                        <h1 class="text-xl font-bold">
+                                            ${{ number_format($ventaUnidad['Fashion Drive'], 2) }}
                                         </h1>
                                         <span class="text-sm uppercase text-gray-100 font-medium">Fashion Drive</span>
                                     </x-dashboard.card>
                                 </div>
                                 <div class="col-span-4 md:col-span-2 rounded-lg">
                                     <x-dashboard.card>
-                                        <h1 class="text-xl font-bold">${{ number_format($ventaUnidad['Main Entrance'])
-                                            }}.00
+                                        <h1 class="text-xl font-bold">
+                                            ${{ number_format($ventaUnidad['Main Entrance'], 2) }}
                                         </h1>
                                         <span class="text-sm uppercase text-gray-100 font-medium">Main Entrance</span>
                                     </x-dashboard.card>
                                 </div>
                                 <div class="col-span-4 md:col-span-2 rounded-lg">
                                     <x-dashboard.card>
-                                        <h1 class="text-xl font-bold">${{ number_format($ventaUnidad['Showcenter'])
-                                            }}.00</h1>
+                                        <h1 class="text-xl font-bold">
+                                            ${{ number_format($ventaUnidad['Showcenter'], 2) }}
+                                        </h1>
                                         <span class="text-sm uppercase text-gray-100 font-medium">Showcenter</span>
                                     </x-dashboard.card>
                                 </div>
@@ -53,91 +55,33 @@
 
                     </div>
                     <div class=" ">
-                        <div class="grid grid-cols-6 gap-2 pt-5 ">
-                            <div class="col-span-4">
-                                <div class="grid grid-cols-4 gap-2">
-                                    <div class="col-span-4 md:col-span-2 shadow-lg  py-3 ">
-                                        <canvas id="ocupacionPorcentual" class="md:max-h-96"></canvas>
-                                    </div>
-                                    <div class="col-span-4 md:col-span-2 shadow-lg py-3">
-                                        <canvas id="ocupacionMonetaria" class="md:max-h-96 h-full"></canvas>
-                                    </div>
-                                    <div class="col-span-4 md:col-span-2 shadow-lg py-3">
-                                        <canvas id="ocupacionPorEspacio" class="md:max-h-96"></canvas>
-                                    </div>
-                                    <div class="col-span-4 md:col-span-2 shadow-lg py-3">
-                                        <canvas id="porEspacioPorcentual" class="md:max-h-96"></canvas>
-                                    </div>
-                                </div>
+                        <div class="grid grid-cols-5 gap-2 pt-5 ">
+                            <div class="col-span-4 md:col-span-2 shadow-lg  py-3 ">
+                                <canvas id="ocupacionPorcentual" class=""></canvas>
                             </div>
-                            <div class="col-span-2">
-
+                            <div class="col-span-4 md:col-span-3 shadow-lg py-3">
+                                <canvas id="ocupacionMonetariaB" height="200"></canvas>
                             </div>
-
+                            <div class="col-span-4 md:col-span-2 shadow-lg py-3">
+                                <canvas id="porEspacioPorcentual"></canvas>
+                            </div>
+                            <div class="col-span-4 md:col-span-3 shadow-lg py-3">
+                                <canvas id="ocupacionPorEspacioB" height="200"></canvas>
+                            </div>
                         </div>
                     </div>
-                    <div class="mt-3 pt-2 grid grid-cols-6 gap-4 ">
-                        <div class="col-span-6 md:col-span-2 ">
-                            <div class="shadow-lg rounded-lg p-3  m-2">
-                                <div class="py-4  font-medium text-sm ">
-                                    <h1>Data dristribution</h1>
-                                </div>
-                                <div class="grid grid-cols-4 gap-2">
-                                    <div class="col-span-3">
-                                        <ul class="text-sm font-normal text-gray-500 px-4 list-disc space-y-3">
-                                            <li>Airó</li>
-                                            <li>Fashion Drive</li>
-                                            <li>Main Entrance</li>
-                                            <li>Showcenter</li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-span-1">
-                                        <ul class="text-sm font-normal text-gray-500 px-1 space-y-3">
-                                            <li>10</li>
-                                            <li>2</li>
-                                            <li>4</li>
-                                            <li>5</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="grid grid-cols-3 gap-3 ">
+                        <div class="py-2 mt-3 grid-cols-3 md:col-span-2">
+
+                            <livewire:inicio.espacios-frecuentes />
                         </div>
-                        <div class="col-span-6 md:col-span-4 shadow-lg p-3 rounded-lg  m-2">
-                            <div class="py-3">
-                                <h1>Productos populares</h1>
-                            </div>
-                            <x-table.table>
-                                <x-slot name="theader">
-                                    <x-table.th>Pantalla</x-table.th>
-                                    <x-table.th>Tipo</x-table.th>
-                                    <x-table.th>Ubicacion</x-table.th>
-                                    <x-table.th>Precio</x-table.th>
-                                    <x-table.th>Fecha</x-table.th>
-                                </x-slot>
-                                <x-table.tr>
-                                    <x-table.td>L1</x-table.td>
-                                    <x-table.td>Digital</x-table.td>
-                                    <x-table.td>Exterior</x-table.td>
-                                    <x-table.td>$120,000.00</x-table.td>
-                                    <x-table.td>10 enero 2022</x-table.td>
-                                </x-table.tr>
-                                <x-table.tr>
-                                    <x-table.td>L2</x-table.td>
-                                    <x-table.td>Digital</x-table.td>
-                                    <x-table.td>Exterior</x-table.td>
-                                    <x-table.td>$180,000.00</x-table.td>
-                                    <x-table.td>31 diciembre 2021</x-table.td>
-                                </x-table.tr>
-                                <x-table.tr>
-                                    <x-table.td>L3</x-table.td>
-                                    <x-table.td>Digital</x-table.td>
-                                    <x-table.td>Exterior</x-table.td>
-                                    <x-table.td>$143,000.00</x-table.td>
-                                    <x-table.td>31 diciembre 2021</x-table.td>
-                                </x-table.tr>
-                            </x-table.table>
+                        <div class="py-2 mt-3 grid-cols-3 md:col-span-1">
+
+                            <livewire:inicio.mejores-clientes />
                         </div>
                     </div>
+
+
                 </div>
             </div>
         </div>
@@ -159,16 +103,17 @@
             }};
         let unidadTotal = {{
                 Js::from($ventaPorUnidad->pluck('total'))
-             }};
+            }};
         let negocioPorcentual = {{
-            Js::from($negocioPorcentual)
-        }};
+                Js::from($negocioPorcentual)
+            }};
 
         const ocupacionPorcentual = document.getElementById('ocupacionPorcentual');
-        const ocupacionMonetaria = document.getElementById('ocupacionMonetaria');
+        const ocupacionMonetariaB = document.getElementById('ocupacionMonetariaB');
         // const ctx = document.getElementById('myChart');
 
-        const ocupacionPorEspacio = document.getElementById('ocupacionPorEspacio');
+
+        const ocupacionPorEspacioB = document.getElementById('ocupacionPorEspacioB');
         const porEspacioPorcentual = document.getElementById('porEspacioPorcentual');
 
         new Chart(ocupacionPorcentual, {
@@ -203,11 +148,13 @@
                 },
             }
         });
-        new Chart(ocupacionMonetaria, {
-            type: 'doughnut',
+
+        new Chart(ocupacionMonetariaB, {
+            type: 'bar',
             data: {
                 labels: ['Ocupado', 'Disponible'],
                 datasets: [{
+                    label: 'OCUPACIÓN MONETARIA',
                     data: totalEspacioVenta,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)', 'rgba(75, 192, 192, 0.2)',
@@ -220,57 +167,17 @@
                 }]
             },
             options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
                 plugins: {
                     title: {
                         display: true,
                         text: 'OCUPACIÓN MONETARIA',
                     },
-                    legend: {
-                        labels: {
-                            usePointStyle: true,
-                            pointStyle: 'rectRot',
-                            pointRadius: 5,
-                        },
-                    }
-                }
-            }
-        });
 
-        new Chart(ocupacionPorEspacio, {
-            type: 'doughnut',
-            data: {
-                labels: unidadNombre,
-                labels: unidadNombre,
-                datasets: [{
-                    data: unidadTotal,data: unidadTotal,
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'NEGOCIO MONETARIA',
-                    },
-                    legend: {
-                        labels: {
-                            usePointStyle: true,
-                            pointStyle: 'rectRot',
-                            pointRadius: 5,
-                        },
-                    }
                 }
             }
         });
@@ -282,11 +189,9 @@
                 datasets: [{
                     data: negocioPorcentual,
                     backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)',
                         'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)',
                         'rgba(255, 159, 64, 0.2)'
                     ],
                     borderColor: [
@@ -313,8 +218,40 @@
             }
         });
 
-    </script>
+        new Chart(ocupacionPorEspacioB, {
+            type: 'bar',
+            data: {
+                labels: unidadNombre,
+                datasets: [{
+                    label: 'NEGOCIO MONETARIA',
+                    data: unidadTotal,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'NEGOCIO MONETARIA',
+                    },
+                    label: {
+                        display: false,
 
+                    }
+                }
+            }
+        });
+    </script>
     @endpush
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NotificarAdministrador;
 use App\Models\AttachStatusFiles;
 use App\Models\Bloqueos;
 use App\Models\Campanias;
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use DateTime;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Mail;
 use PhpParser\Node\Stmt\Foreach_;
 
 use function PHPUnit\Framework\isNull;
@@ -539,7 +541,30 @@ class CampaniaController extends Controller
             ->selectRaw("campanias.*, medios.nombre as medio, clientes.contacto as contacto, clientes.nombre as cliente, espacios.*, unidades_negocios.nombre as unidad, tipos_espacios.nombre as tipo, ubicaciones_espacios.nombre as ubicacion")
             ->get();
 
-        return ($invoices);
+        $clientes = DB::table('campania_espacio')
+            ->join('espacios', 'campania_espacio.id_espacio', '=', 'espacios.id')
+            ->join('campanias', 'campania_espacio.id_campania', '=', 'campanias.id')
+            ->join('clientes', 'campanias.id_cliente', '=', 'clientes.id')
+            ->selectRaw('clientes.nombre as cliente, count(campanias.id) as total, sum(espacios.precio) as importe')
+            ->where(
+                'campanias.end',
+                '<',
+                now()
+            )
+            ->whereIn(
+                'campanias.status',
+                ['Confirmado', 'Cerrado']
+            )
+            ->groupBy('clientes.id')
+
+            ->limit(10)->get();
+        $camp = Campanias::find(13);
+        if ($camp) {
+            # code...
+            $send = Mail::to('gcruz@grupogim.com.mx')->send(new NotificarAdministrador($camp));
+        }
+
+        return ($send);
     }
 
     function getConfirmado2($start, $end, $espacio)

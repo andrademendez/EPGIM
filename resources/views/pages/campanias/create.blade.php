@@ -42,8 +42,8 @@
                                         </div>
                                     </x-form.label>
                                     <x-form.select id="cliente" class="w-full " name="cliente"
-                                        title="Seleccione el Cliente">
-                                        <option selected>Selecione el cliente</option>
+                                        title="Seleccione el Cliente" required>
+                                        <option>Selecione el cliente</option>
                                         @foreach ( $clientes as $cliente)
                                         <option value="{{ $cliente->id }}">{{ $cliente->nombre }}</option>
                                         @endforeach
@@ -63,7 +63,7 @@
                                             <span>Medio</span>
                                         </div>
                                     </x-form.label>
-                                    <x-form.select id="medio" title="Medio" class="w-full">
+                                    <x-form.select id="medio" title="Medio" class="w-full" required>
                                         <option>Seleccione un medio</option>
                                         @foreach ( $medios as $medio)
                                         <option value="{{ $medio->id }}">{{ $medio->nombre }}</option>

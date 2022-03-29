@@ -6,6 +6,24 @@
             </div>
             <div class="flex flex-row space-x-2">
                 <div>
+                    <x-button class="space-x-2 rounded py-2 bg-purple-600" type="button" wire:click="exportExcel">
+                        <span>Descargar</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 13l-3 3m0 0l-3-3m3 3V8m0 13a9 9 0 110-18 9 9 0 010 18z"></path>
+                        </svg>
+                    </x-button>
+                </div>
+                <div>
+                    <x-form.select wire:model="searchUbicacion">
+                        <option value="">Ubicación</option>
+                        @foreach ($ubicaciones as $ubicacion)
+                        <option value="{{ $ubicacion->id }}">{{ $ubicacion->nombre }}</option>
+                        @endforeach
+                    </x-form.select>
+                </div>
+                <div>
                     <x-form.select wire:model="searchUnidad">
                         <option value="">Unidad</option>
                         @foreach ($unidades as $unidad)
@@ -58,7 +76,16 @@
                     <x-table.td>{{ $espacio->unidad }}</x-table.td>
                     <x-table.td>{{ $espacio->tipo }}</x-table.td>
                     <x-table.td>${{ number_format($espacio->precio,2 )}}</x-table.td>
-                    <x-table.td>{{ $espacio->cantidad}}</x-table.td>
+                    <x-table.td>
+                        <div class="flex items-center">
+                            <button title="Ver eventos" class=" text-indigo-700 px-1 font-medium border-b border-blue-500 hover:bg-indigo-200
+                            bg-blue-50 rounded-full" type="button">
+                                {{ $espacio->cantidad}}
+                            </button>
+                        </div>
+
+
+                    </x-table.td>
                     <x-table.td>
                         @if ($espacio->tipo == "Pantalla digital")
                         {{ round($espacio->total * 100 /12, 2) }} %

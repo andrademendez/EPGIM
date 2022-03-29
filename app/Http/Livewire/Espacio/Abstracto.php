@@ -2,21 +2,30 @@
 
 namespace App\Http\Livewire\Espacio;
 
+use App\Exports\EspaciosExport;
 use App\Models\TiposEspacios;
+use App\Models\Ubicacion;
 use App\Models\UnidadesNegocios;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Abstracto extends Component
 {
     use WithPagination;
 
-    public $search = '', $searchUnidad, $searchTipo;
+    public $search = '', $searchUnidad, $searchTipo,  $searchUbicacion;
 
     protected $queryString = [
         'search' => ['except' => '']
     ];
+
+    public function exportExcel()
+    {
+
+        return Excel::download(new EspaciosExport($this->searchUnidad, $this->searchTipo, $this->searchUbicacion), 'espacios.xlsx');
+    }
 
     public function render()
     {
@@ -38,6 +47,7 @@ class Abstracto extends Component
                 ->groupBy('espacios.id')
                 ->paginate(15),
             'tipos' => TiposEspacios::all(),
+            'ubicaciones' => Ubicacion::all(),
             'unidades' => UnidadesNegocios::all()
         ]);
     }

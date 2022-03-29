@@ -6,7 +6,7 @@
         </div>
         <div class="flex items-center space-x-2">
             <div>
-                <x-button class="space-x-2 rounded py-2 bg-green-600" type="button" wire:click="exportExcel">
+                <x-button class="space-x-2 rounded py-2 bg-purple-700" type="button" wire:click="exportExcel">
                     <span>Descargar</span>
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">
@@ -14,6 +14,22 @@
                             d="M15 13l-3 3m0 0l-3-3m3 3V8m0 13a9 9 0 110-18 9 9 0 010 18z"></path>
                     </svg>
                 </x-button>
+            </div>
+            <div>
+                <x-form.select wire:model="searchUser">
+                    <option value="">Usuarios</option>
+                    @foreach ($usuarios as $usuario)
+                    <option value="{{ $usuario->id }}">{{ $usuario->name }}</option>
+                    @endforeach
+                </x-form.select>
+            </div>
+            <div>
+                <x-form.select wire:model="searchMedio">
+                    <option value="">Medio</option>
+                    @foreach ($medios as $medio)
+                    <option value="{{ $medio->id }}">{{ $medio->nombre }}</option>
+                    @endforeach
+                </x-form.select>
             </div>
             <x-form.select wire:model="estatus">
                 <option value="">Campañas</option>

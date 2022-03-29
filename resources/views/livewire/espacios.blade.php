@@ -13,7 +13,7 @@
         <x-form.search type="search" name="search" id="search" wire:model="search" placeholder="Buscar..." />
         <div class="flex items-center justify-between space-x-2">
             <div>
-                <x-button class="space-x-2 rounded py-2 bg-green-500" type="button" wire:click="exportExcel">
+                <x-button class="space-x-2 rounded py-2 bg-indigo-600" type="button" wire:click="exportExcel">
                     <span>Exportar</span>
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">

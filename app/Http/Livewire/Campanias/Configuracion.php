@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Campanias;
 
 use App\Exports\OnlyCampaniaExport;
 use App\Models\Campanias;
+use App\Models\Medios;
 use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -13,7 +14,7 @@ class Configuracion extends Component
 {
     use WithPagination;
 
-    public $search = '', $estatus, $condicion;
+    public $search = '', $estatus, $condicion, $searchMedio, $searchEstatus, $searchUser;
 
     protected $queryString = [
         'search' => ['except' => '']
@@ -56,7 +57,11 @@ class Configuracion extends Component
             $condicion  = [['end', '<', now()]];
             $status = ['Cerrado', 'Confirmado'];
         } else {
-            $condicion  = [['title', 'LIKE', "%$this->search%"]];
+            $condicion  = [
+                ['title', 'LIKE', "%$this->search%"],
+                ['id_user', 'LIKE', "%$this->searchUser%"],
+                ['id_medio', 'LIKE', "%$this->searchMedio%"],
+            ];
             $status = ['Solicitud', 'Challenge', 'Confirmado', 'Cerrado'];
         }
 
@@ -64,6 +69,7 @@ class Configuracion extends Component
             'livewire.campanias.configuracion',
             [
                 'usuarios' => User::all(),
+                'medios' => Medios::all(),
                 'campanias' => Campanias::where($condicion)
                     ->whereIn('status', $status)
                     ->paginate(15),
