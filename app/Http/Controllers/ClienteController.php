@@ -49,6 +49,7 @@ class ClienteController extends Controller
     public function show($id)
     {
         //
+        return view('pages.clientes.razon-social');
     }
 
     /**

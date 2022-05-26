@@ -19,6 +19,7 @@ class CreateClientesTable extends Migration
             $table->string('contacto')->nullable();
             $table->string('telefono')->nullable();
             $table->string('email')->nullable();
+            $table->boolean('estatus')->default(true);
             $table->foreignId('id_user')->constrained('users');
             $table->timestamps();
         });

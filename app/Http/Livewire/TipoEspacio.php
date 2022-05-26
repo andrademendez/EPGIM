@@ -10,6 +10,8 @@ class TipoEspacio extends Component
 {
     use WithPagination;
 
+    protected $paginationTheme = 'bootstrap';
+
     public $nombre, $open, $search = '', $id_tipo, $action;
 
     protected $queryString = [

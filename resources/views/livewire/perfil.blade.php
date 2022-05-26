@@ -1,4 +1,4 @@
-<div class="grid grid-cols-4 gap-2">
+<div class="grid grid-cols-4 gap-4">
     <div class="col-span-4 md:col-span-2  ">
         <div class="flex flex-col items-center justify-center rounded-lg shadow-lg py-4 px-3 bg-gray-50">
             <div class="flex flex-col items-center">
@@ -56,12 +56,12 @@
     </div>
     <div class="col-span-4 md:col-span-2 ">
         <div class="pt-4 pb-1 px-3 shadow-lg bg-gray-50 rounded-lg">
-            <form action="#" method="post">
-                <div class="">
+            <form action="#" method="post" class="space-y-5">
+                <div class="flex flex-col">
                     <x-form.label for="name">Nombre</x-form.label>
                     <x-input type="text" name="name" id="name" wire:model="name" class="max-w-md w-full" required />
                 </div>
-                <div class="pt-4">
+                <div class="flex flex-col">
                     <x-form.label for="email">Correo</x-form.label>
                     <x-input type="email" name="email" wire:model="email" disabled id="email" class="max-w-md w-full" />
                 </div>
@@ -71,13 +71,13 @@
             </form>
         </div>
         <div class="pt-4 pb-1 px-3 shadow-lg bg-gray-50 rounded-lg mt-3">
-            <form action="#" method="post">
-                <div class="">
+            <form action="#" method="post" class="space-y-5">
+                <div class="flex flex-col">
                     <x-form.label for="password">Contraseña</x-form.label>
                     <x-input type="password" wire:model="password" name="password" id="password" class="max-w-md w-full"
                         placeholder="*********" required />
                 </div>
-                <div class="pt-4">
+                <div class="flex flex-col">
                     <x-form.label for="repeat_password">Confirmar Contraseña</x-form.label>
                     <x-input type="password" wire:model="repeat_password" name="repeat_password" id="repeat_password"
                         class="max-w-md w-full" placeholder="*********" required />

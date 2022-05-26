@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Operaciones\Actividades;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -96,5 +97,17 @@ class User extends Authenticatable
     {
         # code...
         return $this->hasMany(Clientes::class);
+    }
+
+    public function departamentos()
+    {
+        # code...
+        return $this->belongsToMany(Departamentos::class, 'departamento_user', 'departamento_id', 'user_id');
+    }
+
+    public function actividades()
+    {
+        # code...
+        return $this->belongsToMany(Actividades::class, 'actividad_usuario', 'actividad_id', 'user_id');
     }
 }

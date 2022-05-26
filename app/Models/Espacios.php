@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Espacios extends Model
 {
@@ -30,5 +31,26 @@ class Espacios extends Model
     public function campanias()
     {
         return $this->belongsToMany(Campanias::class, 'campania_espacio', 'id_espacio', 'id_campania');
+    }
+
+    public function ocupacion($id)
+    {
+        # code...
+        $total = 0;
+
+        $campanias = DB::table('campania_espacio')
+            ->join('campanias', 'campanias.id', '=', 'campania_espacio.id_campania')
+            ->join('espacios', 'espacios.id', '=', 'campania_espacio.id_espacio')
+            ->selectRaw("count(*) as total, espacios.nombre")
+            ->whereIn('campanias.status', ['Confirmado', 'Cerrado'])
+            ->where('espacios.id', '=', $id)
+            ->groupBy('espacios.nombre')
+            ->get();
+        foreach ($campanias as $key => $campania) {
+            # code...
+            $total = $campania->total;
+        }
+        //dd($campania->total);
+        return $total;
     }
 }

@@ -32,7 +32,7 @@
 
         @endforelse
     </x-table.table>
-    <div>
+    <div class="py-2 flex justify-end">
         {{ $tipos->links() }}
     </div>
 </div>

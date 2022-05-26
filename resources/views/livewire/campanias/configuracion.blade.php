@@ -31,12 +31,29 @@
                     @endforeach
                 </x-form.select>
             </div>
+            <div>
+                <x-form.select wire:model="searchEstatus">
+                    <option value="">Estatus</option>
+                    <option value="Solicitud">Solicitud</option>
+                    <option value="Challenge">Challenge</option>
+                    <option value="Confirmado">Confirmado</option>
+                    <option value="Cerrado">Cerrado</option>
+                </x-form.select>
+            </div>
             <x-form.select wire:model="estatus">
                 <option value="">Campañas</option>
                 <option value="activo">Activos</option>
                 <option value="pendiente">Pendientes</option>
                 <option value="terminado">Vencidos</option>
             </x-form.select>
+            @if ($searchEstatus || $estatus || $searchMedio || $searchUser)
+            <button type="button" wire:click="cleanVariable">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-500" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            @endif
         </div>
     </div>
     <div class=" pt-2 ">
@@ -106,7 +123,7 @@
             </x-table.tr>
             @endforeach
         </x-table.table>
-        <div>
+        <div class="py-2 flex justify-end">
             {{ $campanias->links() }}
         </div>
     </div>

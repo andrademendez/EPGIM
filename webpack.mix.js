@@ -16,6 +16,7 @@ mix.js("resources/js/app.js", "public/js")
         require("postcss-import"),
         require("tailwindcss"),
         require("autoprefixer"),
+        require("tailwindcss"),
     ])
     .sass("resources/sass/toastr.scss", "public/css")
     .sass("resources/sass/fontawesome.scss", "public/css");

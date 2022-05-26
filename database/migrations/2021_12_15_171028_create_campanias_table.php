@@ -21,6 +21,7 @@ class CreateCampaniasTable extends Migration
             $table->enum('status', ['Solicitud', 'Challenge', 'Confirmado', 'Cerrado'])->default('Solicitud');
             $table->string('hold', 15);
             $table->string('display', 20)->nullable();
+            $table->integer('slot')->nullable()->default(1);
             $table->foreignId('id_user')->constrained('users');
             $table->foreignId('id_cliente')->constrained('clientes');
             $table->foreignId('id_medio')->constrained('medios');

@@ -14,6 +14,8 @@ class Ciudades extends Component
     public $buscar = '', $action;
     public $clave, $nombre, $id_ciudad;
 
+    protected $paginationTheme = 'bootstrap';
+
     protected $queryString = [
         'buscar' => ['except' => '']
     ];

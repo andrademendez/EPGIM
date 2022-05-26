@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Espacio;
 
 use App\Exports\EspaciosExport;
+use App\Models\Espacios;
 use App\Models\TiposEspacios;
 use App\Models\Ubicacion;
 use App\Models\UnidadesNegocios;
@@ -17,6 +18,7 @@ class Abstracto extends Component
 
     public $search = '', $searchUnidad, $searchTipo,  $searchUbicacion;
 
+    protected $paginationTheme = 'bootstrap';
     protected $queryString = [
         'search' => ['except' => '']
     ];
@@ -30,21 +32,24 @@ class Abstracto extends Component
     public function render()
     {
         return view('livewire.espacio.abstracto', [
-            'espacios' => DB::table('campania_espacio')
-                ->join('campanias', 'campanias.id', '=', 'campania_espacio.id_campania')
-                ->join('espacios', 'espacios.id', '=', 'campania_espacio.id_espacio')
-                ->join('unidades_negocios', 'unidades_negocios.id', '=', 'espacios.id_unidad_negocio')
-                ->join('tipos_espacios', 'tipos_espacios.id', '=', 'espacios.id_tipo_espacio')
-                ->join('ubicaciones_espacios', 'ubicaciones_espacios.id', '=', 'espacios.id_ubicacion')
-                ->selectRaw("count(*) as total, espacios.*, unidades_negocios.nombre as unidad, tipos_espacios.nombre as tipo, ubicaciones_espacios.nombre as ubicacion")
-                ->whereIn('campanias.status', ['Confirmado', 'Cerrado'])
-                ->where([
-                    ['campanias.end', '>', now()],
-                    ['espacios.nombre', 'LIKE', "%$this->search%"],
-                    ['unidades_negocios.nombre', 'LIKE', "%$this->searchUnidad%"],
-                    ['tipos_espacios.nombre', 'LIKE', "%$this->searchTipo%"]
+            'espacios' => Espacios::where([
+                ['nombre', 'LIKE', "%$this->search%"],
+                ['id_unidad_negocio', 'LIKE', "%$this->searchUnidad%"],
+                ['id_tipo_espacio', 'LIKE', "%$this->searchTipo%"],
+                ['id_ubicacion', 'LIKE', "%$this->searchUbicacion%"],
+            ])
+                ->orWhere([
+                    ['clave', 'LIKE', "%$this->search%"],
+                    ['id_unidad_negocio', 'LIKE', "%$this->searchUnidad%"],
+                    ['id_tipo_espacio', 'LIKE', "%$this->searchTipo%"],
+                    ['id_ubicacion', 'LIKE', "%$this->searchUbicacion%"],
                 ])
-                ->groupBy('espacios.id')
+                ->orWhere([
+                    ['referencia', 'LIKE', "%$this->search%"],
+                    ['id_unidad_negocio', 'LIKE', "%$this->searchUnidad%"],
+                    ['id_tipo_espacio', 'LIKE', "%$this->searchTipo%"],
+                    ['id_ubicacion', 'LIKE', "%$this->searchUbicacion%"],
+                ])
                 ->paginate(15),
             'tipos' => TiposEspacios::all(),
             'ubicaciones' => Ubicacion::all(),

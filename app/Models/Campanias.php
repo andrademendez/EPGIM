@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Operaciones\OrdenesServicios;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use DateTime;
@@ -70,5 +71,11 @@ class Campanias extends Model
     public function attachStatusFile()
     {
         return $this->hasMany(AttachStatusFiles::class, 'id_campania');
+    }
+
+    public function ordenesServicios()
+    {
+        # code...
+        return $this->hasMany(OrdenesServicios::class, 'campania_id');
     }
 }

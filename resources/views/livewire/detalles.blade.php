@@ -1,14 +1,19 @@
 <x-content>
     <x-slot name="import">
         @if ($open == true)
+        @if ($action == "Orden de Servicio")
+        @include('pages.campanias.detalles.ordenes')
+        @else
         @include('pages.campanias.detalles.challenge')
+        @endif
+
         @endif
     </x-slot>
     <div class="mb-3 flex items-center justify-between">
         <x-form.search id="search" wire:model="search" placeholder="Buscar..." />
         <div class="flex items-center justify-center space-x-2">
             <div>
-                <x-button class="space-x-2 rounded py-2 bg-green-600" type="button" wire:click="exportExcel">
+                <x-button class="space-x-2 rounded py-2 bg-indigo-600" type="button" wire:click="exportExcel">
                     <span>Descargar</span>
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">
@@ -68,9 +73,8 @@
 
     <x-table.table>
         <x-slot name="theader">
-            @if ($user->isAdmin())
             <x-table.th class="pl-3">Id</x-table.th>
-            @endif
+
             <x-table.th>Nombre</x-table.th>
             <x-table.th>Costo</x-table.th>
             <x-table.th>Estado</x-table.th>
@@ -78,19 +82,17 @@
             <x-table.th>Medio</x-table.th>
             <x-table.th>Espacios</x-table.th>
             {{-- <x-table.th>Estatus</x-table.th> --}}
-            @if ($user->isAdmin())
-            <x-table.th>Usuario</x-table.th>
-            @endif
 
+            <x-table.th>Usuario</x-table.th>
+            <x-table.th>Archivos</x-table.th>
             <x-table.th></x-table.th>
         </x-slot>
         @forelse ($campanias as $campania)
         <x-table.tr class="">
-            @if ($user->isAdmin())
+
             <x-table.td class="">
                 {{ $campania->id }}
             </x-table.td>
-            @endif
             <x-table.td class="">
                 <div class="text-left">
                     <div class="text-xs font-medium text-gray-800">
@@ -139,15 +141,13 @@
                 </div>
                 @endforeach
             </x-table.td>
-            @if ($user->isAdmin())
+
             <x-table.td>
                 <div class="flex flex-col justify-start">
                     <span class="text-sm font-medium">{{ $campania->user->name }}</span>
                     <span class="text-xs lowercase">{{ $campania->user->email }}</span>
                 </div>
             </x-table.td>
-            @endif
-
             <x-table.td>
                 @if ($campania->status == 'Confirmado' || $campania->status == 'Cerrado')
                 <div class="flex flex-col">
@@ -191,12 +191,31 @@
                 @endif
             </x-table.td>
 
+            <x-table.td>
+                @if ($campania->status == 'Confirmado' || $campania->status == 'Cerrado')
+                <a href="{{ route('campania.ordenes', $campania->id) }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-purple-700" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                    </svg>
+                </a>
+                {{-- <x-form.btn-icons wire:click="openOrden({{ $campania->id }})">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+                    </svg>
+                </x-form.btn-icons> --}}
+                @endif
+
+            </x-table.td>
         </x-table.tr>
         @empty
 
         @endforelse
     </x-table.table>
-    <div>
+    <div class="py-2 flex justify-end">
         {{ $campanias->links() }}
     </div>
 </x-content>

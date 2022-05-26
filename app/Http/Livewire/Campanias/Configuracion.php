@@ -16,6 +16,8 @@ class Configuracion extends Component
 
     public $search = '', $estatus, $condicion, $searchMedio, $searchEstatus, $searchUser;
 
+    protected $paginationTheme = 'bootstrap';
+
     protected $queryString = [
         'search' => ['except' => '']
     ];
@@ -40,6 +42,11 @@ class Configuracion extends Component
         return Excel::download(new OnlyCampaniaExport($this->estatus), 'campañas.xlsx');
     }
 
+    public function cleanVariable()
+    {
+        # code...
+        $this->reset(['searchUser', 'searchEstatus', 'searchMedio', 'estatus']);
+    }
     public function render()
     {
         if ($this->estatus == 'activo') {
@@ -71,6 +78,7 @@ class Configuracion extends Component
                 'usuarios' => User::all(),
                 'medios' => Medios::all(),
                 'campanias' => Campanias::where($condicion)
+                    ->where('status', 'LIKE', "%$this->searchEstatus%")
                     ->whereIn('status', $status)
                     ->paginate(15),
             ]

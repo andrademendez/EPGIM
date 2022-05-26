@@ -125,7 +125,7 @@ class Clientes extends Component
             'clientes' => ModelsClientes::where([
                 ['nombre', 'LIKE', "%$this->search%"],
                 ['id_user', 'LIKE', "%$this->searchUser%"],
-            ])->paginate(10),
+            ])->paginate(15),
             'users' => User::where('id_rol', 2)->get(),
         ]);
     }

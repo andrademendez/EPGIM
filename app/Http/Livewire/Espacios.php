@@ -21,7 +21,7 @@ class Espacios extends Component
 
     public $search = '', $open, $action, $searchTipo, $searchUbicacion, $search_unidad;
     public $id_espacio, $nombre, $referencia, $clave, $medidas, $cantidad, $precio, $id_unidad, $id_tipo, $id_ubicacion;
-
+    protected $paginationTheme = 'bootstrap';
     protected $queryString = [
         'search' => ['except' => '']
     ];

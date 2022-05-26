@@ -1,7 +1,7 @@
 @props(['id'])
 <div class="flex items-center">
     {{ $slot }}
-    <button class="pl-3 text-indigo-600 focus:outline-none focus:ring-offset-transparent"
+    <button title="Editar" class="pl-3 text-indigo-600 focus:outline-none focus:ring-offset-transparent"
         wire:click="openEdit({{ $id}})">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -9,7 +9,7 @@
             </path>
         </svg>
     </button>
-    <button class="pl-3 text-red-500 focus:outline-none focus:ring-offset-transparent"
+    <button title="Eliminar" class="pl-3 text-red-500 focus:outline-none focus:ring-offset-transparent"
         wire:click="openDelete( {{ $id }})">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>

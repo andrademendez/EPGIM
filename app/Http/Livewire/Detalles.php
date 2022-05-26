@@ -11,6 +11,8 @@ use App\Models\Campanias;
 use App\Models\Espacios;
 use App\Models\FilesStatus;
 use App\Models\Medios;
+use App\Models\Operaciones\Actividades;
+use App\Models\Operaciones\TiposOrdenes;
 use App\Models\Roles;
 use App\Models\Ubicacion;
 use App\Models\UnidadesNegocios;
@@ -35,6 +37,8 @@ class Detalles extends Component
 
     public $search = '', $open, $action, $searchMedio = "", $searchUnidad = "", $searchUbicacion = "", $searchStatus;
     public $documentos, $id_campania, $solicitudes, $attachStatusFile, $camp_first;
+
+    protected $paginationTheme = 'bootstrap';
 
     protected $queryString = [
         'search' => ['except' => '']
@@ -67,6 +71,15 @@ class Detalles extends Component
     public function openDelete()
     {
         $this->open = true;
+        $this->action = "Orden de Servicio";
+    }
+
+    public function openOrden($id)
+    {
+        # code...
+        $this->open = true;
+        $this->id_campania = $id;
+        $this->action = "Orden de Servicio";
     }
 
     public function sendChallenge()
@@ -238,9 +251,11 @@ class Detalles extends Component
                 'medios' => Medios::all(),
                 'unidades' => UnidadesNegocios::all(),
                 'ubicaciones' => Ubicacion::all(),
+                'actividades' => Actividades::all(),
+                'ordenes' => TiposOrdenes::all(),
             ]);
         } else {
-            return view('livewire.detalles', [
+            return view('livewire.campanias.detalles', [
                 'campanias' =>  Campanias::where(
                     [
                         ['id_user', '=', Auth::id()],
@@ -271,6 +286,8 @@ class Detalles extends Component
 
         // return Excel::download(new CampaniaExport($this->searchStatus, $this->searchMedio), 'campañas.pdf');
     }
+
+
 
     public function showAlert($mensaje, $icons)
     {

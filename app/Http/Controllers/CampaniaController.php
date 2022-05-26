@@ -19,11 +19,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use DateTime;
-use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-use PhpParser\Node\Stmt\Foreach_;
-
-use function PHPUnit\Framework\isNull;
+use Illuminate\Support\Str;
+use Symfony\Component\Mime\Email;
 
 class CampaniaController extends Controller
 {
@@ -237,6 +236,21 @@ class CampaniaController extends Controller
             return response()->json(['error', 'Hay dependencias activos de este evento']);
         }
     }
+
+    public function ordenesServicio($id)
+    {
+        # code...
+        $campania = $id;
+        return view('pages.campanias.detalles.ordenes', compact('campania'));
+    }
+
+    public function detalles()
+    {
+        # code...
+        $user = User::find(Auth::id());
+
+        return view('pages.campanias.detalles', compact('user'));
+    }
     //agregar espacio en el formulario de editar
     public function agregarEspacio(Request $request)
     {
@@ -252,7 +266,7 @@ class CampaniaController extends Controller
         $user = Auth::id();
         $id = $request->id;
         $campania = Campanias::find($id);
-        if ($campania->status = 'Confirmado' || $campania->status == 'Cerrado') {
+        if ($campania->status == 'Confirmado' || $campania->status == 'Cerrado') {
             return response()->json(['info', 'Ya no puedes agregar espacio una ves confirmado']);
         } else {
             if ($user == $campania->id_user) {
@@ -504,67 +518,13 @@ class CampaniaController extends Controller
 
     public function test()
     {
+        $camp = Campanias::findOrFail(13);
 
-        $start = "2022-03-01";
-        $end = "2022-03-30";
-        $espacios = [1, 15];
+        $requestId = 'gcruz@grupogim.com.mx';
+        $val  = Mail::to($requestId)
+            ->send(new NotificarAdministrador($camp));
 
-        foreach ($espacios as $value) {
-            # code...
-
-            $espacio = Espacios::find($value);
-            if ($espacio->tipo->nombre == "Pantalla digital") {
-                # code...
-                $vars[] = $this->getConfirmado2($start, $end, $value);
-            }
-        }
-        if (empty($vars)) {
-            # code...
-            echo "vacio";
-        } else {
-            foreach ($vars as $v) {
-                if ($v <= 12) {
-                    echo "espacio disponible";
-                } else {
-                    echo "insertar campaña";
-                }
-            }
-        }
-        $invoices = DB::table('campania_espacio')
-            ->join('campanias', 'campanias.id', '=', 'campania_espacio.id_campania')
-            ->join('clientes', 'clientes.id', '=', 'campanias.id_cliente')
-            ->join('medios', 'medios.id', '=', 'campanias.id_medio')
-            ->join('espacios', 'espacios.id', '=', 'campania_espacio.id_espacio')
-            ->join('unidades_negocios', 'unidades_negocios.id', '=', 'espacios.id_unidad_negocio')
-            ->join('tipos_espacios', 'tipos_espacios.id', '=', 'espacios.id_tipo_espacio')
-            ->join('ubicaciones_espacios', 'ubicaciones_espacios.id', '=', 'espacios.id_ubicacion')
-            ->selectRaw("campanias.*, medios.nombre as medio, clientes.contacto as contacto, clientes.nombre as cliente, espacios.*, unidades_negocios.nombre as unidad, tipos_espacios.nombre as tipo, ubicaciones_espacios.nombre as ubicacion")
-            ->get();
-
-        $clientes = DB::table('campania_espacio')
-            ->join('espacios', 'campania_espacio.id_espacio', '=', 'espacios.id')
-            ->join('campanias', 'campania_espacio.id_campania', '=', 'campanias.id')
-            ->join('clientes', 'campanias.id_cliente', '=', 'clientes.id')
-            ->selectRaw('clientes.nombre as cliente, count(campanias.id) as total, sum(espacios.precio) as importe')
-            ->where(
-                'campanias.end',
-                '<',
-                now()
-            )
-            ->whereIn(
-                'campanias.status',
-                ['Confirmado', 'Cerrado']
-            )
-            ->groupBy('clientes.id')
-
-            ->limit(10)->get();
-        $camp = Campanias::find(13);
-        if ($camp) {
-            # code...
-            $send = Mail::to('gcruz@grupogim.com.mx')->send(new NotificarAdministrador($camp));
-        }
-
-        return ($send);
+        return $val;
     }
 
     function getConfirmado2($start, $end, $espacio)

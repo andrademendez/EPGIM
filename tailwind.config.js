@@ -10,6 +10,7 @@ module.exports = {
         "./vendor/usernotnull/tall-toasts/config/**/*.php",
         "./vendor/usernotnull/tall-toasts/resources/views/**/*.blade.php",
         "./node_modules/@themesberg/flowbite/**/*.js",
+        "./node_modules/tw-elements/dist/js/**/*.js",
     ],
 
     theme: {
@@ -45,5 +46,6 @@ module.exports = {
     plugins: [
         //
         require("@themesberg/flowbite/plugin"),
+        require("tw-elements/dist/plugin"),
     ],
 };

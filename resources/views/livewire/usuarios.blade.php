@@ -87,14 +87,7 @@
             <x-table.td>
                 @if ($user->id != auth()->user()->id)
                 <div class="flex items-center space-x-2">
-                    <a href="#" class="text-purple-700" title="Campañas" rel="noopener noreferrer">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
-                            </path>
-                        </svg>
-                    </a>
+
                     <a href="{{ route('user.edit', $user->id) }}" title="Editar contenido" class="text-indigo-700">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
@@ -128,5 +121,7 @@
         @endforelse
 
     </x-table.table>
-
+    <div>
+        {{ $usuarios->links() }}
+    </div>
 </x-content>

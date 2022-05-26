@@ -155,7 +155,7 @@
         @endforelse
     </x-table.table>
 
-    <div class="">
+    <div class="py-2 flex justify-end">
         {{ $espacios->links() }}
     </div>
 </x-content>

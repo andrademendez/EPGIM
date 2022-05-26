@@ -27,7 +27,7 @@
                     <x-form.select wire:model="searchUnidad">
                         <option value="">Unidad</option>
                         @foreach ($unidades as $unidad)
-                        <option value="{{ $unidad->nombre }}">{{ $unidad->nombre }}</option>
+                        <option value="{{ $unidad->id }}">{{ $unidad->nombre }}</option>
                         @endforeach
                     </x-form.select>
                 </div>
@@ -35,7 +35,7 @@
                     <x-form.select wire:model="searchTipo">
                         <option value="">Tipo</option>
                         @foreach ($tipos as $tipo)
-                        <option value="{{ $tipo->nombre }}">{{ $tipo->nombre }}</option>
+                        <option value="{{ $tipo->id }}">{{ $tipo->nombre }}</option>
                         @endforeach
                     </x-form.select>
                 </div>
@@ -56,25 +56,27 @@
             <x-table.table>
                 <x-slot name="theader">
                     <tr>
+                        <x-table.th>Clave</x-table.th>
                         <x-table.th>Nombre</x-table.th>
                         <x-table.th>Referencia</x-table.th>
-                        <x-table.th>Clave</x-table.th>
+
                         <x-table.th>Ubicacion</x-table.th>
                         <x-table.th>Unidad</x-table.th>
                         <x-table.th>Tipo</x-table.th>
                         <x-table.th>Precio</x-table.th>
                         <x-table.th>Cant</x-table.th>
+                        <x-table.th>Estatus</x-table.th>
                         <x-table.th>Ocupacion</x-table.th>
                     </tr>
                 </x-slot>
                 @foreach ($espacios as $espacio)
                 <x-table.tr>
+                    <x-table.td class="whitespace-nowrap font-bold">{{ $espacio->clave }}</x-table.td>
                     <x-table.td>{{ $espacio->nombre }}</x-table.td>
                     <x-table.td>{{ $espacio->referencia }}</x-table.td>
-                    <x-table.td>{{ $espacio->clave }}</x-table.td>
-                    <x-table.td>{{ $espacio->ubicacion }}</x-table.td>
-                    <x-table.td>{{ $espacio->unidad }}</x-table.td>
-                    <x-table.td>{{ $espacio->tipo }}</x-table.td>
+                    <x-table.td>{{ $espacio->ubicacion->nombre }}</x-table.td>
+                    <x-table.td>{{ $espacio->unidad->nombre }}</x-table.td>
+                    <x-table.td>{{ $espacio->tipo->nombre }}</x-table.td>
                     <x-table.td>${{ number_format($espacio->precio,2 )}}</x-table.td>
                     <x-table.td>
                         <div class="flex items-center">
@@ -83,27 +85,41 @@
                                 {{ $espacio->cantidad}}
                             </button>
                         </div>
-
-
                     </x-table.td>
                     <x-table.td>
-                        @if ($espacio->tipo == "Pantalla digital")
-                        {{ round($espacio->total * 100 /12, 2) }} %
+                        @if ($espacio->estatus == true)
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+                        </svg>
+                        @else
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                        @endif
+                    </x-table.td>
+                    <x-table.td>
+                        @if ($espacio->tipo->nombre == "Pantalla digital")
+                        {{ round($espacio->ocupacion($espacio->id) * 100 /12, 2) }} %
                         <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                             <div class="bg-blue-600 h-2.5 rounded-full" style="width: {{
-                            round($espacio->total * 100 /12, 2) }}%"></div>
+                            round($espacio->ocupacion($espacio->id) * 100 /12, 2) }}%"></div>
                         </div>
-                        @elseif ($espacio->total == 1)
+                        @elseif ($espacio->ocupacion($espacio->id) == 1)
                         100 %
-                        <progress id="file" max="100" value="1"> 100% </progress>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div class="bg-blue-600 h-2.5 rounded-full" style="width: 100%"></div>
+                        </div>
                         @else
                         0 %
                         @endif
+
                     </x-table.td>
                 </x-table.tr>
                 @endforeach
             </x-table.table>
-            <div>
+            <div class="py-2 flex justify-end">
                 {{ $espacios->links() }}
             </div>
         </div>

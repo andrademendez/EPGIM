@@ -38,7 +38,7 @@
         </tr>
         @endforelse
     </x-table.table>
-    <div class="">
+    <div class="py-2 flex justify-end">
         {{ $ciudades->links() }}
     </div>
 

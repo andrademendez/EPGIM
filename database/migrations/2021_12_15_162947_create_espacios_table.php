@@ -22,6 +22,7 @@ class CreateEspaciosTable extends Migration
             $table->string('clave', 20);
             $table->double('precio');
             $table->boolean('estatus');
+            $table->integer('slot')->nullable()->default(1);
             $table->foreignId('id_unidad_negocio')->constrained('unidades_negocios');
             $table->foreignId('id_tipo_espacio')->constrained('tipos_espacios');
             $table->foreignId('id_ubicacion')->constrained('ubicaciones_espacios');

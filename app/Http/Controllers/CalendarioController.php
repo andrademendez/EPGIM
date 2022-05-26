@@ -112,6 +112,12 @@ class CalendarioController extends Controller
         return response()->json($campanias);
     }
 
+    public function settings()
+    {
+        # code...
+        return view('pages.campanias.administracion');
+    }
+
     public function managerCampania()
     {
         return view('pages.calendarios.configuracion');

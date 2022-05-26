@@ -1,18 +1,14 @@
 <div class="flex flex-col">
-    <div class="overflow-x-auto">
-        <div class="inline-block min-w-full ">
-            <div class="overflow-hidden shadow-md rounded-lg px-1">
-                <table class="min-w-full">
-                    <thead class="bg-gray-100 ">
-                        <tr>
-                            {{ $theader ?? '' }}
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white pb-2">
-                        {{ $slot }}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    <div class="w-full overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 ">
+                <tr>
+                    {{ $theader ?? '' }}
+                </tr>
+            </thead>
+            <tbody class="bg-white pb-2">
+                {{ $slot }}
+            </tbody>
+        </table>
     </div>
 </div>

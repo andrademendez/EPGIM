@@ -13,7 +13,7 @@ class Clientes extends Model
     public function campanias()
     {
         # code...
-        return $this->hasMany(Campanias::class, 'id_clientes');
+        return $this->hasMany(Campanias::class, 'id_cliente');
     }
 
     public function user()

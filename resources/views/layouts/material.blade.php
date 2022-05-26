@@ -10,11 +10,13 @@
     <link rel="shortcut icon" href="{{ asset('images/gim.png') }}" type="image/x-icon">
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
+    {{--
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet"> --}}
     {{--
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css"> --}}
     <!-- CSS Files -->
     <link href="{{ asset('material/css/material-dashboard.css?v=2.1.2') }}" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Styles -->
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
     <link rel="stylesheet" href="{{ mix('css/fontawesome.css') }}">
@@ -75,7 +77,7 @@
     <script src="{{ asset('material/js/application.js') }}"></script>
     <script src="{{ asset('js/offcanvas.js') }}"></script>
     <script src="{{ asset('js/toast.js') }}"></script>
-    <script src="{{ asset('js/flowbite.js') }}"></script>
+    <script src="https://unpkg.com/flowbite@1.4.6/dist/flowbite.js"></script>
     @stack('js')
 
 </body>

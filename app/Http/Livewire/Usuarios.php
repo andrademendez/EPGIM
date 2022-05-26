@@ -21,6 +21,8 @@ class Usuarios extends Component
     public $name, $email, $id_rol, $password, $repeat_password, $status, $id_user;
     public $search = '', $open, $interno, $action;
 
+    protected $paginationTheme = 'bootstrap';
+
     protected $queryString = [
         'search' => ['except' => '']
     ];
@@ -126,7 +128,7 @@ class Usuarios extends Component
     {
         return view('livewire.usuarios', [
             'usuarios' => User::where('name', 'LIKE', "%$this->search%")
-                ->orWhere('email', 'like', "%$this->search%")->paginate(10),
+                ->orWhere('email', 'like', "%$this->search%")->paginate(15),
             'roles' => Roles::all(),
         ]);
     }
