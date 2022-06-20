@@ -6,6 +6,7 @@ use App\Models\Roles as ModelsRoles;
 use App\Models\User;
 use Livewire\Component;
 use Usernotnull\Toast\Concerns\WireToast;
+use Illuminate\Support\Str;
 
 class Roles extends Component
 {
@@ -91,15 +92,19 @@ class Roles extends Component
         $this->validate();
         try {
             if ($this->action == 'Registrar') {
+                $clave = Str::random(24);
                 $rol = new ModelsRoles();
                 $rol->nombre = $this->nombre;
                 $rol->descripcion = $this->descripcion;
+                $rol->clave = $clave;
                 $rol->save();
                 if ($rol) {
                     $this->closeModal();
                     toast()->success('Elemento registrado correctamente')->push();
                 }
             } else {
+                //$clave = Str::random(24);
+
                 $rol = ModelsRoles::find($this->rol_id);
                 $rol->nombre = $this->nombre;
                 $rol->descripcion = $this->descripcion;

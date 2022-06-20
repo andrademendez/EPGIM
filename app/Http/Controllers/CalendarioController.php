@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Campanias;
 use App\Models\Clientes;
 use App\Models\Espacios;
 use App\Models\Medios;
@@ -13,8 +14,10 @@ use Illuminate\Support\Facades\DB;
 class CalendarioController extends Controller
 {
     //
+
     public function calendario($calendario)
     {
+        $this->authorize('viewAny', Campanias::class);
         # code...
         $calendario = $calendario;
         $medios = Medios::all();
@@ -120,6 +123,8 @@ class CalendarioController extends Controller
 
     public function managerCampania()
     {
+        $this->authorize('view', Campanias::class);
+
         return view('pages.calendarios.configuracion');
     }
 }

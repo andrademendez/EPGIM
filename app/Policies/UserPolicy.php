@@ -71,4 +71,10 @@ class UserPolicy
     {
         return $user->isAdmin() || $user->isCreator();
     }
+
+    public function viewHome(User $user)
+    {
+        //
+        return $user->isAdmin() || $user->isValidator() || $user->isCreator() || $user->isMonitor();
+    }
 }

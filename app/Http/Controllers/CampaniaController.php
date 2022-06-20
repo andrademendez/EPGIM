@@ -30,6 +30,7 @@ class CampaniaController extends Controller
     public function index()
     {
         //
+        $this->authorize('viewAny', Campanias::class);
         $calendario = "";
         $medios = Medios::all();
         $clientes = Clientes::where('id_user', Auth::id())->get();
@@ -240,17 +241,36 @@ class CampaniaController extends Controller
     public function ordenesServicio($id)
     {
         # code...
+        $this->authorize('viewAny', Campanias::class);
         $campania = $id;
         return view('pages.campanias.detalles.ordenes', compact('campania'));
+    }
+
+    public function cotizacion($id)
+    {
+        # code...
+        $this->authorize('viewAny', Campanias::class);
+        $campania = Campanias::find($id);
+        return view('pages.campanias.detalles.cotizacion', compact('campania'));
     }
 
     public function detalles()
     {
         # code...
+        $this->authorize('viewAny', Campanias::class);
         $user = User::find(Auth::id());
 
         return view('pages.campanias.detalles', compact('user'));
     }
+
+    public function detallesCampanias($id)
+    {
+        # code...
+        $this->authorize('viewAny', Campanias::class);
+        $campania = Campanias::find($id);
+        return view('pages.campanias.detalles.detalles', compact('campania'));
+    }
+
     //agregar espacio en el formulario de editar
     public function agregarEspacio(Request $request)
     {

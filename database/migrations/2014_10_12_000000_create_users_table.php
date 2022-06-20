@@ -19,11 +19,11 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('display');
             $table->boolean('interno')->default(true)->comment('True: usuario interno, False: usuario externo');
             $table->string('perfil')->nullable();
             $table->boolean('status')->default(true);
             $table->foreignId('id_rol')->constrained('roles');
+            $table->foreignId('departamento_id')->constrained('departamentos');
             $table->rememberToken();
             $table->timestamps();
         });

@@ -36,7 +36,7 @@ class Detalles extends Component
     use WireToast;
 
     public $search = '', $open, $action, $searchMedio = "", $searchUnidad = "", $searchUbicacion = "", $searchStatus;
-    public $documentos, $id_campania, $solicitudes, $attachStatusFile, $camp_first;
+    public $documentos, $id_campania, $solicitudes, $attachStatusFile, $attachStatusFile_id, $camp_first, $openForm;
 
     protected $paginationTheme = 'bootstrap';
 
@@ -55,7 +55,7 @@ class Detalles extends Component
         } else {
             $this->camp_first = $this->getFirstCampania($id);
         }
-        $this->attachStatusFile = Campanias::find($id)->attachStatusFile;
+        $this->attachStatusFile = $cmp->attachStatusFile;
     }
 
     public function openEdit()
@@ -105,7 +105,7 @@ class Detalles extends Component
                         //$this->showAlert('Porfavor cargue los archivos correspondientes.', 'success');
                         $this->campania = Campanias::find($this->id_campania);
                         $verificador = User::where('id_rol', 4)->first();
-                        Mail::to($verificador->email)->send(new NotificarAdministrador($camp));
+                        Mail::to($verificador->email)->queue(new NotificarAdministrador($camp));
 
                         $idCamp = $this->sendMailChallengue($camp->id);
                         $campanias = Campanias::whereIn('id', $idCamp)->get();
@@ -114,7 +114,7 @@ class Detalles extends Component
                             if ($camp->id == $campania->id) {
                                 break;
                             }
-                            Mail::to($campania->user->email)->send(new ChallengeNotification($camp));
+                            Mail::to($campania->user->email)->queue(new ChallengeNotification($camp));
                         }
                         toast()->success('Porfavor cargue los archivos correspondientes para continuar con el proceso...')->push();
                         $this->attachStatusFile = Campanias::find($this->id_campania)->attachStatusFile;
@@ -123,6 +123,7 @@ class Detalles extends Component
             }
         }
     }
+
 
     public function sendConfirmation()
     {
@@ -146,12 +147,17 @@ class Detalles extends Component
                     //$this->showAlert('Porfavor cargue los archivos correspondientes.', 'success');
                     $this->campania = Campanias::find($this->id_campania);
                     $verificador = User::where('id_rol', 4)->first();
-                    Mail::to($verificador->email)->send(new NotificarAdministrador($camp));
+                    Mail::to($verificador->email)->queue(new NotificarAdministrador($camp));
 
                     $this->attachStatusFile = Campanias::find($this->id_campania)->attachStatusFile;
                 }
             }
         }
+    }
+    public function openAddDocs($id)
+    {
+        $this->openForm = "AddDocs";
+        $this->attachStatusFile_id  = $id;
     }
     public function attachFiles()
     {
@@ -167,17 +173,12 @@ class Detalles extends Component
 
             $attach = new FilesStatus();
             $attach->file = $url;
-            foreach ($this->attachStatusFile as $key => $atach) {
-                # code...
-                if ($atach->process == 'Confirmacion') {
-                    $attach->id_attach_status_file = $atach->id;
-                }
-            }
+            $attach->id_attach_status_file = $this->attachStatusFile_id;
             $attach->save();
             if ($attach) {
                 toast()->success('Archivo cargado!!')->push();
                 //$this->showAlert('Archivo cargado!!', 'success');
-                $this->reset('documentos');
+                $this->reset(['documentos', 'attachStatusFile_id', 'openForm']);
                 $this->attachStatusFile = Campanias::find($this->id_campania)->attachStatusFile;
             }
         } catch (\Throwable $th) {
@@ -228,6 +229,7 @@ class Detalles extends Component
 
         return $position->pluck('id_campania');
     }
+
     public function render()
     {
         $user = User::find(Auth::id());
@@ -241,10 +243,10 @@ class Detalles extends Component
                         // ['espacios.id_unidad_negocio',  'LIKE', "%$this->searchUnidad%"],
                         // ['espacios.id_ubicacion',  'LIKE', "%$this->searchUbicacion%"],
                     ]
-                )
+                )->where('start', '>=', now())
                     // ->join('campania_espacio', 'campanias.id', '=', 'campania_espacio.id_campania')
                     // ->join('espacios', 'espacios.id', '=', 'campania_espacio.id_espacio')
-                    ->orderBy('campanias.start')
+                    ->orderBy('start', 'desc')
                     ->paginate(15),
 
                 'user' =>  $user,
@@ -264,7 +266,8 @@ class Detalles extends Component
                         ['status', 'LIKE', "%$this->searchStatus%"],
                     ]
                 )
-                    ->orderBy('start')
+                    ->where('start', '>=', now())
+                    ->orderBy('start', 'desc')
                     ->paginate(15),
                 'user' =>  $user,
                 'medios' => Medios::all(),

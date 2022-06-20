@@ -6,7 +6,7 @@
         <div class="mx-auto">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-4 bg-white border-b border-gray-200">
-                    <div class="text-xl font-semibold py-2 mb-3 border-b-2 border-violet-600">
+                    <div class="text-xl font-semibold py-2 mb-5 border-b-2 border-violet-600">
                         <span>Hola, {{ auth()->user()->name }}</span>
                     </div>
                     <div class="grid grid-cols-8 gap-2 ">
@@ -80,8 +80,6 @@
                             <livewire:inicio.mejores-clientes />
                         </div>
                     </div>
-
-
                 </div>
             </div>
         </div>

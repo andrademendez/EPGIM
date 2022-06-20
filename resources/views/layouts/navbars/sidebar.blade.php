@@ -170,7 +170,8 @@
                     </ul>
                 </div>
             </li>
-
+            @endif
+            @if (auth()->user()->isAdmin() || auth()->user()->isCreator())
             <li class="nav-item {{ $menuParent == 'operacion' ? 'active' : '' }}">
                 <a class="nav-link" data-toggle="collapse" href="#operacion" {{ $menuParent=='Operacion'
                     ? 'aria-expanded="true"' : '' }}>
@@ -182,6 +183,19 @@
                 <div class="collapse {{ $menuParent == 'operacion' ? ' show' : '' }}" id="operacion">
                     <ul class="nav">
                         @if (auth()->user()->isAdmin())
+                        <x-nav-li :active="request()->routeIs('catalogos.index')">
+                            <x-nav-link :href="route('catalogos.index')">
+                                <span class="sidebar-mini">
+                                    <span class="material-icons">
+                                        devices_other
+                                    </span>
+                                </span>
+                                <span class="sidebar-normal"> {{ __('Catálogos') }} </span>
+                            </x-nav-link>
+                        </x-nav-li>
+
+                        @endif
+                        @if (auth()->user()->isAdmin() || auth()->user()->isCreator())
 
                         <x-nav-li :active="request()->routeIs('contratos.index')">
                             <x-nav-link :href="route('contratos.index')">
@@ -202,16 +216,6 @@
                                 <span class="sidebar-normal"> {{ __('Cotizaciones') }} </span>
                             </x-nav-link>
                         </x-nav-li>
-                        <x-nav-li :active="request()->routeIs('ordenes.index')">
-                            <x-nav-link :href="route('ordenes.index')">
-                                <span class="sidebar-mini">
-                                    <span class="material-icons">
-                                        checklist_rtl
-                                    </span>
-                                </span>
-                                <span class="sidebar-normal"> {{ __('Ordenes de servicio') }} </span>
-                            </x-nav-link>
-                        </x-nav-li>
                         <x-nav-li :active="request()->routeIs('estados.index')">
                             <x-nav-link :href="route('estados.index')">
                                 <span class="sidebar-mini">
@@ -222,22 +226,25 @@
                                 <span class="sidebar-normal"> {{ __('Estados de cuenta') }} </span>
                             </x-nav-link>
                         </x-nav-li>
-                        <x-nav-li :active="request()->routeIs('catalogos.index')">
-                            <x-nav-link :href="route('catalogos.index')">
+
+                        @endif
+                        <x-nav-li :active="request()->routeIs('ordenes.index')">
+                            <x-nav-link :href="route('ordenes.index')">
                                 <span class="sidebar-mini">
                                     <span class="material-icons">
-                                        devices_other
+                                        checklist_rtl
                                     </span>
                                 </span>
-                                <span class="sidebar-normal"> {{ __('Catálogos') }} </span>
+                                <span class="sidebar-normal"> {{ __('Ordenes de servicio') }} </span>
                             </x-nav-link>
                         </x-nav-li>
-                        @endif
+
+
                     </ul>
                 </div>
             </li>
             @endif
-
+            @if (!auth()->user()->isAdminSO())
             <li class="nav-item {{ $menuParent == 'calendario' ? 'active' : '' }}">
                 <a class="nav-link" data-toggle="collapse" href="#calendario" {{ $menuParent=='calendario'
                     ? 'aria-expanded="true"' : '' }}>
@@ -251,6 +258,7 @@
                 </a>
                 <div class="collapse{{ $menuParent  == 'calendario' ? ' show' : '' }}" id="calendario">
                     <ul class="nav">
+
                         <x-nav-li :active="request()->routeIs('calendario.general')">
                             <x-nav-link :href="route('calendario.general', ['calendario' => 'general'])">
                                 <span class="sidebar-mini">
@@ -261,6 +269,7 @@
                                 <span class="sidebar-normal"> {{ __('Campañas') }} </span>
                             </x-nav-link>
                         </x-nav-li>
+
                         @if (auth()->user()->isAdmin() || auth()->user()->isCreator())
                         <x-nav-li :active="request()->routeIs('campania.detalles')">
                             <x-nav-link :href="route('campania.detalles')">
@@ -299,6 +308,7 @@
                     </ul>
                 </div>
             </li>
+            @endif
         </ul>
     </div>
 </div>

@@ -17,6 +17,7 @@ class CreateDepartamentoUserTable extends Migration
             $table->id();
             $table->foreignId('departamento_id')->constrained('departamentos');
             $table->foreignId('user_id')->constrained('users');
+            $table->boolean('validador')->default(true);
             $table->timestamps();
         });
     }

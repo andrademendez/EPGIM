@@ -4,8 +4,11 @@ namespace App\Http\Livewire\User;
 
 use App\Models\Departamentos as ModelsDepartamentos;
 use App\Models\User;
+use App\Notifications\ValidacionOrdenServicio;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Usernotnull\Toast\Concerns\WireToast;
+use Illuminate\Support\Facades\Notification;
 
 class Departamentos extends Component
 {
@@ -92,6 +95,29 @@ class Departamentos extends Component
         } catch (\Throwable $th) {
             //throw $th;
             toast()->info('Revisa tus datos!!')->push();
+        }
+    }
+
+    public function validador($user)
+    {
+        # code...
+        $validador = DB::table('departamento_user')
+            ->where('user_id', $user)
+            ->update(['validador' => true, 'updated_at' => now()]);
+        if ($validador) {
+            toast()->success('Usuario se cambiado a Validador!!')->push();
+            // Notification::route('mail', 'jandrade@delking.mx')->notify(new ValidacionOrdenServicio());
+        }
+    }
+
+    public function notValidator($user)
+    {
+        # code...
+        $validador = DB::table('departamento_user')
+            ->where('user_id', $user)
+            ->update(['validador' => false, 'updated_at' => now()]);
+        if ($validador) {
+            toast()->success('Usuario se cambiado a estándar!!')->push();
         }
     }
 

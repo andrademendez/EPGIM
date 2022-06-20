@@ -7,6 +7,7 @@ use App\Models\Espacios;
 use App\Models\TiposEspacios;
 use App\Models\Ubicacion;
 use App\Models\UnidadesNegocios;
+use DateTime;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -18,6 +19,8 @@ class EditarEspacio extends Component
     use WireToast;
 
     public $id_espacio, $nombre, $referencia, $clave, $medidas, $cantidad, $precio, $estatus, $id_unidad, $id_tipo, $id_ubicacion;
+
+    public $filterFecha = "todo";
 
     protected $rules = [
         'nombre' => 'required|min:4',
@@ -101,14 +104,7 @@ class EditarEspacio extends Component
             'unidades' => UnidadesNegocios::all(),
             'tipos' => TiposEspacios::all(),
             'ubicaciones' => Ubicacion::all(),
-            'campanias' => DB::table('campania_espacio')
-                ->join('campanias', 'campanias.id', '=', 'campania_espacio.id_campania')
-                ->join('espacios', 'espacios.id', '=', 'campania_espacio.id_espacio')
-                ->join('users', 'users.id', '=', 'campanias.id_user')
-                ->select('campanias.*', 'users.name as userName')
-                ->where('espacios.id', '=', $this->id_espacio)
-                ->orderBy('campanias.created_at', 'asc')
-                ->paginate(10),
+
         ]);
     }
 }

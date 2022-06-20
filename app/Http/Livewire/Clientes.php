@@ -83,6 +83,7 @@ class Clientes extends Component
                 $cliente->email = $this->email;
                 $cliente->telefono = $this->telefono;
                 $cliente->contacto = $this->contacto;
+                $cliente->id_user = $this->usuario;
                 $cliente->save();
                 if ($cliente) {
                     toast()->success('Datos del cliente actualizados!!')->push();

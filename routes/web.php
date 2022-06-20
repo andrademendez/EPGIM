@@ -23,7 +23,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/', [HomeController::class, 'dashboard'])->name('dashboard');
     // Route::get('/ciudades', [HomeController::class, 'ciudad'])->name('ciudades');
 
-    Route::get('/test', [CampaniaController::class, 'test']);
+    Route::get('/test', [HomeController::class, 'test']);
 
     //obtencion de los eventos por unidades
     Route::get('/all/campanias', [CalendarioController::class, 'getCampanias']);
@@ -47,14 +47,17 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/campanias/delespacio', [CampaniaController::class, 'eliminarEspacio']);
     Route::get('/campanias/first', [CampaniaController::class, 'getFirstCampania']);
     Route::get('/campanias/{id}/ordenes-servicios', [CampaniaController::class, 'ordenesServicio'])->name('campania.ordenes');
+    Route::get('/campanias/{id}/cotizacion', [CampaniaController::class, 'cotizacion'])->name('campania.cotizacion');
 
     Route::get('/challenge', [CampaniaController::class, 'show'])->name('challenge');
-    Route::get('/campania/my-campania', [CampaniaController::class, 'detalles'])->name('campania.detalles');
+    Route::get('/campania/detalles', [CampaniaController::class, 'detalles'])->name('campania.detalles');
+    Route::get('/campania/{id}/detalles', [CampaniaController::class, 'detallesCampanias'])->name('detalles.detalles');
 
     //operaciones
     Route::get('/cotizaciones', [CotizacionController::class, 'index'])->name('cotizacion.index');
     Route::get('/operaciones/catalogos', [OperacionesController::class, 'catalogos'])->name('catalogos.index');
     Route::get('/ordenes', [OrdenesServiciosController::class, 'index'])->name('ordenes.index');
+    Route::get('/ordenes/{id}/detalles', [OrdenesServiciosController::class, 'show'])->name('ordenes.show');
     Route::get('/contratos', [ContratosController::class, 'index'])->name('contratos.index');
     Route::get('/estado-cuenta', [EstadoCuentaController::class, 'index'])->name('estados.index');
 });

@@ -17,6 +17,7 @@
         "laravel/tinker": "^2.5",
         "livewire/livewire": "^2.8",
         "maatwebsite/excel": "^3.1",
+        "spatie/browsershot": "^3.55",
         "usernotnull/tall-toasts": "^1.3"
     },
     "require-dev": {

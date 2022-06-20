@@ -11,10 +11,13 @@ use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
-    //
+    //viewHome
 
     public function dashboard()
     {
+        $this->authorize('viewHome', User::class);
+
+
         $totalVentaDigital = Espacios::selectRaw('sum(precio) as total')->where([
             ['id_tipo_espacio', '=', 13],
             ['estatus', true]
@@ -74,6 +77,16 @@ class HomeController extends Controller
         return ($totales);
     }
 
+
+    function espacioOcupado()
+    {
+        $totalVendido = Campanias::whereIn('status', ['Confirmado', 'Cerrado'])
+            ->where('end', '>', now())
+            ->get();
+
+        return $totalVendido;
+    }
+
     private function ventaPorUnidad()
     {
         # code...
@@ -106,5 +119,50 @@ class HomeController extends Controller
     {
         $this->authorize('viewAny', User::class);
         return view('pages.ciudad.index');
+    }
+
+    public function test()
+    {
+        # code...
+        $valor = false;
+        $id = 46;
+        $campania = Campanias::find($id);
+
+        foreach ($campania->espacios  as $espacio) {
+            if ($espacio->id_tipo_espacio == 13) {
+                # code...
+                $existen = DB::table('vEspacioConfirmado')
+
+                    ->whereBetween('start', [$campania->start, $campania->end])
+                    ->orWhereBetween('end', [$campania->start, $campania->end])
+                    ->where('id_espacio', $espacio->id)
+                    ->get();
+
+                $total =  count($existen);
+                if ($total <= 12) {
+                    $valor = true;
+                } else {
+                    $valor = false;
+                    break;
+                }
+            } else {
+                $existen2 = DB::table('vEspacioConfirmado')
+
+                    ->whereBetween('start', [$campania->start, $campania->end])
+                    ->orWhereBetween('end', [$campania->start, $campania->end])
+                    ->where('id_espacio', $espacio->id)
+                    ->get();
+
+                $total2 = count($existen2);
+                if ($total2 == 0) {
+                    $ima = true;
+                } else {
+                    $valor = false;
+                    break;
+                }
+            }
+        }
+
+        return ($valor);
     }
 }

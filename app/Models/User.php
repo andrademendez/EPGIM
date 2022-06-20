@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -58,31 +59,44 @@ class User extends Authenticatable
         return  asset('images/logo.png');
     }
 
+    //
+    //Roles de los usuarios
+    //
 
     public function isAdmin()
     {
-        return $this->id_rol == 1;
+        $rol = Roles::find($this->id_rol);
+
+        return $rol->clave == 'ieL6gwrVQLqzq1ypzjA5C2uZ';
     }
 
 
     public function isCreator()
     {
-        return $this->id_rol == 2;
+        $rol = Roles::find($this->id_rol);
+
+        return $rol->clave == '3p3cVvRtBgC8xSQYjOqnSoDY';
     }
 
     public function isMonitor()
     {
-        return $this->id_rol == 3;
+        $rol = Roles::find($this->id_rol);
+
+        return $rol->clave == 'i4rmIMlhO1RJaQePLs6sa1dc';
     }
 
     public function isValidator()
     {
-        return $this->id_rol == 4;
+        $rol = Roles::find($this->id_rol);
+
+        return $rol->clave == 'zNY9upssqQtZDCQ6JSttazGV';
     }
 
-    public function isAdminCierre()
+    public function isAdminSO()
     {
-        return $this->id_rol == 5;
+        $rol = Roles::find($this->id_rol);
+
+        return $rol->clave == '8fPrnAXGzMjfWs8o2LOSb2cQ';
     }
 
     //end roles
@@ -109,5 +123,13 @@ class User extends Authenticatable
     {
         # code...
         return $this->belongsToMany(Actividades::class, 'actividad_usuario', 'actividad_id', 'user_id');
+    }
+
+    // usuario para validacion de ordenes de servicios
+    public function isValidador($id)
+    {
+        $user = DB::table('departamento_user')->where('user_id', $id)->first();
+
+        return $user->validador;
     }
 }

@@ -2,13 +2,19 @@
 
 namespace App\Http\Livewire\Campanias;
 
+use App\Mail\OrdenesServicios as MailOrdenesServicios;
 use App\Models\Campanias;
 use App\Models\Operaciones\Actividades;
 use App\Models\Operaciones\OrdenesServicios;
 use App\Models\Operaciones\TiposOrdenes;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Usernotnull\Toast\Concerns\WireToast;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Spatie\Browsershot\Browsershot;
 
 class Ordenes extends Component
 {
@@ -49,7 +55,7 @@ class Ordenes extends Component
             $orden->horario_inicio = $this->hora_inicio;
             $orden->fecha_fin = $this->fecha_termino;
             $orden->horario_fin = $this->hora_termino;
-            $orden->estatus = true;
+            $orden->estatus = false;
             $orden->url = $this->url;
             $orden->comentarios = $this->comentarios;
             $orden->campania_id = $this->campania_id;
@@ -57,9 +63,25 @@ class Ordenes extends Component
             $orden->tipo_orden_servicios_id = $this->tipoOrden;
             $orden->save();
             if ($orden) {
-                $this->closeModal();
-                $this->resetear();
-                toast()->success('Se ha creado la orden de servicio')->push();
+
+                $archivo = $this->PDF($orden);
+                $editar = OrdenesServicios::find($orden->id);
+                $editar->archivo = $archivo;
+                $editar->save();
+
+                if ($editar) {
+                    foreach ($editar->responsables($editar->actividad_id) as $activ) {
+                        # code...
+                        foreach ($activ->users as  $user) {
+                            # code...
+                            Mail::to($user->email)->queue(new MailOrdenesServicios($editar));
+                        }
+                    }
+
+                    $this->closeModal();
+                    $this->resetear();
+                    toast()->success('Se ha creado la orden de servicio')->push();
+                }
             }
         } catch (\Throwable $th) {
             //throw $th;
@@ -67,8 +89,44 @@ class Ordenes extends Component
         }
     }
 
+
+    public function crearPdf($datos)
+    {
+        # code...
+        $pdf = App::make('dompdf.wrapper');
+
+        $pdf->loadView('pdf.ordenes.normal', ['orden' => $datos]);
+
+        $random = Str::random(10);
+
+        $path = Storage::url('ordenes/ordenes-' . $random . '.pdf');
+        $pdf->save('storage/ordenes/ordenes-' . $random . '.pdf');
+
+        return $path;
+    }
+
+    public function PDF($orden)
+    {
+        $random = Str::random(10);
+
+        $html = view('pdf.ordenes.digital', [
+            'orden' => $orden,
+        ])->render();
+
+        $path = Storage::url('ordenes/ordenes-' . $random . '.pdf'); //
+
+        Browsershot::html($html)->format('Letter')
+            ->emulateMedia('screen')
+            ->margins(10, 10, 10, 10)
+            ->landscape()
+            ->savePdf('storage/ordenes/ordenes-' . $random . '.pdf');
+
+        return $path;
+    }
+
     public function render()
     {
+
         return view('livewire.campanias.ordenes', [
 
             'actividades' => Actividades::all(),

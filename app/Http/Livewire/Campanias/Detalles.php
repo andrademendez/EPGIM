@@ -224,8 +224,9 @@ class Detalles extends Component
                     ['id_medio',  'LIKE', "%$this->searchMedio%"],
                     ['status', 'LIKE', "%$this->searchStatus%"],
                 ]
-            )
-                ->orderBy('start')
+
+            )->where('start', '>=', now())
+                ->orderBy('start', 'desc')
                 ->paginate(15),
             'user' =>  User::find(Auth::id()),
             'medios' => Medios::all(),

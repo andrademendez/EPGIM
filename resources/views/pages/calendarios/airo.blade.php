@@ -3,8 +3,11 @@
     <x-slot name="titlePage">Aiŕo</x-slot>
     <x-content>
         <x-slot name="import">
+            @if (auth()->user()->isAdmin() || auth()->user()->isCreator() )
             @include("pages.campanias.create")
             @include("pages.campanias.edit")
+            @endif
+
         </x-slot>
         <div class="py-3">
             <div id="fullAiro">

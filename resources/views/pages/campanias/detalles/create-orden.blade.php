@@ -10,7 +10,7 @@
                         <x-form.select wire:model="espacio_asignado">
                             <option value="">Espacios</option>
                             @foreach ($espacios as $espacio)
-                            <option value="{{ $espacio->nombre }}">{{ $espacio->referencia }}</option>
+                            <option value="{{ $espacio->id }}">{{ $espacio->referencia }}</option>
                             @endforeach
                         </x-form.select>
                     </div>
@@ -54,12 +54,12 @@
                 @if ($tipoOrden == 2)
                 <div class="col-span-2 mt-2">
                     <x-form.label for=""> Fecha de Termino</x-form.label>
-                    <x-input type="date" wire:model="fecha_fin" placeholder="Fecha término" class="w-full" />
+                    <x-input type="date" wire:model="fecha_termino" placeholder="Fecha término" class="w-full" />
                 </div>
 
                 <div class="col-span-2 mt-2">
                     <x-form.label for=""> Hora de termino </x-form.label>
-                    <x-input type="time" class="w-full" wire:model="fecha_termino" placeholder="Hora Entrada" />
+                    <x-input type="time" class="w-full" wire:model="hora_termino" placeholder="Hora Entrada" />
                 </div>
                 @endif
 

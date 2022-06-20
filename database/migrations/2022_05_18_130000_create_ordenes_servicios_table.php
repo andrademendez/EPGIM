@@ -15,7 +15,7 @@ class CreateOrdenesServiciosTable extends Migration
     {
         Schema::create('ordenes_servicios', function (Blueprint $table) {
             $table->id();
-            $table->string('ubicacion')->nullable();
+            $table->integer('ubicacion')->nullable();
             $table->date('fecha_inicio');
             $table->time('horario_inicio')->nullable();
             $table->date('fecha_fin')->nullable();

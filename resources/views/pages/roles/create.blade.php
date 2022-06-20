@@ -7,7 +7,8 @@
         </div>
         <div class="mb-3">
             <x-form.label for="">Descripción</x-form.label>
-            <x-input type="text" class="w-full" wire:model="descripcion" placeholder="Descripcion" />
+            <x-form.textarea class="w-full" wire:model="descripcion" placeholder="Descripcion" rows="4">
+            </x-form.textarea>
         </div>
         <div class="flex justify-end">
             <x-button wire:click.prevent="store">Guardar</x-button>

@@ -3,8 +3,12 @@
     <x-slot name="titlePage">Showcenter</x-slot>
     <x-content>
         <x-slot name="import">
+            @if (auth()->user()->isAdmin() || auth()->user()->isCreator() )
             @include("pages.campanias.create")
             @include("pages.campanias.edit")
+            @else
+            @include("pages.campanias.campania-show")
+            @endif
         </x-slot>
         <div class="py-3">
             <div id="fullShowcenter">

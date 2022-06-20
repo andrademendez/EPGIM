@@ -79,6 +79,7 @@
             <x-table.th>Fecha</x-table.th>
             <x-table.th>Medio</x-table.th>
             <x-table.th>Espacios</x-table.th>
+            <x-table.th>Unidad</x-table.th>
             <x-table.th>Archivos</x-table.th>
             <x-table.th></x-table.th>
         </x-slot>
@@ -109,84 +110,40 @@
                 {{ $campania->status }} - {{ $campania->hold }}
                 @endif
             </x-table.td>
-            <x-table.td>
-                <div class="flex flex-col ">
+            <x-table.td class="whitespace-nowrap">
+                <div class="flex">
                     <span class="text-xs text-gray-700 font-medium">
-                        {{ $campania->formatoMx($campania->start) }}
+                        {{ $campania->formatoMx($campania->start) }} -
                     </span>
+
                     <span class="text-xs text-gray-500">
                         {{ $campania->formatoMx($campania->end) }}
                     </span>
                 </div>
             </x-table.td>
+
             <x-table.td>{{ $campania->medio->nombre }}</x-table.td>
             <x-table.td class="whitespace-normal">
                 @foreach ($campania->espacios as $espacio)
-                <div class="flex flex-col mb-1">
-                    <span class="text-xs font-medium text-gray-700">
-                        {{ $espacio->nombre }}
-                    </span>
-                    <span class="text-xs text-gray-500 capitalize">
-                        {{ $espacio->unidad->nombre }}
-                    </span>
-                </div>
+                {{ $espacio->nombre }}
                 @endforeach
             </x-table.td>
 
+            <x-table.td class="whitespace-nowrap">
+                <span class="text-xs text-gray-500 capitalize">
+                    @foreach ($campania->espacios as $espacio)
+                    {{ $espacio->unidad->nombre }}
+                    ,<br>
+                    @endforeach
+
+                </span>
+            </x-table.td>
             <x-table.td>
-                @if ($campania->status == 'Confirmado' || $campania->status == 'Cerrado')
-                <div class="flex flex-col">
-                    <div class="my-2 text-center">
-                        <span>Mis archivos</span>
-                    </div>
-                    <div class="flex space-x-2 items-center justify-center">
-                        @foreach ($campania->attachStatusFile as $attach)
-                        @if ($attach->process == 'Confirmacion')
-                        @foreach ($attach->filesStatus as $files)
-                        <a href="{{ $files->file }}" target="_blank" rel="noopener noreferrer">
-                            <img src="{{ asset('images/test/jpeg.png') }}" class="h-9" alt="" srcset="">
-                        </a>
-                        @endforeach
-
-                        @continue
-                        @endif
-                        @if ($attach->process == 'Cierre')
-                        @foreach ($attach->filesStatus as $files)
-                        <a href="{{ $files->file }}" target="_blank" rel="noopener noreferrer">
-                            <img src="{{ asset('images/test/pdf.png') }}" class="h-9" alt="" srcset="">
-                        </a>
-                        @endforeach
-                        @endif
-                        @endforeach
-                    </div>
-
-                </div>
-                @else
-                <div class="flex items-center justify-center">
-                    <button type="button"
-                        class="rounded-full  p-1.5 bg-[#e0f1f8] ml-2 text-[#30a3cf] hover:text-[#2bb1e6] focus:outline-none focus:ring-transparent disabled:opacity-25 transition ease-in-out duration-150"
-                        wire:click="openModal({{ $campania->id }})" title="Challenge">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd"
-                                d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V8z"
-                                clip-rule="evenodd" />
-                        </svg>
-                    </button>
-                </div>
-                @endif
+                @include('pages.campanias.detalles._solicitud')
             </x-table.td>
 
             <x-table.td>
-                @if ($campania->status == 'Confirmado' || $campania->status == 'Cerrado')
-                <x-form.btn-icons wire:click="openOrden({{ $campania->id }})">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
-                    </svg>
-                </x-form.btn-icons>
-                @endif
-
+                @include('pages.campanias.detalles._editar')
             </x-table.td>
         </x-table.tr>
         @empty

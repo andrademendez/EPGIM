@@ -49,11 +49,15 @@
 
             @endif
         </div>
-
-
         <div class=" collapse navbar-collapse justify-content-end w-full">
                         <ul class="navbar-nav">
-
+                            <li>
+                                <a href="">
+                                    <span class="material-icons">
+                                        notifications
+                                    </span>
+                                </a>
+                            </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProfile"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

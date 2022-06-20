@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Operaciones\Cotizacion;
 use App\Models\Operaciones\OrdenesServicios;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -35,14 +36,18 @@ class Campanias extends Model
 
     public function costoCampania($id)
     {
-        $costo = DB::table('campania_espacio')
-            ->join('campanias', 'campanias.id', '=', 'campania_espacio.id_campania')
-            ->join('espacios', 'espacios.id', '=', 'campania_espacio.id_espacio')
-            ->selectRaw("sum(precio) as costo")
-            ->where('campania_espacio.id_campania', '=', $id)->first();
+        $total = [];
+        $campania = Campanias::find($id);
+        foreach ($campania->espacios as $espacio) {
+            $total[] =  Espacios::diasCosto($espacio->id, $campania->id);
+        }
 
-        return $costo->costo;
+        $totales = array_sum($total);
+
+        return $totales;
     }
+
+
     public function espacios()
     {
         return $this->belongsToMany(Espacios::class, 'campania_espacio', 'id_campania', 'id_espacio');
@@ -77,5 +82,18 @@ class Campanias extends Model
     {
         # code...
         return $this->hasMany(OrdenesServicios::class, 'campania_id');
+    }
+
+    public function cotizacion()
+    {
+        # code...
+        return $this->hasOne(Cotizacion::class, 'campania_id');
+    }
+
+    //
+    public function existeCotizacion($id)
+    {
+        # code...
+        $existe = DB::table('cotizaciones')->where('campania_id', $id)->exists();
     }
 }

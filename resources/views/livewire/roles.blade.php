@@ -24,6 +24,7 @@
     <x-table.table>
         <x-slot name="theader">
             <x-table.th>ID</x-table.th>
+            <x-table.th>Clave</x-table.th>
             <x-table.th>NOMBRE</x-table.th>
             <x-table.th>DESCRIPCION</x-table.th>
             <x-table.th></x-table.th>
@@ -31,6 +32,7 @@
         @forelse ($roles as $rol)
         <x-table.tr>
             <x-table.td>{{ $rol->id }}</x-table.td>
+            <x-table.td>{{ $rol->clave }}</x-table.td>
             <x-table.td>{{ $rol->nombre }}</x-table.td>
             <x-table.td>{{ $rol->descripcion }}</x-table.td>
             <x-table.td>

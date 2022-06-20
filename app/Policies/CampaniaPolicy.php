@@ -19,6 +19,7 @@ class CampaniaPolicy
     public function viewAny(User $user)
     {
         //
+        return $user->isAdmin() || $user->isValidator() || $user->isCreator() || $user->isMonitor();;
     }
 
     /**

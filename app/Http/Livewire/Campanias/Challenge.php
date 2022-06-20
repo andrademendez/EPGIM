@@ -42,25 +42,33 @@ class Challenge extends Component
     public function confirmar()
     {
         # code...
-        if (Auth::user()->id_rol == '4') {
+        if (Auth::user()->isValidator()) {
             $campania = Campanias::findOrFail($this->id_campania);
             $archive = DB::table('files_status')->where('id_attach_status_file', $this->id_attach)->get();
             if ($archive->count() > 0) {
-                $campania->status = 'Confirmado';
-                $campania->display = '#f3a40c';
-                $campania->updated_at = now();
-                $campania->save();
-                if ($campania) {
-                    $attach = AttachStatusFiles::find($this->id_attach);
-                    $attach->comment = NULL;
-                    $attach->status = 'Confirmado';
-                    $attach->updated_at = now();
-                    $attach->save();
-                    if ($attach) {
-                        Mail::to($campania->user->email)->queue(new NotificacionConfirmacion($campania));
-                        toast()->success('Se ha confirmado la campaña', 'Campaña confirmado')->push();
-                        $this->closeModal();
+
+                $res = $this->validar($campania);
+                if ($res) {
+                    # code...
+                    $campania->status = 'Confirmado';
+                    $campania->display = '#f3a40c';
+                    $campania->updated_at = now();
+                    $campania->save();
+                    if ($campania) {
+                        $attach = AttachStatusFiles::find($this->id_attach);
+                        $attach->comment = NULL;
+                        $attach->status = 'Confirmado';
+                        $attach->updated_at = now();
+                        $attach->save();
+                        if ($attach) {
+                            Mail::to($campania->user->email)->queue(new NotificacionConfirmacion($campania));
+                            toast()->success('Se ha confirmado la campaña', 'Campaña confirmado')->push();
+                            $this->closeModal();
+                        }
                     }
+                } else {
+                    toast()->info('Uno o mas espacios ha alcanzado el maximo de campaña permitido')->push();
+                    $this->closeModal();
                 }
             } else {
                 toast()->info('No se puede confirmar, ya que el usuario no cargado los archivos')->push();
@@ -70,6 +78,50 @@ class Challenge extends Component
             toast()->info('No tengo permiso para realizar la acción')->push();
         }
     }
+
+    public function validar(Campanias $campania)
+    {
+        # code...
+        $valor = false;
+
+        foreach ($campania->espacios  as $espacio) {
+            if ($espacio->id_tipo_espacio == 13) {
+                # code...
+                $existen = DB::table('vEspacioConfirmado')
+
+                    ->whereBetween('start', [$campania->start, $campania->end])
+                    ->orWhereBetween('end', [$campania->start, $campania->end])
+                    ->where('id_espacio', $espacio->id)
+                    ->get();
+
+                $total =  count($existen);
+                if ($total <= 12) {
+                    $valor = true;
+                } else {
+                    $valor = false;
+                    break;
+                }
+            } else {
+                $existen2 = DB::table('vEspacioConfirmado')
+
+                    ->whereBetween('start', [$campania->start, $campania->end])
+                    ->orWhereBetween('end', [$campania->start, $campania->end])
+                    ->where('id_espacio', $espacio->id)
+                    ->get();
+
+                $total2 = count($existen2);
+                if ($total2 == 0) {
+                    $ima = true;
+                } else {
+                    $valor = false;
+                    break;
+                }
+            }
+        }
+
+        return $valor;
+    }
+
     public function closeModal()
     {
         $this->open = false;
@@ -110,6 +162,8 @@ class Challenge extends Component
     {
         return view('livewire.campanias.challenge', [
             'campanias' => AttachStatusFiles::whereIn('process', ['Challenge', 'Confirmacion'])
+                ->where('status', '=', 'Send')
+                ->orderBy('created_at', 'desc')
                 ->get(),
         ]);
     }
